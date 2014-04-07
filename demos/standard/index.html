@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10" />
+
+    <link href='module.forms.css' rel='stylesheet' type='text/css' />
+
+    <script src="../../vendor/jquery-1.9.1.min.js"></script>
+    <script src="../../vendor/meLibs/helpMe.js"></script>
+    <script src="../../src/skinMe.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var skinMeForm = new Me.skin($('form'));
+        });
+    </script>
+</head>
+<body>
+<form class="skinMe radio checkbox select" action="" method="post">
+    <div class="row">
+        <label class="label">Radio Demo:</label>
+        <div class="radios-ctn">
+            <label class="radio-text" for="radio-sex-m">Homme</label>
+            <input type="radio" id="radio-sex-m" name="sex" />
+            <div id="skinme-radio-sex-m" class="radio demo for-radio-btn"></div>
+
+            <label class="radio-text" for="radio-sex-w">Femme</label>
+            <input type="radio" id="radio-sex-w" name="sex" />
+            <div id="skinme-radio-sex-w" class="radio demo2 for-radio-btn"></div>
+        </div>
+    </div>
+    <div class="row">
+        <label class="label">Checkbox Demo:</label>
+        <div class="checkbox-ctn">
+            <input type="checkbox" id="checkbox-sex-m" name="checkbox[]" />
+            <div id="skinme-checkbox-sex-m" class="checkbox demo for-radio-btn"></div>
+
+            <label class="radio-text" for="checkbox-sex-w">Femme</label>
+            <input type="checkbox" id="checkbox-sex-w" name="checkbox[]" />
+            <div id="skinme-checkbox-sex-w" class="checkbox demo for-radio-btn"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <label class="label">Select Demo:</label>
+        <div class="skinme-select-ctn">
+            <div id="skinme-select-city" class="select demo">
+                <div class="skinme-mask"></div>
+                <div class="active-choice select-choice">Choisir région</div>
+                <a class="toggler rounded dropdown"></a>
+                <div class="skinme-select-choices">
+                    <div class="choice">Choisir région</div>
+                    <div class="choice">Québec</div>
+                    <div class="choice">Montréal</div>
+                </div>
+            </div>
+            <select id="select-city" name="city" class="native">
+                <option selected value="Choose">Choisir région</option>
+                <option value="Quebec">Québec</option>
+                <option value="Montreal">Montréal</option>
+            </select>
+        </div>
+    </div>
+</form>
+</body>
+</html>

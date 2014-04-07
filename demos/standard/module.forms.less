@@ -1,0 +1,36 @@
+@import "../../src/skinMe.less";
+
+form {
+	.skinMe-radio(23, 23, 4, top, demo, "radio-test2.png", "radio-test2-error.png", true, "radio-test_x2.png", "radio-test-error_x2.png");
+	.skinMe-radio(23, 23, 4, top, demo2, "radio-test2.png", "radio-test2-error.png", true, "radio-test_x2.png", "radio-test-error_x2.png", true);
+
+	.skinMe-checkbox(23, 23, 4, top, demo, "radio-test2.png", "radio-test2-error.png", true, "radio-test_x2.png", "radio-test-error_x2.png");
+
+	.skinMe-select(demo);
+	.select.demo {
+		background: white;
+		border: solid #d3d3d3;
+		border-width: 2px 0 0 2px;
+		display: block;
+		p {
+			color:red;
+		}
+
+		.dropdown {
+			position: absolute;
+			top: 50%;
+			right: 10px;
+			margin-top:-15px;
+
+			width:30px;
+			height:30px;
+			background-image: url("arrow-down-button.png");
+			background-size: 9px 5px;
+
+			&:hover {
+				background-image: url("arrow-down-button.png");
+				background-size: 18/2px 10/2px;
+			}
+		}
+	}
+}
