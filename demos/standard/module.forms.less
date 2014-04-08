@@ -8,10 +8,14 @@ form {
 
 	.skinMe-select(demo);
 	.select.demo {
-		background: white;
-		border: solid #d3d3d3;
-		border-width: 2px 0 0 2px;
+		background: #979797;
 		display: block;
+		color: #ffffff;
+		height: 20px;
+		-moz-box-sizing:border-box;
+		-webkit-box-sizing:border-box;
+		box-sizing:border-box;
+
 		p {
 			color:red;
 		}
@@ -19,13 +23,13 @@ form {
 		.dropdown {
 			position: absolute;
 			top: 50%;
-			right: 10px;
-			margin-top:-15px;
-
-			width:30px;
-			height:30px;
+			right: 2px;
+			margin-top: -5px;
+			width: 17px;
+			height: 11px;
 			background-image: url("arrow-down-button.png");
-			background-size: 9px 5px;
+			background-size: 100% auto;
+			background-repeat: no-repeat;
 
 			&:hover {
 				background-image: url("arrow-down-button.png");

@@ -32,7 +32,7 @@ form.skinMe .radio.demo.active.hover {
 @media (-webkit-min-device-pixel-ratio: 1.75), (min-resolution: 168dpi) {
   form.skinMe .radio.demo {
     background-image: url("radio-test_x2.png");
-    background-size: auto 400%;
+    background-size: 100% auto;
   }
   form.skinMe .radio.demo.error {
     background-image: url("radio-test-error_x2.png");
@@ -44,7 +44,7 @@ form.skinMe .radio.demo2 {
   height: 23px;
   background-position: 0 0;
   background-image: url("radio-test_x2.png");
-  background-size: auto 400%;
+  background-size: 100% auto;
 }
 form.skinMe .radio.demo2.error {
   background-image: url("radio-test-error_x2.png");
@@ -80,7 +80,7 @@ form.skinMe .checkbox.demo.active.hover {
 @media (-webkit-min-device-pixel-ratio: 1.75), (min-resolution: 168dpi) {
   form.skinMe .checkbox.demo {
     background-image: url("radio-test_x2.png");
-    background-size: auto 400%;
+    background-size: 100% auto;
   }
   form.skinMe .checkbox.demo.error {
     background-image: url("radio-test-error_x2.png");
@@ -136,10 +136,13 @@ form.skinMe .skinme-select-ctn select.native {
   z-index: 10;
 }
 form .select.demo {
-  background: white;
-  border: solid #d3d3d3;
-  border-width: 2px 0 0 2px;
+  background: #979797;
   display: block;
+  color: #ffffff;
+  height: 20px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 form .select.demo p {
   color: red;
@@ -147,12 +150,13 @@ form .select.demo p {
 form .select.demo .dropdown {
   position: absolute;
   top: 50%;
-  right: 10px;
-  margin-top: -15px;
-  width: 30px;
-  height: 30px;
+  right: 2px;
+  margin-top: -5px;
+  width: 17px;
+  height: 11px;
   background-image: url("arrow-down-button.png");
-  background-size: 9px 5px;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
 }
 form .select.demo .dropdown:hover {
   background-image: url("arrow-down-button.png");

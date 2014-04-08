@@ -97,19 +97,11 @@
 			}
 			.fretina() when (@forceRetina = true) {
 					background-image: url(@retinaUrl);
+					background-size:100% auto;
 
 					&.error {
 						background-image: url(@retinaUrlError);
 					}
-
-					.background-top() when (@direction = top) {
-						background-size:auto 100% * @frames;
-					}
-					.background-top();
-					.background-left() when (@direction = left) {
-						background-size:100% * @frames auto;
-					}
-					.background-left();
 			}
 			.fretina();
 
@@ -163,19 +155,11 @@
 				.fretina() when (@forceRetina = false) {
 					@media (-webkit-min-device-pixel-ratio: 1.75), (min-resolution: 168dpi) {
 						background-image: url(@retinaUrl);
+						background-size:100% auto;
 
 						&.error {
 							background-image: url(@retinaUrlError);
 						}
-
-						.background-top() when (@direction = top) {
-							background-size:auto 100% * @frames;
-						}
-						.background-top();
-						.background-left() when (@direction = left) {
-							background-size:100% * @frames auto;
-						}
-						.background-left();
 					}
 				}
 				.fretina();
@@ -205,19 +189,12 @@
 			}
 			.fretina() when (@forceRetina = true) {
 				background-image: url(@retinaUrl);
+				background-size:100% auto;
 
 				&.error {
 					background-image: url(@retinaUrlError);
 				}
 
-				.background-top() when (@direction = top) {
-					background-size:auto 100% * @frames;
-				}
-				.background-top();
-				.background-left() when (@direction = left) {
-					background-size:100% * @frames auto;
-				}
-				.background-left();
 			}
 			.fretina();
 
@@ -271,19 +248,12 @@
 				.fretina() when (@forceRetina = false) {
 					@media (-webkit-min-device-pixel-ratio: 1.75), (min-resolution: 168dpi) {
 						background-image: url(@retinaUrl);
+						background-size:100% auto;
 
 						&.error {
 							background-image: url(@retinaUrlError);
 						}
 
-						.background-top() when (@direction = top) {
-							background-size:auto 100% * @frames;
-						}
-						.background-top();
-						.background-left() when (@direction = left) {
-							background-size:100% * @frames auto;
-						}
-						.background-left();
 					}
 				}
 				.fretina();
