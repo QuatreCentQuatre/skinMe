@@ -1,15 +1,15 @@
-.skinMe.activated {
-	&.radio {
+.skinMe {
+	&.radio.activated {
 		input[type="radio"] {
 			display:none;
 		}
 	}
-	&.checkbox {
+	&.checkbox.activated {
 		input[type="checkbox"] {
 			display:none;
 		}
 	}
-	&.select {
+	&.select.activated {
 		select {
 			filter: ~"alpha(opacity=1)";
 			-khtml-opacity:0.01;
@@ -62,7 +62,21 @@
 				}
 
 				.skinme-select-choices {
+					position:absolute;
+					width:100%;
 					display:none;
+
+					&.open {
+						display:block;
+					}
+				}
+
+				&.no-default {
+					.skinme-select-choices {
+						.choice:first-child {
+							display:none;
+						}
+					}
 				}
 			}
 

@@ -6,34 +6,66 @@
  *
  * Dual licensed under MIT and GNU General Public License version 3 (GPLv3)
  * http://www.opensource.org/licenses/LGPL-3.0
- * Version  : April 2014
+ * Version: 1.0
+ * Release date: April 2014
  */
-(function($, window, document, undefined){
-	var SkinMe = function($form, options){
-		this.__construct($form, options);
+(function($, window, document, undefined) {
+	var SkinMeID   = 1;
+	var SkinMeName = "skinMe";
+
+	var SkinMe = function($form, options) {
+		this.id    = SkinMeID;
+		this.name  = SkinMeName + "-" + String(this.id) + ":: ";
+		this.$form = $form;
+		this.__construct(options);
+		SkinMeID ++;
 	};
 
 	var defaults = {
 		debug : false
 	};
 
-	var proto = SkinMe.prototype;
+	var p = SkinMe.prototype;
 
-	proto.options = null;
+	p.options = null;
 
 	//--------Methods--------//
-	proto.__construct = function($form, options) {
-		var scope    = this;
+	p.__construct = function(options) {
 		var settings = (options) ? options : {};
+		//Me.help.extend({}, defaultOptions);
 		this.options = $.extend({}, defaults, settings);
-		this.$el     = $form;
 
+		this.fetchField();
+	};
+
+	p.__dependencies = function() {
+		var isOk = true;
+		if (!Me.help) {
+			console.warn(this.name + " :: " + "helpMe needed (https://github.com/QuatreCentQuatre/helpMe)");
+			isOk = false;
+		}
+
+		return isOk;
+	};
+
+	p.toString = function() {
+		return this.name;
+	};
+
+	p.setOpts = function(options) {
+		this.options = $.extend({}, this.options, options);
+
+		this.fetchField();
+	};
+
+	p.fetchField = function() {
+		var scope = this;
 		var $selector;
-		if (this.$el.hasClass('radio')) {
-			$selector = this.$el.find('input[type=radio]');
+		if (this.$form.hasClass('radio')) {
+			$selector = this.$form.find('input[type=radio]');
 			if ($selector.length > 0) {
 				$selector.each(function(index, el) {
-					el.skinMe = helperMethods.setVariables(el, scope.$el);
+					el.skinMe = helperMethods.setVariables(el, scope.$form);
 					el.skinMe.type = "radio";
 					privateMethods.addEventCommons(el.skinMe);
 					privateMethods.addEventRadio(el.skinMe);
@@ -41,11 +73,11 @@
 			}
 		}
 
-		if (this.$el.hasClass('checkbox')) {
-			$selector = this.$el.find('input[type=checkbox]');
+		if (this.$form.hasClass('checkbox')) {
+			$selector = this.$form.find('input[type=checkbox]');
 			if ($selector.length > 0) {
 				$selector.each(function(index, el) {
-					el.skinMe = helperMethods.setVariables(el, scope.$el);
+					el.skinMe = helperMethods.setVariables(el, scope.$form);
 					el.skinMe.type = "checkbox";
 					privateMethods.addEventCommons(el.skinMe);
 					privateMethods.addEventCheckbox(el.skinMe);
@@ -53,29 +85,90 @@
 			}
 		}
 
-		if (this.$el.hasClass('select')) {
-			$selector = this.$el.find('select');
+		if (this.$form.hasClass('select')) {
+			$selector = this.$form.find('select');
 			if ($selector.length > 0) {
 				$selector.each(function(index, el) {
-					el.skinMe = helperMethods.setSelectVariables(el, scope.$el);
+					el.skinMe = helperMethods.setSelectVariables(el, scope.$form);
 					el.skinMe.type = "select";
-					el.skinMe.$skm.on('mouseenter', function(e){
-						el.skinMe.$skm.addClass('hover');
-					});
-
-					el.skinMe.$skm.on('mouseleave', function(e){
-						el.skinMe.$skm.removeClass('hover');
-					});
 					privateMethods.addEventSelect(el.skinMe);
 				});
 			}
 		}
-
-		this.$el.addClass('activated');
 	};
 
-	proto.setOptions = function(options) {
-		this.options = $.extend({}, this.options, options);
+	var helperMethods = {
+		setVariables: function(el, $form){
+			var obj    = {};
+			obj.$form  = $form;
+			obj.el     = el;
+			obj.$el    = $(el);
+			obj.name   = $(el).attr('name');
+			obj.id     = $(el).attr('id');
+			obj.$label = null;
+			if (obj.$form.find('label[for=' + obj.id + ']').length > 0) {
+				obj.$label = obj.$form.find('label[for=' + obj.id + ']');
+			}
+
+			obj.$skm   = null;
+			if (obj.$form.find('#skinme-' + obj.id).length > 0) {
+				obj.$skm = obj.$form.find('#skinme-' + obj.id);
+			}
+
+			obj.$cz    = null;
+			if (obj.$skm != null && obj.$skm.find('.skinme-cz').length > 0) {
+				obj.$cz = obj.$skm.find('.skinme-cz');
+			} else {
+				obj.$cz = obj.$skm;
+			}
+
+			return obj;
+		},
+		setSelectVariables: function(el, $form){
+			var obj    = {};
+			obj.$form  = $form;
+			obj.el     = el;
+			obj.$el    = $(el);
+			obj.name   = $(el).attr('name');
+			obj.id     = $(el).attr('id');
+			obj.$label = null;
+			if (obj.$form.find('label[for=' + obj.id + ']').length > 0) {
+				obj.$label = obj.$form.find('label[for=' + obj.id + ']');
+			}
+
+			obj.$skm   = null;
+			if (obj.$form.find('#skinme-' + obj.id).length > 0) {
+				obj.$skm = obj.$form.find('#skinme-' + obj.id);
+			}
+
+			obj.$mask  = null;
+			if (obj.$skm) {
+				obj.$mask = obj.$skm.find('.skinme-mask');
+			}
+
+			obj.$active = null;
+			if (obj.$skm) {
+				obj.$active = obj.$skm.find('.active-choice');
+			}
+
+			obj.$toggler = null;
+			if (obj.$skm) {
+				obj.$toggler = obj.$skm.find('.toggler');
+			}
+
+			obj.$choice = null;
+			if (obj.$skm){
+				obj.$choice = obj.$skm.find('.skinme-select-choices');
+			}
+
+			if(isMobile.any()){
+				obj.$el.addClass('native');
+			}
+
+			obj.native = (obj.$el.hasClass('native'));
+
+			return obj;
+		}
 	};
 
 	var privateMethods = {
@@ -164,87 +257,81 @@
 		},
 		addEventSelect: function(element) {
 			element.$active.html(element.$el.find('option[value="' + element.el.value + '"]')[0].text);
-
-			element.$el.on('change', function skinMeCheckboxChangeHandler(e, from){
+			element.$el.on('change', function skinMeCheckboxChangeHandler(e, from) {
 				element.$active.html(element.$el.find('option[value="' + element.el.value + '"]')[0].text);
+				//IF CHOICE SELECTED ADD ACTIVE CLASS TO CHANGE CSS TO DEMONSTRATE THAT ITS SELECTED
 			});
 
-
 			if (!element.native) {
+				element.$skm.on('mouseenter', function(e) {
+					e.preventDefault();
+					if (element.$el.attr('disabled')) {return;}
+					element.$skm.addClass('hover');
+				});
+
+				element.$skm.on('mouseleave', function(e) {
+					e.preventDefault();
+					if (element.$el.attr('disabled')) {return;}
+					element.$skm.removeClass('hover');
+				});
+
 				element.$mask.on('click', function skinMeSelectClickHandler(e) {
 					e.preventDefault();
 					if (element.$el.attr('disabled')) {return;}
-					element.$el.trigger('mousedown');
-					// open custom choices
-					// select custom choices
-					// trigger change on original
+					if(!element.$choice.hasClass('open')){
+						e.preventDefault();
+						e.stopPropagation();
+						element.$el.trigger('mousedown');
+						// open custom choices
+						element.$choice.addClass('open');
+					}
+
+					$(document).on('click.skinMe', function closeHander(e) {
+						e.preventDefault();
+						if (element.$el.attr('disabled')) {return;}
+						if(element.$choice.hasClass('open')){
+							element.$choice.removeClass('open');
+						}
+						$(document).off('click.skinMe');
+					});
 				});
+
+				// select custom choices
+				element.$choice.find('.choice').on('click',function selectChangeHandler(e) {
+					e.preventDefault();
+					if (element.$el.attr('disabled')) {return;}
+
+					var index = $(e.currentTarget).index();
+					//TO SEE IF AUTO CHANGE ON SWITCH
+					element.$el.find('option').attr('selected',false);
+					$(element.$el.find('option')[index]).attr('selected', true);
+
+					// trigger change on original
+					element.$el.trigger('change');
+				});
+				//TO ADD HOVER ON EVERY CHOICE
 			}
 		}
 	};
 
-	var helperMethods = {
-		setVariables: function(el, $form){
-			var obj    = {};
-			obj.$form  = $form;
-			obj.el     = el;
-			obj.$el    = $(el);
-			obj.name   = $(el).attr('name');
-			obj.id     = $(el).attr('id');
-			obj.$label = null;
-			if (obj.$form.find('label[for=' + obj.id + ']').length > 0) {
-				obj.$label = obj.$form.find('label[for=' + obj.id + ']');
-			}
-
-			obj.$skm   = null;
-			if (obj.$form.find('#skinme-' + obj.id).length > 0) {
-				obj.$skm = obj.$form.find('#skinme-' + obj.id);
-			}
-
-			obj.$cz    = null;
-			if (obj.$skm != null && obj.$skm.find('.skinme-cz').length > 0) {
-				obj.$cz = obj.$skm.find('.skinme-cz');
-			} else {
-				obj.$cz = obj.$skm;
-			}
-
-			return obj;
+	var isMobile = {
+		Android: function() {
+			return navigator.userAgent.match(/Android/i);
 		},
-		setSelectVariables: function(el, $form){
-			var obj    = {};
-			obj.$form  = $form;
-			obj.el     = el;
-			obj.$el    = $(el);
-			obj.name   = $(el).attr('name');
-			obj.id     = $(el).attr('id');
-			obj.$label = null;
-			if (obj.$form.find('label[for=' + obj.id + ']').length > 0) {
-				obj.$label = obj.$form.find('label[for=' + obj.id + ']');
-			}
-
-			obj.$skm   = null;
-			if (obj.$form.find('#skinme-' + obj.id).length > 0) {
-				obj.$skm = obj.$form.find('#skinme-' + obj.id);
-			}
-
-			obj.$mask  = null;
-			if (obj.$skm) {
-				obj.$mask = obj.$skm.find('.skinme-mask');
-			}
-
-			obj.$active = null;
-			if (obj.$skm) {
-				obj.$active = obj.$skm.find('.active-choice');
-			}
-
-			obj.$toggler = null;
-			if (obj.$skm) {
-				obj.$toggler = obj.$skm.find('.toggler');
-			}
-
-			obj.native   = (obj.$el.hasClass('native'));
-
-			return obj;
+		BlackBerry: function() {
+			return navigator.userAgent.match(/BlackBerry/i);
+		},
+		iOS: function() {
+			return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+		},
+		Opera: function() {
+			return navigator.userAgent.match(/Opera Mini/i);
+		},
+		Windows: function() {
+			return navigator.userAgent.match(/IEMobile/i);
+		},
+		any: function() {
+			return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
 		}
 	};
 

@@ -15,7 +15,7 @@
 	proto.__construct = function() {
 	};
 
-	proto.extend = function(source, overwrites, keep_source, deep) {
+	proto.extend = function(source, overwrites, keep_source) {
 		var result     = source;
 		var args       = arguments;
 		var finalArgs  = [];

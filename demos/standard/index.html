@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
 
     <link href='module.forms.css' rel='stylesheet' type='text/css' />
+    <link href='../../src/skinMe.select-default.css' rel='stylesheet' type='text/css' />
 
     <script src="../../vendor/jquery-1.9.1.min.js"></script>
     <script src="../../vendor/meLibs/helpMe.js"></script>
@@ -48,9 +49,9 @@
     <div class="row">
         <label class="label">Select Demo:</label>
         <div class="skinme-select-ctn">
-            <div id="skinme-select-city" class="select demo">
+            <div id="skinme-select-city" class="select default no-default">
                 <div class="skinme-mask"></div>
-                <div class="active-choice select-choice">Choisir région</div>
+                <div class="active-choice select-choice"></div>
                 <a class="toggler rounded dropdown"></a>
                 <div class="skinme-select-choices">
                     <div class="choice">Choisir région</div>
@@ -58,7 +59,7 @@
                     <div class="choice">Montréal</div>
                 </div>
             </div>
-            <select id="select-city" name="city" class="native">
+            <select id="select-city" name="city">
                 <option selected value="Choose">Choisir région</option>
                 <option value="Quebec">Québec</option>
                 <option value="Montreal">Montréal</option>

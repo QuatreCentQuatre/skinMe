@@ -1,10 +1,10 @@
-.skinMe.activated.radio input[type="radio"] {
+.skinMe.radio.activated input[type="radio"] {
   display: none;
 }
-.skinMe.activated.checkbox input[type="checkbox"] {
+.skinMe.checkbox.activated input[type="checkbox"] {
   display: none;
 }
-.skinMe.activated.select select {
+.skinMe.select.activated select {
   filter: alpha(opacity=1);
   -khtml-opacity: 0.01;
   -moz-opacity: 0.01;
@@ -69,7 +69,7 @@ form.skinMe .skinme-select-ctn {
   position: relative;
   display: inline-block;
 }
-form.skinMe .skinme-select-ctn .select.demo {
+form.skinMe .skinme-select-ctn .select.default {
   cursor: pointer;
   position: absolute;
   top: 0;
@@ -78,7 +78,7 @@ form.skinMe .skinme-select-ctn .select.demo {
   right: 0;
   z-index: 5;
 }
-form.skinMe .skinme-select-ctn .select.demo .skinme-mask {
+form.skinMe .skinme-select-ctn .select.default .skinme-mask {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -91,7 +91,7 @@ form.skinMe .skinme-select-ctn .select.demo .skinme-mask {
   -moz-opacity: 0.01;
   opacity: 0.01;
 }
-form.skinMe .skinme-select-ctn .select.demo .active-choice {
+form.skinMe .skinme-select-ctn .select.default .active-choice {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -103,7 +103,15 @@ form.skinMe .skinme-select-ctn .select.demo .active-choice {
   box-sizing: border-box;
   overflow: hidden;
 }
-form.skinMe .skinme-select-ctn .select.demo .skinme-select-choices {
+form.skinMe .skinme-select-ctn .select.default .skinme-select-choices {
+  position: absolute;
+  width: 100%;
+  display: none;
+}
+form.skinMe .skinme-select-ctn .select.default .skinme-select-choices.open {
+  display: block;
+}
+form.skinMe .skinme-select-ctn .select.default.no-default .skinme-select-choices .choice:first-child {
   display: none;
 }
 form.skinMe .skinme-select-ctn select {
@@ -113,31 +121,4 @@ form.skinMe .skinme-select-ctn select {
 }
 form.skinMe .skinme-select-ctn select.native {
   z-index: 10;
-}
-form .select.demo {
-  background: #979797;
-  display: block;
-  color: #ffffff;
-  height: 20px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-form .select.demo p {
-  color: red;
-}
-form .select.demo .dropdown {
-  position: absolute;
-  top: 50%;
-  right: 2px;
-  margin-top: -5px;
-  width: 17px;
-  height: 11px;
-  background-image: url("arrow-down-button.png");
-  background-size: 100% auto;
-  background-repeat: no-repeat;
-}
-form .select.demo .dropdown:hover {
-  background-image: url("arrow-down-button.png");
-  background-size: 9px 5px;
 }

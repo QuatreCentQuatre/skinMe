@@ -1,10 +1,10 @@
-.skinMe.activated.radio input[type="radio"] {
+.skinMe.radio.activated input[type="radio"] {
   display: none;
 }
-.skinMe.activated.checkbox input[type="checkbox"] {
+.skinMe.checkbox.activated input[type="checkbox"] {
   display: none;
 }
-.skinMe.activated.select select {
+.skinMe.select.activated select {
   filter: alpha(opacity=1);
   -khtml-opacity: 0.01;
   -moz-opacity: 0.01;
