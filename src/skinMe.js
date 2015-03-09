@@ -32,7 +32,6 @@
 	//--------Methods--------//
 	p.__construct = function(options) {
 		var settings = (options) ? options : {};
-		//Me.help.extend({}, defaultOptions);
 		this.options = $.extend({}, defaults, settings);
 
 		this.fetchField();
@@ -40,10 +39,6 @@
 
 	p.__dependencies = function() {
 		var isOk = true;
-		if (!Me.help) {
-			console.warn(this.name + " :: " + "helpMe needed (https://github.com/QuatreCentQuatre/helpMe)");
-			isOk = false;
-		}
 
 		return isOk;
 	};
