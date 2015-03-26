@@ -90,6 +90,8 @@
 				});
 			}
 		}
+
+		this.$form.addClass('activated');
 	};
 
 	var helperMethods = {
