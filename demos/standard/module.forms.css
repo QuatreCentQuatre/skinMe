@@ -1,15 +1,3 @@
-.skinMe.radio.activated input[type="radio"] {
-  display: none;
-}
-.skinMe.checkbox.activated input[type="checkbox"] {
-  display: none;
-}
-.skinMe.select.activated select {
-  filter: alpha(opacity=1);
-  -khtml-opacity: 0.01;
-  -moz-opacity: 0.01;
-  opacity: 0.01;
-}
 form.skinMe .radio.demo {
   cursor: pointer;
   width: 23px;
@@ -32,7 +20,7 @@ form.skinMe .radio.demo.active.hover {
 @media (-webkit-min-device-pixel-ratio: 1.75), (min-resolution: 168dpi) {
   form.skinMe .radio.demo {
     background-image: url("radio-test_x2.png");
-    background-size: 100% auto;
+    background-size: auto 400%;
   }
   form.skinMe .radio.demo.error {
     background-image: url("radio-test-error_x2.png");
@@ -44,7 +32,7 @@ form.skinMe .radio.demo2 {
   height: 23px;
   background-position: 0 0;
   background-image: url("radio-test3-2x.png");
-  background-size: 100% auto;
+  background-size: auto 200%;
 }
 form.skinMe .radio.demo2.error {
   background-image: url("radio-test-error_x2.png");
@@ -67,7 +55,6 @@ form.skinMe .checkbox.demo.active {
 }
 form.skinMe .skinme-select-ctn {
   position: relative;
-  display: inline-block;
 }
 form.skinMe .skinme-select-ctn .select.default {
   cursor: pointer;
@@ -104,14 +91,6 @@ form.skinMe .skinme-select-ctn .select.default .active-choice {
   overflow: hidden;
 }
 form.skinMe .skinme-select-ctn .select.default .skinme-select-choices {
-  position: absolute;
-  width: 100%;
-  display: none;
-}
-form.skinMe .skinme-select-ctn .select.default .skinme-select-choices.open {
-  display: block;
-}
-form.skinMe .skinme-select-ctn .select.default.no-default .skinme-select-choices .choice:first-child {
   display: none;
 }
 form.skinMe .skinme-select-ctn select {
