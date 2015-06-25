@@ -33,8 +33,7 @@
 	p.__construct = function(options) {
 		var settings = (options) ? options : {};
 		this.options = $.extend({}, defaults, settings);
-
-		this.fetchField();
+		this.fields = this.fetchField();
 	};
 
 	p.__dependencies = function() {
@@ -49,13 +48,13 @@
 
 	p.setOpts = function(options) {
 		this.options = $.extend({}, this.options, options);
-
-		this.fetchField();
+		this.fields = this.fetchField();
 	};
 
 	p.fetchField = function() {
 		var scope = this;
 		var $selector;
+		var fields = [];
 		if (this.$form.hasClass('radio')) {
 			$selector = this.$form.find('input[type=radio]');
 			if ($selector.length > 0) {
@@ -64,6 +63,7 @@
 					el.skinMe.type = "radio";
 					privateMethods.addEventCommons(el.skinMe);
 					privateMethods.addEventRadio(el.skinMe);
+					fields.push(el);
 				});
 			}
 		}
@@ -76,22 +76,27 @@
 					el.skinMe.type = "checkbox";
 					privateMethods.addEventCommons(el.skinMe);
 					privateMethods.addEventCheckbox(el.skinMe);
+					fields.push(el);
 				});
 			}
 		}
 
 		if (this.$form.hasClass('select')) {
-			$selector = this.$form.find('select');
+			$selector = this.$form.find('select').not('[me\\:skin=disabled]');
 			if ($selector.length > 0) {
 				$selector.each(function(index, el) {
+					console.log(el);
 					el.skinMe = helperMethods.setSelectVariables(el, scope.$form);
 					el.skinMe.type = "select";
 					privateMethods.addEventSelect(el.skinMe);
+					fields.push(el);
 				});
 			}
 		}
+		console.log(fields);
 
 		this.$form.addClass('activated');
+		return fields;
 	};
 
 	var helperMethods = {
@@ -163,7 +168,6 @@
 			}
 
 			obj.native = (obj.$el.hasClass('native'));
-
 			return obj;
 		}
 	};
@@ -240,7 +244,7 @@
 
 			element.$cz.on('click', function skinMeCheckboxCzHandler(e) {
 				if (element.$el.attr('disabled')) {return;}
-				e.preventDefault();
+                e.preventDefault();
 				element.$el.trigger('change', 'cz');
 			});
 
@@ -255,9 +259,36 @@
 		addEventSelect: function(element) {
 			element.$active.html(element.$el.find('option[value="' + element.el.value + '"]')[0].text);
 			element.$el.on('change', function skinMeCheckboxChangeHandler(e, from) {
+				var index = element.el.selectedIndex;
+				element.$skm.find('.choice').removeClass('selected');
+				element.$skm.find('.choice').eq(index).addClass('selected');
 				element.$active.html(element.$el.find('option[value="' + element.el.value + '"]')[0].text);
 				//IF CHOICE SELECTED ADD ACTIVE CLASS TO CHANGE CSS TO DEMONSTRATE THAT ITS SELECTED
 			});
+
+			element.selectItemByValue = function(element, value) {
+				var el = element.el;
+				for(var i=0; i < el.options.length; i++) {
+					$(el.options[i]).attr('selected', false);
+					if (el.options[i].value == value) {
+						el.selectedIndex = i;
+						$(el.options[i]).attr('selected', true);
+					}
+				}
+				element.$el.trigger('change');
+			};
+
+			element.selectItemByIndex = function(element, index) {
+				var el = element.el;
+				for(var i=0; i < el.options.length; i++) {
+					$(el.options[i]).attr('selected', false);
+					if (i == index) {
+						el.selectedIndex = i;
+						$(el.options[i]).attr('selected', true);
+					}
+				}
+				element.$el.trigger('change');
+			};
 
 			if (!element.native) {
 				element.$skm.on('mouseenter', function(e) {
@@ -272,8 +303,14 @@
 					element.$skm.removeClass('hover');
 				});
 
+                element.$skm.parent().on('mouseleave', function(e) {
+					e.preventDefault();
+					element.$skm.find('.open').removeClass('open');
+				});
+
 				element.$mask.on('click', function skinMeSelectClickHandler(e) {
 					e.preventDefault();
+
 					if (element.$el.attr('disabled')) {return;}
 					if(!element.$choice.hasClass('open')){
 						e.preventDefault();
@@ -298,15 +335,10 @@
 					e.preventDefault();
 					if (element.$el.attr('disabled')) {return;}
 
+					var value = $(e.currentTarget).html();
 					var index = $(e.currentTarget).index();
-					//TO SEE IF AUTO CHANGE ON SWITCH
-					element.$el.find('option').attr('selected',false);
-					$(element.$el.find('option')[index]).attr('selected', true);
-
-					// trigger change on original
-					element.$el.trigger('change');
+					element.selectItemByIndex(element, index);
 				});
-				//TO ADD HOVER ON EVERY CHOICE
 			}
 		}
 	};
