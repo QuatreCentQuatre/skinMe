@@ -177,36 +177,36 @@
 			@if($frames == 2) {
 				&.active {
 					@if($direction == top) {
-						background-position:0 -$height * 1px;
+						background-position:0 $height * -1px;
 					}
 					@if($direction == left) {
-						background-position:-$height * 1px 0;
+						background-position:$height * -1px 0;
 					}
 				}
 			}
 			@if($frames == 4){
 				&.hover {
 					@if($direction == top) {
-						background-position:0 -$height * 1px;
+						background-position:0 $height * -1px;
 					}
 					@if($direction == left) {
-						background-position:-$height * 1px 0;
+						background-position:$height * -1px 0;
 					}
 				}
 
 				&.active {
 					@if($direction == top) {
-						background-position:0 -$height * 2px;
+						background-position:0 $height * -2px;
 					}
 					@if($direction == left) {
-						background-position:-$height * 2px 0;
+						background-position:$height * -2px 0;
 					}
 					&.hover {
 						@if($direction == top) {
-							background-position:0 -$height * 3px;
+							background-position:0 $height * -3px;
 						}
 						@if($direction == left) {
-							background-position:-$height * 3px 0;
+							background-position:$height * -3px 0;
 						}
 					}
 				}
