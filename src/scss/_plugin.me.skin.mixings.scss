@@ -1,0 +1,234 @@
+@mixin skinMe-select ($class) {
+	&.skinMe {
+		.skinme-select-ctn {
+			position:relative;
+			.select.#{$class} {
+				cursor:pointer;
+				position:absolute;
+				top:0;
+				bottom:0;
+				left:0;
+				right:0;
+
+				.skinme-mask {
+					position:absolute;
+					top:0;
+					bottom:0;
+					left:0;
+					right:0;
+					z-index:10;
+					background-color:#ffffff;
+					filter: "alpha(opacity=1)";
+					-khtml-opacity:0.01;
+					-moz-opacity:0.01;
+					opacity:0.01;
+				}
+
+				.active-choice {
+					position:absolute;
+					top:0;
+					bottom:0;
+					left:0;
+					right:0;
+					z-index:5;
+					-moz-box-sizing:border-box;
+					-webkit-box-sizing:border-box;
+					box-sizing:border-box;
+					overflow:hidden;
+				}
+
+				.skinme-select-choices {
+					display:none;
+				}
+			}
+
+			select {
+				cursor:pointer;
+				position:relative;
+				z-index:1;
+
+				&.native {
+					z-index:10;
+				}
+			}
+		}
+	}
+}
+
+
+@mixin skinMe-radio ($width, $height, $frames, $direction, $class, $url, $urlError:'', $retina:false, $retinaUrl:'', $retinaUrlError:'', $forceRetina:false) {
+	&.skinMe {
+		.radio.#{$class} {
+			cursor:pointer;
+			width: $width * 1px;
+			height: $height * 1px;
+			background-position: 0 0;
+
+			@if($forceRetina) {
+				background-image: url($retinaUrl);
+
+				&.error {
+					background-image: url($retinaUrlError);
+				}
+
+				@if($direction == "top") {
+					background-size:auto 100% * $frames;
+				}
+				@if($direction == "left") {
+					background-size:100% * $frames auto;
+				}
+			} @else {
+				background-image: url($url);
+
+				&.error {
+					background-image: url($urlError);
+				}
+			}
+
+			@if($frames == 2) {
+				&.active {
+					@if($direction == top) {
+						background-position:0 -$height * 1px;
+					}
+					@if($direction == left) {
+						background-position:-$height * 1px 0;
+					}
+				}
+			}
+			@if($frames == 4){
+				&.hover {
+					@if($direction == top) {
+						background-position:0 -$height * 1px;
+					}
+					@if($direction == left) {
+						background-position:-$height * 1px 0;
+					}
+				}
+
+				&.active {
+					@if($direction == top) {
+						background-position:0 -$height * 2px;
+					}
+					@if($direction == left) {
+						background-position:-$height * 2px 0;
+					}
+					&.hover {
+						@if($direction == top) {
+							background-position:0 -$height * 3px;
+						}
+						@if($direction == left) {
+							background-position:-$height * 3px 0;
+						}
+					}
+				}
+			}
+
+			@if($retina == true) {
+				@if($forceRetina == false) {
+					@media (-webkit-min-device-pixel-ratio: 1.75), (min-resolution: 168dpi) {
+						background-image: url($retinaUrl);
+
+						&.error {
+							background-image: url($retinaUrlError);
+						}
+						@if($direction == top) {
+							background-size:auto 100% * $frames;
+						}
+						@if($direction == left) {
+							background-size:100% * $frames auto;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@mixin skinMe-checkbox ($width, $height, $frames, $direction, $class, $url, $urlError:'', $retina:false, $retinaUrl:'', $retinaUrlError:'', $forceRetina:false) {
+	&.skinMe {
+		.checkbox.#{$class} {
+			cursor:pointer;
+			width: $width * 1px;
+			height: $height * 1px;
+			background-position: 0 0;
+
+			@if($forceRetina == false) {
+				background-image: url($url);
+
+				&.error {
+					background-image: url($urlError);
+				}
+			}
+			@if($forceRetina == true) {
+				background-image: url($retinaUrl);
+
+				&.error {
+					background-image: url($retinaUrlError);
+				}
+
+				@if($direction == top) {
+					background-size:auto 100% * $frames;
+				}
+				@if($direction == left) {
+					background-size:100% * $frames auto;
+				}
+			}
+
+			@if($frames == 2) {
+				&.active {
+					@if($direction == top) {
+						background-position:0 -$height * 1px;
+					}
+					@if($direction == left) {
+						background-position:-$height * 1px 0;
+					}
+				}
+			}
+			@if($frames == 4){
+				&.hover {
+					@if($direction == top) {
+						background-position:0 -$height * 1px;
+					}
+					@if($direction == left) {
+						background-position:-$height * 1px 0;
+					}
+				}
+
+				&.active {
+					@if($direction == top) {
+						background-position:0 -$height * 2px;
+					}
+					@if($direction == left) {
+						background-position:-$height * 2px 0;
+					}
+					&.hover {
+						@if($direction == top) {
+							background-position:0 -$height * 3px;
+						}
+						@if($direction == left) {
+							background-position:-$height * 3px 0;
+						}
+					}
+				}
+			}
+
+			@if($retina == true) {
+				@if($forceRetina == false) {
+					@media (-webkit-min-device-pixel-ratio: 1.75), (min-resolution: 168dpi) {
+						background-image: url($retinaUrl);
+
+						&.error {
+							background-image: url($retinaUrlError);
+						}
+						@if($direction == top) {
+							background-size:auto 100% * $frames;
+						}
+						@if($direction == left) {
+							background-size:100% * $frames auto;
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -82,10 +82,9 @@
 		}
 
 		if (this.$form.hasClass('select')) {
-			$selector = this.$form.find('select').not('[me\\:skin=disabled]');
+			$selector = this.$form.find('select').not('[me\\:skin="disabled"]');
 			if ($selector.length > 0) {
 				$selector.each(function(index, el) {
-					console.log(el);
 					el.skinMe = helperMethods.setSelectVariables(el, scope.$form);
 					el.skinMe.type = "select";
 					privateMethods.addEventSelect(el.skinMe);
@@ -93,8 +92,6 @@
 				});
 			}
 		}
-		console.log(fields);
-
 		this.$form.addClass('activated');
 		return fields;
 	};
@@ -244,7 +241,7 @@
 
 			element.$cz.on('click', function skinMeCheckboxCzHandler(e) {
 				if (element.$el.attr('disabled')) {return;}
-                e.preventDefault();
+				e.preventDefault();
 				element.$el.trigger('change', 'cz');
 			});
 
@@ -266,7 +263,7 @@
 				//IF CHOICE SELECTED ADD ACTIVE CLASS TO CHANGE CSS TO DEMONSTRATE THAT ITS SELECTED
 			});
 
-			element.selectItemByValue = function(element, value) {
+			element.selectItemByValue = function(value) {
 				var el = element.el;
 				for(var i=0; i < el.options.length; i++) {
 					$(el.options[i]).attr('selected', false);
@@ -278,7 +275,7 @@
 				element.$el.trigger('change');
 			};
 
-			element.selectItemByIndex = function(element, index) {
+			element.selectItemByIndex = function(index) {
 				var el = element.el;
 				for(var i=0; i < el.options.length; i++) {
 					$(el.options[i]).attr('selected', false);
@@ -303,7 +300,7 @@
 					element.$skm.removeClass('hover');
 				});
 
-                element.$skm.parent().on('mouseleave', function(e) {
+				element.$skm.parent().on('mouseleave', function(e) {
 					e.preventDefault();
 					element.$skm.find('.open').removeClass('open');
 				});
@@ -337,7 +334,7 @@
 
 					var value = $(e.currentTarget).html();
 					var index = $(e.currentTarget).index();
-					element.selectItemByIndex(element, index);
+					element.selectItemByIndex(index);
 				});
 			}
 		}
