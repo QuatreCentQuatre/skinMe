@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAEE,2CAAoB;EACnB,OAAO,EAAC,IAAI;AAIb,iDAAuB;EACtB,OAAO,EAAC,IAAI;AAIb,+BAAO;EACN,MAAM,EAAE,kBAAkB;EAC1B,cAAc,EAAC,IAAI;EACnB,YAAY,EAAC,IAAI;EACjB,OAAO,EAAC,IAAI",
+"sources": ["plugin.me.skin.scss"],
+"names": [],
+"file": "plugin.me.skin.css"
+}

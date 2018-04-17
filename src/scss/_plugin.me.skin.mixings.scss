@@ -1,21 +1,50 @@
-@mixin skinMe-select ($class) {
+@mixin skinMe-select ($height, $class, $icon, $iconW, $iconH, $retina:false, $retinaIcon:'', $forceRetina:false) {
 	&.skinMe {
 		.skinme-select-ctn {
 			position:relative;
+			height: $height * 1px;
+
 			.select.#{$class} {
 				cursor:pointer;
 				position:absolute;
-				top:0;
-				bottom:0;
-				left:0;
-				right:0;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: $height * 1px;
+				border: 1px solid;
+				box-sizing: border-box;
+
+				// To customize for default
+				background: #ffffff;
+				color: #333333;
+				border-color: #d3d8d8;
+				// To customize for default
+
+				.toggler {
+					position: absolute;
+					top: 0;
+					right: 0;
+
+					width: $height * 1px;
+					height: 100%;
+
+					@if($forceRetina) {
+						background-image: url($retinaIcon);
+						background-size: ($iconW * 0.5px) ($iconH * 0.5px);
+					} @else {
+						background-image: url($icon);
+						background-size: $iconW $iconH;
+					}
+
+					background-repeat: no-repeat;
+					background-position:center;
+				}
 
 				.skinme-mask {
-					position:absolute;
-					top:0;
-					bottom:0;
-					left:0;
-					right:0;
+					position: absolute;
+					width: 100%;
+					height: 100%;
+
 					z-index:10;
 					background-color:#ffffff;
 					filter: "alpha(opacity=1)";
@@ -24,21 +53,82 @@
 					opacity:0.01;
 				}
 
+				&.opened{
+					.toggler{
+						-webkit-transform: rotate(180deg);
+						-moz-transform: rotate(180deg);
+						-ms-transform: rotate(180deg);
+						-o-transform: rotate(180deg);
+						transform: rotate(180deg);
+					}
+
+					.active-choice{
+						border-bottom: none;
+						border-bottom-right-radius: 0;
+						border-bottom-left-radius: 0;
+					}
+				}
+
 				.active-choice {
 					position:absolute;
+					height: $height;
 					top:0;
-					bottom:0;
 					left:0;
-					right:0;
 					z-index:5;
 					-moz-box-sizing:border-box;
 					-webkit-box-sizing:border-box;
 					box-sizing:border-box;
 					overflow:hidden;
+
+					padding-left: 15px;
+					padding-right: $height * 1px;
 				}
 
 				.skinme-select-choices {
 					display:none;
+
+					position: relative;
+					top: 100%;
+					margin-top: 1px;
+					border: 1px solid;
+					z-index: 9999;
+					overflow: hidden;
+					border-radius: 0 0 25px 25px;
+
+					// To customize for default
+					background-color: #ffffff;
+					border-color: #ececec;
+					// To customize for default
+
+					&.open {
+						display: block;
+					}
+
+					.choice{
+						box-sizing: border-box;
+						position: relative;
+						padding: 5px 15px;
+						clear: both;
+						cursor: pointer;
+						text-align: left;
+
+						&.default {
+							display: none;
+						}
+
+						&.selected, &:hover{
+							// To customize for default
+							color: #333333;
+							background-color: #d3d8d8;
+							// To customize for default
+						}
+					}
+				}
+
+				&:hover {
+					// To customize for default
+					background-color: #d3d8d8;
+					// To customize for default
 				}
 			}
 
@@ -88,36 +178,36 @@
 			@if($frames == 2) {
 				&.active {
 					@if($direction == top) {
-						background-position:0 -$height * 1px;
+						background-position:0 (-$height * 1px);
 					}
 					@if($direction == left) {
-						background-position:-$height * 1px 0;
+						background-position:(-$height * 1px) 0;
 					}
 				}
 			}
 			@if($frames == 4){
 				&.hover {
 					@if($direction == top) {
-						background-position:0 -$height * 1px;
+						background-position:0 (-$height * 1px);
 					}
 					@if($direction == left) {
-						background-position:-$height * 1px 0;
+						background-position:(-$height * 1px) 0;
 					}
 				}
 
 				&.active {
 					@if($direction == top) {
-						background-position:0 -$height * 2px;
+						background-position:0 (-$height * 2px);
 					}
 					@if($direction == left) {
-						background-position:-$height * 2px 0;
+						background-position:(-$height * 2px) 0;
 					}
 					&.hover {
 						@if($direction == top) {
-							background-position:0 -$height * 3px;
+							background-position:0 (-$height * 3px);
 						}
 						@if($direction == left) {
-							background-position:-$height * 3px 0;
+							background-position:(-$height * 3px) 0;
 						}
 					}
 				}
@@ -177,36 +267,36 @@
 			@if($frames == 2) {
 				&.active {
 					@if($direction == top) {
-						background-position:0 $height * -1px;
+						background-position:0 ($height * -1px);
 					}
 					@if($direction == left) {
-						background-position:$height * -1px 0;
+						background-position:($height * -1px) 0;
 					}
 				}
 			}
 			@if($frames == 4){
 				&.hover {
 					@if($direction == top) {
-						background-position:0 $height * -1px;
+						background-position:0 ($height * -1px);
 					}
 					@if($direction == left) {
-						background-position:$height * -1px 0;
+						background-position:($height * -1px) 0;
 					}
 				}
 
 				&.active {
 					@if($direction == top) {
-						background-position:0 $height * -2px;
+						background-position:0 ($height * -2px);
 					}
 					@if($direction == left) {
-						background-position:$height * -2px 0;
+						background-position:($height * -2px) 0;
 					}
 					&.hover {
 						@if($direction == top) {
-							background-position:0 $height * -3px;
+							background-position:0 ($height * -3px);
 						}
 						@if($direction == left) {
-							background-position:$height * -3px 0;
+							background-position: ($height * -3px) 0;
 						}
 					}
 				}
