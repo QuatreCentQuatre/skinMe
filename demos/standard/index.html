@@ -88,8 +88,11 @@
                 </div>
             </div>
 
+            <!--
+            To specify which option is selected on init you have to use data-default="true" on the targeted option
+            -->
             <select id="select-city" name="city">
-                <option selected value="default">Choisir région</option>
+                <option value="default" data-default="true">Choisir région</option>
                 <option value="qc">Québec</option>
                 <option value="mtl">Montréal</option>
             </select>

@@ -6,7 +6,7 @@
  *
  * Dual licensed under MIT and GNU General Public License version 3 (GPLv3)
  * http://www.opensource.org/licenses/LGPL-3.0
- * Version: 1.0.0
+ * Version: 1.0.1
  * Release date: April 2014
  */
 (function($, window, document, undefined) {
