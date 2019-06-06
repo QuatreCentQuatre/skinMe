@@ -6,7 +6,7 @@
  *
  * Dual licensed under MIT and GNU General Public License version 3 (GPLv3)
  * http://www.opensource.org/licenses/LGPL-3.0
- * Version: 1.0.1
+ * Version: 1.0.2
  * Release date: April 2014
  */
 (function($, window, document, undefined) {
@@ -103,6 +103,120 @@
 		this.$form.addClass('activated');
 		return fields;
 	};
+
+    p.updateFields = function() {
+        var scope = this;
+        var $selector;
+
+        if (this.$form.hasClass('radio')) {
+            $selector = this.$form.find('input[type=radio]');
+            if ($selector.length > 0) {
+                $selector.each(function(index, el) {
+                    if (scope.fields.indexOf(el) !== -1) {
+                        return true;
+                    }
+
+                    scope.addRadioField(el);
+                });
+            }
+        }
+
+        if (this.$form.hasClass('checkbox')) {
+            $selector = this.$form.find('input[type=checkbox]');
+            if ($selector.length > 0) {
+                $selector.each(function(index, el) {
+                    if (scope.fields.indexOf(el) !== -1) {
+                        return true;
+                    }
+
+                    scope.addCheckboxField(el);
+                });
+            }
+        }
+
+        if (this.$form.hasClass('select')) {
+            $selector = this.$form.find('select').not('[me\\:skin=disabled]');
+            if ($selector.length > 0) {
+                $selector.each(function(index, el) {
+                    if (scope.fields.indexOf(el) !== -1) {
+                        return true;
+                    }
+
+                    scope.addSelectField(el);
+                });
+            }
+        }
+    };
+
+	p.addField = function(field) {
+        var $selector = this.$form.find('[name="' + field.name + '"]');
+
+        if ($selector.length === 0) {
+            return false;
+        }
+
+        var scope = this;
+
+        $selector.each(function(index, element) {
+            var needTreatment = false;
+            var $element = $(element);
+
+            if (
+                ($element.is('input[type="radio"]') && scope.$form.hasClass('radio'))
+                || ($element.is('input[type="checkbox"]') && scope.$form.hasClass('checkbox'))
+                || ($element.is('select') && !$element.is('[me\\:skin="disabled"]') && scope.$form.hasClass('select'))
+            ) {
+                needTreatment = true;
+            }
+
+            if (!needTreatment || scope.fields.indexOf(element) !== -1) {
+                return true;
+            }
+
+            if ($element.is('input[type="radio"]')) {
+				scope.addRadioField(element)
+            } else if ($element.is('input[type="checkbox"]')) {
+				scope.addCheckboxField(element);
+            } else if ($element.is('select')) {
+                scope.addSelectField(element);
+            }
+        });
+    };
+
+    p.addRadioField = function(element) {
+        element.skinMe = helperMethods.setVariables(element, this.$form);
+        element.skinMe.type = "radio";
+        privateMethods.removeEventCommons(element.skinMe);
+        privateMethods.removeEventRadio(element.skinMe);
+        privateMethods.addEventCommons(element.skinMe);
+        privateMethods.addEventRadio(element.skinMe);
+
+        this.fields.push(element);
+    };
+
+    p.addCheckboxField = function(element) {
+        element.skinMe = helperMethods.setVariables(element, this.$form);
+        element.skinMe.type = "checkbox";
+        privateMethods.removeEventCommons(element.skinMe);
+        privateMethods.removeEventCheckbox(element.skinMe);
+        privateMethods.addEventCommons(element.skinMe);
+        privateMethods.addEventCheckbox(element.skinMe);
+
+        this.fields.push(element);
+    };
+
+    p.addSelectField = function(element) {
+	    var $element = $(element);
+
+        element.skinMe = helperMethods.setSelectVariables(element, this.$form);
+        element.skinMe.type = "select";
+        privateMethods.removeEventSelect(element.skinMe);
+        privateMethods.addEventSelect(element.skinMe);
+
+        $element.val($element.find('option[data-default="true"]').val()).trigger('change');
+
+        this.fields.push(element);
+    };
 
 	var helperMethods = {
 		setVariables: function(el, $form){
