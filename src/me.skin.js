@@ -6,7 +6,7 @@
  *
  * Dual licensed under MIT and GNU General Public License version 3 (GPLv3)
  * http://www.opensource.org/licenses/LGPL-3.0
- * Version: 1.0.2
+ * Version: 1.0.3
  * Release date: April 2014
  */
 (function($, window, document, undefined) {
@@ -282,12 +282,12 @@
 				obj.$choice = obj.$skm.find('.skinme-select-choices');
 			}
 
-            //
-			// if(isMobile.any()){
-			// 	obj.$el.addClass('native');
-			// }
-            //
-			// obj.native = (obj.$el.hasClass('native'));
+
+			if(isMobile.any()){
+				obj.$el.addClass('native');
+			}
+
+			obj.native = (obj.$el.hasClass('native'));
 			return obj;
 		}
 	};
