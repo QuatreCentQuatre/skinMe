@@ -1,10 +1,47 @@
-@import "../../../src/scss/_plugin.me.skin.mixings";
+[me\:skin\:theme="skinMe-checkbox"], [me\:skin\:theme="skinMe-radio"]{
+	position: relative;
+	border: 1px solid black;
+	width: 20px;
+	height: 20px;
 
-form {
-	@include skinMe-radio(23, 23, 4, top, demo, "../radio-test2.png", "../radio-test2-error.png", true, "../radio-test_x2.png", "../radio-test-error_x2.png");
-	@include skinMe-radio(23, 23, 2, top, demo2, "../radio-test3.png", "../radio-test2-error.png", true, "../radio-test3-2x.png", "../radio-test-error_x2.png", true);
+	&::after{
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: calc(100% - 4px);
+		height: calc(100% - 4px);
+		box-sizing: border-box;
+		transform: translate(-50%, -50%);
+		background: transparent;
+	}
 
-	@include skinMe-checkbox(22, 22, 2, top, demo, "../checkbox.png", "", false, "", "");
+	&.is-checked{
+		&::after{
+			background: black;
+		}
+	}
+}
 
-	@include skinMe-select(50, demo, "../arrow-down-button.png", 18, 10, false, "", false);
+[me\:skin\:theme="skinMe-radio"]{
+	&::after{
+		border-radius: 100%;
+	}
+}
+
+[me\:skin\:theme="skinMe-select"]{
+	padding: 2px 20px 2px 5px;
+	border: 1px solid;
+
+	&::after{
+		content: '';
+		width: 8px;
+		height: 8px;
+		border-right: 1px solid black;
+		border-bottom: 1px solid black;
+		position: absolute;
+		right: 6px;
+		top: calc(50% - 2px);
+		transform: translateY(-50%) rotate(45deg);
+	}
 }

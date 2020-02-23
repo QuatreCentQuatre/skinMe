@@ -1,0 +1,10 @@
+[me\:skin\:id] {
+  position: relative;
+  display: inline-block; }
+
+[me\:skin\:theme] {
+  display: none; }
+  [me\:skin\:theme][me\:skin\:render="true"] {
+    display: inline-block; }
+
+/*# sourceMappingURL=plugin.me.skin.css.map */

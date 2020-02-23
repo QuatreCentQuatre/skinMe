@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,qBAAqB;EACpB,OAAO,EAAE,IAAI",
+"sources": ["plugin.me.skin.checkbox.scss"],
+"names": [],
+"file": "plugin.me.skin.checkbox.css"
+}

@@ -1,0 +1,11 @@
+# Browsers that we support
+# details: https://github.com/browserslist/browserslist
+
+IE 11
+Edge >= 16
+Chrome >= 73
+ChromeAndroid >= 73
+Firefox >= 65
+FirefoxAndroid >= 65
+Safari >= 11
+iOS >= 11

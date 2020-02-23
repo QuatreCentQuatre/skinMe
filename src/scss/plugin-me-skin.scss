@@ -1,0 +1,12 @@
+[me\:skin\:id]{
+	position: relative;
+	display: inline-block;
+}
+
+[me\:skin\:theme]{
+	display: none;
+
+	&[me\:skin\:render="true"]{
+		display: inline-block;
+	}
+}

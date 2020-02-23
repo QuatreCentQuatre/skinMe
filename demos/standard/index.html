@@ -7,97 +7,72 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=10" />
 
-    <link href='../../src/scss/plugin.me.skin.css' rel='stylesheet' type='text/css' />
+    <link href='../../src/scss/plugin-me-skin.css' rel='stylesheet' type='text/css' />
+    <link href='../../src/scss/plugin-me-skin-checkbox.css' rel='stylesheet' type='text/css' />
+    <link href='../../src/scss/plugin-me-skin-radio.css' rel='stylesheet' type='text/css' />
+    <link href='../../src/scss/plugin-me-skin-select.css' rel='stylesheet' type='text/css' />
     <link href='scss/module.forms.css' rel='stylesheet' type='text/css' />
-    <link href='../../src/scss/plugin.me.skin.select-default.css' rel='stylesheet' type='text/css' />
-
-    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-
-    <script src="../../src/me.skin.js"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function(){
-			var skinMeForm = new Me.skin($('form'));
-		});
-    </script>
 </head>
 <body>
-<form class="skinMe radio checkbox select" action="" method="post">
+<form action="">
     <div class="row">
-        <label class="label">Radio Demo:</label>
-
-        <!--No need radios-ctn only work as a custom wrapper-->
-        <div class="radios-ctn">
-            <label for="radio-sex-m">Man</label>
-            <input type="radio" id="radio-sex-m" name="sex" />
-            <!--Custom div needs to have id equal to "skinme-" + the id of the real input-->
-            <!--Custom div needs to have class equal to type(radio,checkbox, select) plus the class name created in the css file (demo)-->
-            <div id="skinme-radio-sex-m" class="radio demo"></div>
-
-            <label class="radio-text" for="radio-sex-w">Woman</label>
-            <input type="radio" id="radio-sex-w" name="sex" />
-            <div id="skinme-radio-sex-w" class="radio demo2"></div>
-        </div>
-
+        <label for="radio-direction-up">Up</label>
+        <input me:skin="radio" type="radio" id="radio-direction-up" name="direction" value="up"/>
+        <span me:skin:id="radio-direction-up" me:skin:theme="skinMe-radio"></span>
     </div>
     <div class="row">
-        <label class="label">Checkbox Demo:</label>
-
-        <!--No need checkbox-ctn only work as a custom wrapper-->
-        <div class="checkbox-ctn">
-            <label for="checkbox-sex-m">Man</label>
-            <input type="checkbox" id="checkbox-sex-m" name="checkbox[]" />
-            <!--Custom div needs to have id equal to "skinme-" + the id of the real input-->
-            <!--Custom div needs to have class equal to type(radio,checkbox, select) plus the class name created in the css file (demo)-->
-            <div id="skinme-checkbox-sex-m" class="checkbox demo"></div>
-
-            <label for="checkbox-sex-w">Woman</label>
-            <input type="checkbox" id="checkbox-sex-w" name="checkbox[]" />
-            <div id="skinme-checkbox-sex-w" class="checkbox demo"></div>
-        </div>
+        <label for="radio-direction-down">Down</label>
+        <input me:skin="radio" type="radio" id="radio-direction-down" name="direction" value="down"/>
+        <span me:skin:id="radio-direction-down" me:skin:theme="skinMe-radio" ></span>
     </div>
 
     <div class="row">
-        <label class="label">Select Demo:</label>
+        <label for="checkbox-side-left">Check Down</label>
+        <input me:skin="checkbox" type="checkbox" id="checkbox-side-left" name="side[]" value="left"/>
+        <span me:skin:id="checkbox-side-left" me:skin:theme="skinMe-checkbox"></span>
+    </div>
 
+    <div class="row">
+        <label for="checkbox-side-right">Check up</label>
+        <input me:skin="checkbox" type="checkbox" id="checkbox-side-right" name="side[]" value="right"/>
+        <span me:skin:id="checkbox-side-right" me:skin:theme="skinMe-checkbox"></span>
+    </div>
 
-        <div class="skinme-select-ctn">
+    <div class="row">
+        <label for="select-number">Label Select</label>
 
-            <!--Custom div needs to have id equal to "skinme-" + the id of the real select-->
-            <!--Custom div needs to have class equal to type(radio,checkbox, select) plus the class name created in the css file (demo)-->
-            <div id="skinme-select-city" class="select demo">
-                <!--The mask copy paste exactly as it is no need modification-->
-                <div class="skinme-mask"></div>
+        <div>
+            <select me:skin="select" name="select-number" id="select-number">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
 
-                <!--This is where we will render the selected option-->
-                <div class="active-choice"></div>
-
-                <!--This is the toggle icon-->
-                <a class="toggler"></a>
-
-                <!--
-                List of the choice. These are the defaults class in the mixings scss files.
-                If you need to modify these, add new class or create new scss file where you'll customize the styles
-                - Each choice needs a data-value with the same value of the option in the select
-                - default class will hide the choice
-                -->
-                <div class="skinme-select-choices">
-                    <div class="choice default" data-value="default">Choisir région</div>
-                    <div class="choice" data-value="qc">Québec</div>
-                    <div class="choice" data-value="mtl">Montréal</div>
+            <div me:skin:id="select-number" me:skin:theme="skinMe-select">
+                <span me:skin:selection="select-number"></span>
+                <div me:skin:choices="select-number">
+                    <div class="choice">1</div>
+                    <div class="choice">2</div>
+                    <div class="choice">3</div>
+                    <div class="choice">4</div>
                 </div>
             </div>
-
-            <!--
-            To specify which option is selected on init you have to use data-default="true" on the targeted option
-            -->
-            <select id="select-city" name="city">
-                <option value="default" data-default="true">Choisir région</option>
-                <option value="qc">Québec</option>
-                <option value="mtl">Montréal</option>
-            </select>
         </div>
     </div>
+
+    <div class="row">
+        <!--Add new element-->
+    </div>
 </form>
+
+<script src="../../node_modules/jquery/dist/jquery.js"></script>
+<script src="../../node_modules/detect-me/src/me.detect.js"></script>
+
+<script src="../../src/me-skin-manage.js"></script>
+<script src="../../src/me-skin-field.js"></script>
+<script src="../../src/me-skin-radio.js"></script>
+<script src="../../src/me-skin-checkbox.js"></script>
+<script src="../../src/me-skin-select.js"></script>
 </body>
 </html>

@@ -1,0 +1,6 @@
+[me\:skin="radio"] {
+  display: none; }
+  [me\:skin="radio"] + [me\:skin\:id] {
+    border-radius: 100%; }
+
+/*# sourceMappingURL=plugin.me.skin.radio.css.map */
