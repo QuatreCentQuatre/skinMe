@@ -203,9 +203,4 @@ class SkinSelect extends SkinField{
 	}
 }
 
-if (!window.Me.skinType){
-    Me.skinTypes = [];
-}
-
-
 Me.skinTypes['SkinSelect'] = SkinSelect;

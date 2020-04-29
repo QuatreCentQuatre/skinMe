@@ -1,17 +1,10 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<html>
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=10" />
-
-    <link href='../../src/scss/plugin-me-skin.css' rel='stylesheet' type='text/css' />
-    <link href='../../src/scss/plugin-me-skin-checkbox.css' rel='stylesheet' type='text/css' />
-    <link href='../../src/scss/plugin-me-skin-radio.css' rel='stylesheet' type='text/css' />
-    <link href='../../src/scss/plugin-me-skin-select.css' rel='stylesheet' type='text/css' />
-    <link href='scss/module.forms.css' rel='stylesheet' type='text/css' />
+    <title>SkinMe standard demo page</title>
+    <link href='../../dist/me-skin.min.css' rel='stylesheet' type='text/css'/>
+    <link href='scss/module.forms.css' rel='stylesheet' type='text/css'/>
 </head>
 <body>
 <form action="">
@@ -23,7 +16,7 @@
     <div class="row">
         <label for="radio-direction-down">Down</label>
         <input me:skin="radio" type="radio" id="radio-direction-down" name="direction" value="down"/>
-        <span me:skin:id="radio-direction-down" me:skin:theme="skinMe-radio" ></span>
+        <span me:skin:id="radio-direction-down" me:skin:theme="skinMe-radio"></span>
     </div>
 
     <div class="row">
@@ -66,13 +59,12 @@
     </div>
 </form>
 
-<script src="../../node_modules/jquery/dist/jquery.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/polyfill@7.8.7/dist/polyfill.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="../../node_modules/detect-me/src/me.detect.js"></script>
 
-<script src="../../src/me-skin-manage.js"></script>
-<script src="../../src/me-skin-field.js"></script>
-<script src="../../src/me-skin-radio.js"></script>
-<script src="../../src/me-skin-checkbox.js"></script>
-<script src="../../src/me-skin-select.js"></script>
+<script src="../../dist/me-skin.min.js"></script>
+
+<script src="js/app.config.js"></script>
 </body>
 </html>

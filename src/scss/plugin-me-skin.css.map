@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAAA,cAAc;EACb,QAAQ,EAAE,QAAQ;EAClB,OAAO,EAAE,YAAY;;AAGtB,iBAAiB;EAChB,OAAO,EAAE,IAAI;EAEb,0CAA0B;IACzB,OAAO,EAAE,YAAY",
-"sources": ["plugin.me.skin.scss"],
-"names": [],
-"file": "plugin.me.skin.css"
-}

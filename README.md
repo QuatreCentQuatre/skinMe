@@ -1,6 +1,12 @@
 skinMe
 ========
 
+Version - 3.0.0
+- Moved .js source files into a js/ folder
+- Simplified build task
+- Generated concat dist files me-skin.js and me-skin.css with minified versions
+- Updated demo
+
 Version - 2.0.1
 - Refactor for ES6
 - Split skin type into different class
@@ -9,22 +15,19 @@ Version - 2.0.1
 
 Dependencies
 
+- Babel Polyfill (https://babeljs.io/docs/en/babel-polyfill#usage-in-browser)
 - jQuery (https://jquery.com/)
 
 ## How to implement
 
-First, you'll need to link jQuery and skinMe files in your project 
+First, you'll need to link Babel Polyfill, jQuery and skinMe files in your project 
 ```html
-<link href='/path/to/directory/plugin-me-skin.css' rel='stylesheet' type='text/css' />
-<link href='/path/to/directory/plugin-me-skin-checkbox.css' rel='stylesheet' type='text/css' />
-<link href='/path/to/directory/plugin-me-skin-radio.css' rel='stylesheet' type='text/css' />
-<link href='/path/to/directory/plugin-me-skin-select.css' rel='stylesheet' type='text/css' />
+<link href='/path/to/directory/me-skin.min.css' rel='stylesheet' type='text/css' />
 
-<script type="text/javascript" src="/path/to/directory/me-skin-manage.js"></script>
-<script type="text/javascript" src="/path/to/directory/me-skin-field.js"></script>
-<script type="text/javascript" src="/path/to/directory/me-skin-radio.js"></script>
-<script type="text/javascript" src="/path/to/directory/me-skin-checkbox.js"></script>
-<script type="text/javascript" src="/path/to/directory/me-skin-select.js"></script>
+<script type="text/javascript" src="/path/to/directory/polyfill.js"></script>
+<script type="text/javascript" src="/path/to/directory/jquery.js"></script>
+
+<script type="text/javascript" src="/path/to/directory/me-skin.min.js"></script>
 ```
 
 Then you're already good to go and customize your first element!
