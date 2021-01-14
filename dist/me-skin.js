@@ -707,7 +707,9 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
       var _this9 = this;
 
       window.addEventListener('resize', function () {
-        _this9.close();
+        if (_this9.isOpen) {
+          _this9.close();
+        }
       });
       this.$field.on('change.skinMe', function (e) {
         _this9.handleChange(e);
@@ -731,7 +733,9 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
       var _this10 = this;
 
       window.removeEventListener("resize", function () {
-        _this10.close();
+        if (_this10.isOpen) {
+          _this10.close();
+        }
       });
       this.$field.off('change.skinMe');
 
