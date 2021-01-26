@@ -833,7 +833,7 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
     value: function setSelection(index) {
       this.$field.find('option').attr('selected', false); // jQuery(this.$field.find('option')[index]).attr('selected', true); // @NOTE: issue on reset: previously selected value cant be selected anymore
 
-      jQuery(this.$field.find("option")[e])[0].selected = 'selected';
+      jQuery(this.$field.find("option")[index])[0].selected = 'selected';
       this.$field.trigger('change');
     }
   }, {
