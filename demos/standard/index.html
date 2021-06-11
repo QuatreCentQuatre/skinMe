@@ -38,7 +38,7 @@
             <select me:skin="select" name="select-number" id="select-number">
                 <option value="1">1</option>
                 <option value="2">2</option>
-                <option value="3">3</option>
+                <option value="3" selected>3</option>
                 <option value="4">4</option>
             </select>
 
@@ -56,6 +56,27 @@
 
     <div class="row">
         <!--Add new element-->
+    
+        <label for="select-number">Label Select Duplicat</label>
+    
+        <div>
+            <select me:skin="select" name="select-number" id="select-number">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+        
+            <div me:skin:id="select-number" me:skin:theme="skinMe-select">
+                <span me:skin:selection="select-number"></span>
+                <div me:skin:choices="select-number">
+                    <div class="choice">1</div>
+                    <div class="choice">2</div>
+                    <div class="choice">3</div>
+                    <div class="choice">4</div>
+                </div>
+            </div>
+        </div>
     </div>
 </form>
 
@@ -63,7 +84,7 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="../../node_modules/detect-me/src/me.detect.js"></script>
 
-<script src="../../dist/me-skin.min.js"></script>
+<script src="../../dist/me-skin.min.js?v=2"></script>
 
 <script src="js/app.config.js"></script>
 </body>

@@ -55,6 +55,14 @@
  * 	<input type="week">
  */
 
+if (!window.Me) {
+	window.Me = {};
+}
+
+if (!window.Me.skinType){
+	Me.skinTypes = [];
+}
+
 
 class SkinField {
 	constructor(options){
@@ -66,8 +74,8 @@ class SkinField {
 		this.type 			= (this.$field.attr('type')) ? this.$field.attr('type') : this.$field.prop("tagName").toLowerCase();
 		this.disabled 		= !!this.$field.attr('disabled');
 
-		this.$label 		= (jQuery('label[for="' + this.ID + '"]').length > 0) ? jQuery('label[for="' + this.ID + '"]') : null;
-		this.$customSkin 	= (jQuery(`[me\\:skin\\:id="${this.ID}"]`).length > 0) ? jQuery(`[me\\:skin\\:id="${this.ID}"]`) : null;
+		this.$label 		= (this.$field.parent().find('label[for="' + this.ID + '"]').length > 0) ? this.$field.parent().find('label[for="' + this.ID + '"]') : null;
+		this.$customSkin 	= (this.$field.parent().find(`[me\\:skin\\:id="${this.ID}"]`).length > 0) ? this.$field.parent().find(`[me\\:skin\\:id="${this.ID}"]`) : null;
 
 		if(!this.dependenciesExist() || !this.requirementsExist())
 			return;
@@ -90,7 +98,7 @@ class SkinField {
 		this.removeCustomEvents();
 		this.addCustomEvents();
 
-		this.setDefault();
+		this.setInitialValue();
 	}
 	addCommonEvents(){
 		this.$customSkin.on('mouseenter.skinMe mouseleave.skinMe', (e) => {this.toggleHover(e)});
@@ -226,6 +234,6 @@ class SkinField {
 	setCustomVariables(){}
 	addCustomEvents(){}
 	removeCustomEvents(){}
-	setDefault(){}
+	setInitialValue(){}
 	keyHandler(e){}
 }

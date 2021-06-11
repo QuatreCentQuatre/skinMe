@@ -1,5 +1,7 @@
 "use strict";
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 function set(target, property, value, receiver) { if (typeof Reflect !== "undefined" && Reflect.set) { set = Reflect.set; } else { set = function set(target, property, value, receiver) { var base = _superPropBase(target, property); var desc; if (base) { desc = Object.getOwnPropertyDescriptor(base, property); if (desc.set) { desc.set.call(receiver, value); return true; } else if (!desc.writable) { return false; } } desc = Object.getOwnPropertyDescriptor(receiver, property); if (desc) { if (!desc.writable) { return false; } desc.value = value; Object.defineProperty(receiver, property, desc); } else { _defineProperty(receiver, property, value); } return true; }; } return set(target, property, value, receiver); }
 
 function _set(target, property, value, receiver, isStrict) { var s = set(target, property, value, receiver || target); if (!s && isStrict) { throw new Error('failed to set property'); } return value; }
@@ -24,159 +26,12 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var SkinManager = /*#__PURE__*/function () {
-  function SkinManager(options) {
-    _classCallCheck(this, SkinManager);
-
-    this.name = "SkinManager";
-    this.fields = [];
-    this.options = options;
-    this.newFields = [];
-  }
-
-  _createClass(SkinManager, [{
-    key: "initFields",
-    value: function initFields() {
-      var $root = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : jQuery('html');
-      this.clearFields();
-      var fields = $root.find('[me\\:skin]');
-      this.newFields = [];
-
-      for (var i = 0; i < fields.length; i++) {
-        this.addField(jQuery(fields[i]));
-      } // /* Initialize all new fields*/
-
-
-      for (var j = 0; j < this._newFields.length; j++) {
-        this.newFields[j].initialize();
-      }
-    }
-  }, {
-    key: "getField",
-    value: function getField($field) {
-      for (var i in this.fields) {
-        var field = this.fields[i];
-
-        if (field.ID === $field.attr('id')) {
-          return field;
-        }
-      }
-    }
-  }, {
-    key: "addField",
-    value: function addField($field) {
-      var shouldInit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-      var fieldType = $field.attr('me:skin');
-      var fieldParams = {
-        field: $field[0],
-        type: fieldType
-      };
-      var className = "Skin".concat(fieldType.charAt(0).toUpperCase()).concat(fieldType.slice(1));
-      /* Look if the field is valid */
-
-      if (typeof Me.skinTypes[className] !== "function") {
-        console.error("The skin type ".concat(className, " does not exist. Please select one listed in the following array"), Object.keys(Me.skinTypes));
-        return;
-      }
-      /* Look if the field has already been rendered */
-
-
-      if ($field.attr('me:skin:render')) {
-        return;
-      }
-      /* Create instance of the field */
-
-
-      var field = new Me.skinTypes[className](fieldParams);
-      /* Keep reference of the global field in this class */
-
-      this.fields.push(field);
-      /* Assign the field in an array to initialize them later */
-
-      this.newFields.push(field);
-
-      if (shouldInit) {
-        field.initialize();
-      }
-    }
-  }, {
-    key: "clearFields",
-    value: function clearFields() {
-      var activeFields = [];
-
-      for (var i in this.fields) {
-        var field = this.fields[i];
-
-        if (_typeof(field.$el) == "object") {
-          var selector = jQuery('html').find(field.$el[0]);
-
-          if (selector.length > 0) {
-            activeFields.push(field);
-          } else {
-            field.terminate();
-          }
-        }
-      }
-
-      this.fields = activeFields;
-    }
-  }, {
-    key: "name",
-    get: function get() {
-      return this._name;
-    },
-    set: function set(name) {
-      this._name = name;
-    }
-  }, {
-    key: "options",
-    set: function set(params) {
-      this._options = params;
-    },
-    get: function get() {
-      return this._options;
-    }
-  }, {
-    key: "newFields",
-    get: function get() {
-      return this._newFields;
-    },
-    set: function set(newFields) {
-      this._newFields = newFields;
-    }
-  }, {
-    key: "fields",
-    get: function get() {
-      return this._fields;
-    },
-    set: function set(fields) {
-      this._fields = fields;
-    }
-  }]);
-
-  return SkinManager;
-}();
-
-if (!window.Me) {
-  window.Me = {};
-}
-
-if (!window.Me.skinType) {
-  Me.skinTypes = [];
-}
-
-Me.skin = new SkinManager();
-jQuery(document).ready(function () {
-  Me.skin.initFields();
-});
 /**
  * SkinMe: A library to simplify radio, checkbox, select customization
  *
@@ -233,6 +88,13 @@ jQuery(document).ready(function () {
  * 	<input type="url">
  * 	<input type="week">
  */
+if (!window.Me) {
+  window.Me = {};
+}
+
+if (!window.Me.skinType) {
+  Me.skinTypes = [];
+}
 
 var SkinField = /*#__PURE__*/function () {
   function SkinField(options) {
@@ -244,8 +106,8 @@ var SkinField = /*#__PURE__*/function () {
     this.name = this.$field.attr('name');
     this.type = this.$field.attr('type') ? this.$field.attr('type') : this.$field.prop("tagName").toLowerCase();
     this.disabled = !!this.$field.attr('disabled');
-    this.$label = jQuery('label[for="' + this.ID + '"]').length > 0 ? jQuery('label[for="' + this.ID + '"]') : null;
-    this.$customSkin = jQuery("[me\\:skin\\:id=\"".concat(this.ID, "\"]")).length > 0 ? jQuery("[me\\:skin\\:id=\"".concat(this.ID, "\"]")) : null;
+    this.$label = this.$field.parent().find('label[for="' + this.ID + '"]').length > 0 ? this.$field.parent().find('label[for="' + this.ID + '"]') : null;
+    this.$customSkin = this.$field.parent().find("[me\\:skin\\:id=\"".concat(this.ID, "\"]")).length > 0 ? this.$field.parent().find("[me\\:skin\\:id=\"".concat(this.ID, "\"]")) : null;
     if (!this.dependenciesExist() || !this.requirementsExist()) return;
     this.options = {
       debug: window.SETTINGS && SETTINGS.DEBUG_MODE ? SETTINGS.DEBUG_MODE : false
@@ -264,7 +126,7 @@ var SkinField = /*#__PURE__*/function () {
 
       this.removeCustomEvents();
       this.addCustomEvents();
-      this.setDefault();
+      this.setInitialValue();
     }
   }, {
     key: "addCommonEvents",
@@ -347,8 +209,8 @@ var SkinField = /*#__PURE__*/function () {
     key: "removeCustomEvents",
     value: function removeCustomEvents() {}
   }, {
-    key: "setDefault",
-    value: function setDefault() {}
+    key: "setInitialValue",
+    value: function setInitialValue() {}
   }, {
     key: "keyHandler",
     value: function keyHandler(e) {}
@@ -502,14 +364,14 @@ var SkinCheckbox = /*#__PURE__*/function (_SkinField) {
       e.stopImmediatePropagation();
       e.stopPropagation();
       e.preventDefault();
-      this.$field.trigger('change');
+      this.$field.trigger('change.skinMe');
     }
   }, {
     key: "keyHandler",
     value: function keyHandler(e) {
       _get(_getPrototypeOf(SkinCheckbox.prototype), "keyHandler", this).call(this, e);
 
-      if (e.keyCode === 13 || e.keyCode === 32) this.$customSkin.trigger('click');
+      if (e.keyCode === 13 || e.keyCode === 32) this.$customSkin.trigger('click.skinMe');
     }
   }, {
     key: "disabled",
@@ -578,7 +440,7 @@ var SkinRadio = /*#__PURE__*/function (_SkinField2) {
       var _this6 = this;
 
       if (!this.field.checked) {
-        $.each(jQuery('input[name="' + this.name + '"]'), function (index, el) {
+        jQuery.each(jQuery('input[name="' + this.name + '"]'), function (index, el) {
           var field = Me.skin.getField(jQuery(el));
           field.$customSkin.removeClass(_this6.classes.checked);
           field.$field.removeClass(_this6.classes.checked);
@@ -626,7 +488,8 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
     _classCallCheck(this, SkinSelect);
 
     _this7 = _super3.call(this, options);
-    _this7.$skinChoicesWrapper = jQuery("[me\\:skin\\:choices=\"".concat(_this7.ID, "\"]"));
+    _this7.preventDefaultChangeEvent = _this7.$field[0].hasAttribute('me:skin:prevent-default');
+    _this7.$skinChoicesWrapper = _this7.$field.parent().find("[me\\:skin\\:choices=\"".concat(_this7.ID, "\"]"));
     _this7.$choiceSelected = _this7.$skinChoicesWrapper.find('.choice[selected]');
     _this7.isAnimating = false;
     _this7.classes = {
@@ -639,12 +502,28 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
   }
 
   _createClass(SkinSelect, [{
+    key: "initialize",
+    value: function initialize() {
+      _get(_getPrototypeOf(SkinSelect.prototype), "initialize", this).call(this);
+
+      this.setDefault();
+    }
+  }, {
     key: "setDefault",
     value: function setDefault() {
-      if (this.$default.length > 0) {
-        this.setSelection(this.$default.index());
+      var _this8 = this;
+
+      this.$defaults.each(function (index, value) {
+        jQuery(_this8.$skinChoicesWrapper.find('.choice')[_this8.$field.find('option[value="' + $(value).val() + '"]').index()]).attr('default', true);
+      });
+    }
+  }, {
+    key: "setInitialValue",
+    value: function setInitialValue() {
+      if (this.$selected.length > 0) {
+        this.setSelection(this.$selected.index(), this.preventDefaultChangeEvent);
       } else {
-        this.setSelection(0);
+        this.setSelection(0, this.preventDefaultChangeEvent);
       }
     }
   }, {
@@ -662,9 +541,10 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
     key: "setCustomVariables",
     value: function setCustomVariables() {
       if (this.$customSkin) {
-        this.$default = this.$field.find("option[default]");
-        this.$selection = jQuery("[me\\:skin\\:selection=\"".concat(this.ID, "\"]"));
-        this.$wrapper = jQuery("[me\\:skin\\:wrapper=\"".concat(this.ID, "\"]"));
+        this.$defaults = this.$field.find("option[default]");
+        this.$selected = this.$field.find("option[selected]");
+        this.$selection = this.$field.parent().find("[me\\:skin\\:selection=\"".concat(this.ID, "\"]"));
+        this.$wrapper = this.$field.parent();
       }
 
       if (Me.detect && Me.detect.isMobile()) {
@@ -676,22 +556,22 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
   }, {
     key: "addEventWhenOpen",
     value: function addEventWhenOpen() {
-      var _this8 = this;
+      var _this9 = this;
 
       jQuery(document).on('click.skinMe', function (e) {
-        _this8.close(e);
+        _this9.close(e);
       });
       this.$skinChoicesWrapper.find('.choice').on('keydown.skinMe', function (e) {
         if (e.keyCode === 13) {
-          _this8.handleSelection(e);
+          _this9.handleSelection(e);
         }
 
         if (e.keyCode === 9) {
-          _this8.close();
+          _this9.close();
         }
       });
       this.$skinChoicesWrapper.find('.choice').on('click.skinMe', function (e) {
-        _this8.handleSelection(e);
+        _this9.handleSelection(e);
       });
     }
   }, {
@@ -704,23 +584,23 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
   }, {
     key: "addCustomEvents",
     value: function addCustomEvents() {
-      var _this9 = this;
+      var _this10 = this;
 
       window.addEventListener('resize', function () {
-        _this9.close();
+        _this10.close();
       });
       this.$field.on('change.skinMe', function (e) {
-        _this9.handleChange(e);
+        _this10.handleChange(e);
       });
 
       if (!this.isNative) {
         this.$customSkin.on('click.skinMe', function (e) {
-          _this9.handleState(e);
+          _this10.handleState(e);
         });
 
         if (this.$label) {
           this.$label.on('click.skinMe', function (e) {
-            _this9.handleState(e);
+            _this10.handleState(e);
           });
         }
       }
@@ -728,10 +608,10 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
   }, {
     key: "removeCustomEvents",
     value: function removeCustomEvents() {
-      var _this10 = this;
+      var _this11 = this;
 
       window.removeEventListener("resize", function () {
-        _this10.close();
+        _this11.close();
       });
       this.$field.off('change.skinMe');
 
@@ -775,7 +655,7 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
   }, {
     key: "open",
     value: function open() {
-      var _this11 = this;
+      var _this12 = this;
 
       if (this.disabled || this.isAnimating) {
         return;
@@ -784,19 +664,19 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
       this.isAnimating = true;
       this.$skinChoicesWrapper.outerHeight(this.choicesHeight);
       this.$wrapper.addClass(this.classes.opening).on('transitionend', function () {
-        _this11.$wrapper.addClass(_this11.classes.open).removeClass(_this11.classes.opening);
+        _this12.$wrapper.addClass(_this12.classes.open).removeClass(_this12.classes.opening);
 
-        _this11.$wrapper.off('transitionend');
+        _this12.$wrapper.off('transitionend');
 
-        _this11.isAnimating = false;
-        jQuery(_this11.$skinChoicesWrapper.find('.choice')[_this11.getSelectedIndex()]).focus();
+        _this12.isAnimating = false;
+        jQuery(_this12.$skinChoicesWrapper.find('.choice')[_this12.getSelectedIndex()]).focus();
       });
       this.addEventWhenOpen();
     }
   }, {
     key: "close",
     value: function close(e) {
-      var _this12 = this;
+      var _this13 = this;
 
       if (this.disabled || this.isAnimating) {
         return;
@@ -810,11 +690,11 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
 
       this.$skinChoicesWrapper.outerHeight(0);
       this.$wrapper.addClass(this.classes.closing).on('transitionend', function () {
-        _this12.$wrapper.removeClass("".concat(_this12.classes.open, " ").concat(_this12.classes.closing));
+        _this13.$wrapper.removeClass("".concat(_this13.classes.open, " ").concat(_this13.classes.closing));
 
-        _this12.$wrapper.off('transitionend');
+        _this13.$wrapper.off('transitionend');
 
-        _this12.isAnimating = false;
+        _this13.isAnimating = false;
       });
       this.removeEventOnClose();
     }
@@ -826,10 +706,15 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
     }
   }, {
     key: "setSelection",
-    value: function setSelection(index) {
+    value: function setSelection(index, preventTrigger) {
       this.$field.find('option').attr('selected', false);
       jQuery(this.$field.find('option')[index]).attr('selected', true);
-      this.$field.trigger('change');
+
+      if (!preventTrigger) {
+        this.$field.trigger('change');
+      } else {
+        this.updateHtml();
+      }
     }
   }, {
     key: "getSelectedIndex",
@@ -904,3 +789,141 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
 }(SkinField);
 
 Me.skinTypes['SkinSelect'] = SkinSelect;
+
+var SkinManager = /*#__PURE__*/function () {
+  function SkinManager(options) {
+    _classCallCheck(this, SkinManager);
+
+    this.name = "SkinManager";
+    this.fields = [];
+    this.options = options;
+    this.newFields = [];
+  }
+
+  _createClass(SkinManager, [{
+    key: "initFields",
+    value: function initFields() {
+      var $root = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : jQuery('html');
+      this.clearFields();
+      var fields = $root.find('[me\\:skin]');
+      this.newFields = [];
+
+      for (var i = 0; i < fields.length; i++) {
+        this.addField(jQuery(fields[i]));
+      } // /* Initialize all new fields*/
+
+
+      for (var j = 0; j < this._newFields.length; j++) {
+        this.newFields[j].initialize();
+      }
+    }
+  }, {
+    key: "getField",
+    value: function getField($field) {
+      for (var i in this.fields) {
+        var field = this.fields[i];
+
+        if (field.ID === $field.attr('id')) {
+          return field;
+        }
+      }
+    }
+  }, {
+    key: "addField",
+    value: function addField($field) {
+      var shouldInit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var fieldType = $field.attr('me:skin');
+      var fieldParams = {
+        field: $field[0],
+        type: fieldType
+      };
+      var className = "Skin".concat(fieldType.charAt(0).toUpperCase()).concat(fieldType.slice(1));
+      /* Look if the field is valid */
+
+      if (typeof Me.skinTypes[className] !== "function") {
+        console.error("The skin type ".concat(className, " does not exist. Please select one listed in the following array"), Object.keys(Me.skinTypes));
+        return;
+      }
+      /* Look if the field has already been rendered */
+
+
+      if ($field.attr('me:skin:render')) {
+        return;
+      }
+      /* Create instance of the field */
+
+
+      var field = new Me.skinTypes[className](fieldParams);
+      /* Keep reference of the global field in this class */
+
+      this.fields.push(field);
+      /* Assign the field in an array to initialize them later */
+
+      this.newFields.push(field);
+
+      if (shouldInit) {
+        field.initialize();
+      }
+    }
+  }, {
+    key: "clearFields",
+    value: function clearFields() {
+      var activeFields = [];
+
+      for (var i in this.fields) {
+        var field = this.fields[i];
+
+        if (_typeof(field.$el) == "object") {
+          var selector = jQuery('html').find(field.$el[0]);
+
+          if (selector.length > 0) {
+            activeFields.push(field);
+          } else {
+            field.terminate();
+          }
+        }
+      }
+
+      this.fields = activeFields;
+    }
+  }, {
+    key: "name",
+    get: function get() {
+      return this._name;
+    },
+    set: function set(name) {
+      this._name = name;
+    }
+  }, {
+    key: "options",
+    set: function set(params) {
+      this._options = params;
+    },
+    get: function get() {
+      return this._options;
+    }
+  }, {
+    key: "newFields",
+    get: function get() {
+      return this._newFields;
+    },
+    set: function set(newFields) {
+      this._newFields = newFields;
+    }
+  }, {
+    key: "fields",
+    get: function get() {
+      return this._fields;
+    },
+    set: function set(fields) {
+      this._fields = fields;
+    }
+  }]);
+
+  return SkinManager;
+}();
+
+Me.skin = new SkinManager();
+jQuery(document).ready(function () {
+  Me.skin.initFields();
+});

@@ -1,4 +1,4 @@
-class SkinRadio extends SkinField{
+class SkinCheckbox extends SkinField{
 	constructor(options){
 		super(options);
 		this.classes = {
@@ -23,32 +23,37 @@ class SkinRadio extends SkinField{
 	}
 	changeHandler(e){
 		if (!this.field.checked) {
-			$.each(jQuery('input[name="' + this.name + '"]'), (index, el)=>{
-				let field = Me.skin.getField(jQuery(el));
-				field.$customSkin.removeClass(this.classes.checked);
-				field.$field.removeClass(this.classes.checked);
-				field.field.checked = false;
-			});
-
 			this.$customSkin.addClass(this.classes.checked);
 			this.$field.addClass(this.classes.checked);
 			this.field.checked = true;
+		} else {
+			this.$customSkin.removeClass(this.classes.checked);
+			this.$field.removeClass(this.classes.checked);
+			this.field.checked = false;
 		}
 	}
 	clickHandler(e) {
 		if (this.disabled) {return;}
-		e.preventDefault();
 		e.stopImmediatePropagation();
 		e.stopPropagation();
-		this.$field.trigger('change', 'label');
+		e.preventDefault();
+		this.$field.trigger('change.skinMe');
 	}
 
 	keyHandler(e) {
 		super.keyHandler(e);
 
 		if(e.keyCode === 13 || e.keyCode === 32)
-			this.$customSkin.trigger('click');
+			this.$customSkin.trigger('click.skinMe');
+	}
+
+	set disabled(bool){
+		super.disabled = bool;
+
+		if(this.field.checked){
+			this.changeHandler();
+		}
 	}
 }
 
-Me.skinTypes['SkinRadio'] = SkinRadio;
+Me.skinTypes['SkinCheckbox'] = SkinCheckbox;
