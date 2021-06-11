@@ -219,7 +219,7 @@ class SkinSelect extends SkinField{
 	get choicesHeight(){
 		let height = 0;
 
-		this.$skinChoicesWrapper.find('.choice').each((index, value) => {
+		this.$skinChoicesWrapper.find('.choice').filter(":visible").each((index, value) => {
 			height += jQuery(value).outerHeight(true);
 		});
 

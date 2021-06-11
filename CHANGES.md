@@ -1,6 +1,9 @@
 skinMe
 ========
 
+Version - 3.1.1
+- Update select choices height calculation to ignore options not visible
+
 Version - 3.1.0
 - Change default attribute utility
 - handle initial selected attribute on option
