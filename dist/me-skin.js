@@ -778,7 +778,7 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
     key: "choicesHeight",
     get: function get() {
       var height = 0;
-      this.$skinChoicesWrapper.find('.choice').each(function (index, value) {
+      this.$skinChoicesWrapper.find('.choice').filter(":visible").each(function (index, value) {
         height += jQuery(value).outerHeight(true);
       });
       return height;
