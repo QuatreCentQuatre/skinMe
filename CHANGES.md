@@ -6,6 +6,9 @@ Version - 3.1.0
 - handle initial selected attribute on option
 - Updated demo
 
+Version - 3.0.1
+- Patched closed() for select called on resize even if select is not open, resulting in is-closing class added
+
 Version - 3.0.0
 - Moved .js source files into a js/ folder
 - Simplified build task

@@ -68,7 +68,11 @@ class SkinSelect extends SkinField{
 		this.$skinChoicesWrapper.find('.choice').off('click.skinMe');
 	}
 	addCustomEvents(){
-		window.addEventListener('resize', ()=>{this.close();});
+		window.addEventListener('resize', ()=>{
+			if (this.isOpen) {
+				this.close();
+			}
+		});
 		this.$field.on('change.skinMe', (e) => {this.handleChange(e)});
 
 		if(!this.isNative){
@@ -80,7 +84,11 @@ class SkinSelect extends SkinField{
 		}
 	}
 	removeCustomEvents(){
-		window.removeEventListener("resize", ()=>{this.close();});
+		window.removeEventListener("resize", ()=>{
+			if (this.isOpen) {
+				this.close();
+			}
+		});
 		this.$field.off('change.skinMe');
 
 		if(!this.isNative){
