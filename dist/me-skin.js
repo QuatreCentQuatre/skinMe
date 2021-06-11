@@ -587,13 +587,9 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
       var _this10 = this;
 
       window.addEventListener('resize', function () {
-<<<<<<< HEAD
-        _this10.close();
-=======
-        if (_this9.isOpen) {
-          _this9.close();
+        if (_this10.isOpen) {
+          _this10.close();
         }
->>>>>>> 22b635ad935043895e97b1d307bbe0337a29c1b6
       });
       this.$field.on('change.skinMe', function (e) {
         _this10.handleChange(e);
@@ -617,13 +613,9 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
       var _this11 = this;
 
       window.removeEventListener("resize", function () {
-<<<<<<< HEAD
-        _this11.close();
-=======
-        if (_this10.isOpen) {
-          _this10.close();
+        if (_this11.isOpen) {
+          _this11.close();
         }
->>>>>>> 22b635ad935043895e97b1d307bbe0337a29c1b6
       });
       this.$field.off('change.skinMe');
 
