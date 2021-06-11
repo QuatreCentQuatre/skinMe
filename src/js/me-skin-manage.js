@@ -112,14 +112,6 @@ class SkinManager {
 	}
 }
 
-if (!window.Me) {
-	window.Me = {};
-}
-
-if (!window.Me.skinType){
-    Me.skinTypes = [];
-}
-
 Me.skin = new SkinManager();
 
 jQuery(document).ready(function() {

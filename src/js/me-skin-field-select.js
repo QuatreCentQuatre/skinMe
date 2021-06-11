@@ -1,7 +1,8 @@
 class SkinSelect extends SkinField{
 	constructor(options){
 		super(options);
-		this.$skinChoicesWrapper = jQuery(`[me\\:skin\\:choices="${this.ID}"]`);
+		this.preventDefaultChangeEvent = this.$field[0].hasAttribute('me:skin:prevent-default');
+		this.$skinChoicesWrapper = this.$field.parent().find(`[me\\:skin\\:choices="${this.ID}"]`);
 		this.$choiceSelected = this.$skinChoicesWrapper.find('.choice[selected]');
 		this.isAnimating = false;
 
@@ -12,13 +13,25 @@ class SkinSelect extends SkinField{
 			native: 'is-native'
 		}
 	}
+	
+	initialize() {
+		super.initialize();
+		this.setDefault();
+	}
+	
 	setDefault(){
-		if(this.$default.length > 0){
-			this.setSelection(this.$default.index());
+		this.$defaults.each((index, value)=>{
+			jQuery(this.$skinChoicesWrapper.find('.choice')[this.$field.find('option[value="'+ $(value).val() +'"]').index()]).attr('default', true);
+		});
+	}
+	setInitialValue(){
+		if(this.$selected.length > 0){
+			this.setSelection(this.$selected.index(), this.preventDefaultChangeEvent);
 		} else{
-			this.setSelection(0);
+			this.setSelection(0, this.preventDefaultChangeEvent);
 		}
 	}
+	
 	setDOMAttr(){
 		super.setDOMAttr();
 		this.$field.parent().attr('me:skin:wrapper', this.ID);
@@ -29,9 +42,10 @@ class SkinSelect extends SkinField{
 	}
 	setCustomVariables(){
 		if (this.$customSkin){
-			this.$default = this.$field.find(`option[default]`);
-			this.$selection = jQuery(`[me\\:skin\\:selection="${this.ID}"]`);
-			this.$wrapper = jQuery(`[me\\:skin\\:wrapper="${this.ID}"]`);
+			this.$defaults = this.$field.find(`option[default]`);
+			this.$selected = this.$field.find(`option[selected]`);
+			this.$selection = this.$field.parent().find(`[me\\:skin\\:selection="${this.ID}"]`);
+			this.$wrapper = this.$field.parent();
 		}
 
 		if(Me.detect && Me.detect.isMobile()){
@@ -145,11 +159,16 @@ class SkinSelect extends SkinField{
 		e.preventDefault();
 		this.setSelection(jQuery(e.currentTarget).index());
 	}
-	setSelection(index){
+	setSelection(index, preventTrigger){
 		this.$field.find('option').attr('selected', false);
 		// jQuery(this.$field.find('option')[index]).attr('selected', true); // @NOTE: issue on reset: previously selected value cant be selected anymore
 		jQuery(this.$field.find("option")[index])[0].selected = 'selected';
-		this.$field.trigger('change');
+		
+		if(!preventTrigger){
+			this.$field.trigger('change');
+		} else{
+			this.updateHtml();
+		}
 	}
 	getSelectedIndex(){
 		return this.$field.find('option[value="'+ this.$field.val() +'"]').index();
@@ -190,7 +209,7 @@ class SkinSelect extends SkinField{
 			console.error(`Can't find the associated me:skin:choices attribute linked to field. See me:skin:choices in README.md`)
 		}
 
-		if(!jQuery(`[me\\:skin\\:selection="${this.ID}"]`).length > 0){
+		if(!jQuery(`[me\\:skin\\:selection="${this.ID}"]`).length > 0){
 			console.error(`Can't find the associated me:skin:selection attribute linked to field. See me:skin:selection in README.md`)
 		}
 

@@ -1,21 +1,6 @@
 skinMe
 ========
 
-Version - 3.0.1
-- Patched closed() for select called on resize even if select is not open, resulting in is-closing class added
-
-Version - 3.0.0
-- Moved .js source files into a js/ folder
-- Simplified build task
-- Generated concat dist files me-skin.js and me-skin.css with minified versions
-- Updated demo
-
-Version - 2.0.1
-- Refactor for ES6
-- Split skin type into different class
-- Simplified DOM declaration 
-- Add new demo
-
 Dependencies
 
 - Babel Polyfill (https://babeljs.io/docs/en/babel-polyfill#usage-in-browser)
@@ -159,8 +144,17 @@ At the end you should have something similar to this:
 </div>
 ```
 
-
 Once the HTML is in place, the SkinManager class will take care of everything if the JS file are linked!
+
+###Optionnal attibutes
+<b>default</b>
+<br>
+This attribute needs to be set on an option tag of your select. The attribute will be reflected on the custom div choice element.
+
+<b>selected</b>
+<br>
+This attribute needs to be set on an option tag of your select. This attribute will define the value as the initial one.
+
 
 ## Skin Manager functions
 

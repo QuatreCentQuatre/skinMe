@@ -1,0 +1,12 @@
+.skinMe.activated.radio input[type="radio"] {
+  display: none;
+}
+.skinMe.activated.checkbox input[type="checkbox"] {
+  display: none;
+}
+.skinMe.activated.select select {
+  filter: alpha(opacity=1);
+  -khtml-opacity: 0.01;
+  -moz-opacity: 0.01;
+  opacity: 0.01;
+}

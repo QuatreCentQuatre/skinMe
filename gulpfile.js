@@ -12,9 +12,10 @@ gulpSass.compiler = require('node-sass');
 
 const sourceFiles = {
     js: [
-        'src/js/me-skin-manage.js',
         'src/js/me-skin-field.js',
-        'src/js/*.js',
+        'src/js/me-skin-field-*.js',
+        'src/js/me-skin-manage.js',
+        
     ],
     scss: [
         'src/scss/plugin-me-skin.scss',

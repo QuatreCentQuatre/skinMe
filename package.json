@@ -1,6 +1,6 @@
 {
   "name": "skin-me",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "author": "QuatreCentQuatre team <info@quatrecentquatre.com> (https://www.quatrecentquatre.com/)",
   "scripts": {
     "production": "node_modules/gulp/bin/gulp.js build"
@@ -20,8 +20,8 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
-    "jquery": "^3.4.1",
-    "detect-me": "git+https://github.com/QuatreCentQuatre/detectMe.git#1.0.4"
+    "detect-me": "git+https://github.com/QuatreCentQuatre/detectMe.git#1.0.4",
+    "jquery": "^3.4.1"
   },
   "repository": {
     "type": "git",
