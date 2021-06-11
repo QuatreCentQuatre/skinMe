@@ -21,7 +21,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
     "detect-me": "git+https://github.com/QuatreCentQuatre/detectMe.git#1.0.4",
-    "jquery": "^3.4.1"
+    "jquery": "^3.5.0"
   },
   "repository": {
     "type": "git",
