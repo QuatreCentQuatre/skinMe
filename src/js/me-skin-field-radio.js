@@ -36,7 +36,7 @@ class SkinRadio extends SkinField{
 		}
 	}
 	clickHandler(e) {
-		if (this.disabled) {return;}
+		if (this.field.disabled) {return;}
 		e.preventDefault();
 		e.stopImmediatePropagation();
 		e.stopPropagation();

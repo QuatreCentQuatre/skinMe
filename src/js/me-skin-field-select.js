@@ -110,7 +110,7 @@ class SkinSelect extends SkinField{
 		}
 	}
 	handleState(e){
-		if (this.disabled) {return;}
+		if (this.field.disabled) {return;}
 
 		e.preventDefault();
 		e.stopPropagation();
@@ -123,7 +123,7 @@ class SkinSelect extends SkinField{
 		this.open();
 	}
 	open(){
-		if (this.disabled || this.isAnimating) {return;}
+		if (this.field.disabled || this.isAnimating) {return;}
 
 		this.isAnimating = true;
 		this.$skinChoicesWrapper.outerHeight(this.choicesHeight);
@@ -137,7 +137,7 @@ class SkinSelect extends SkinField{
 		this.addEventWhenOpen();
 	}
 	close(e){
-		if (this.disabled || this.isAnimating) {return;}
+		if (this.field.disabled || this.isAnimating) {return;}
 
 		if(e)
 			e.preventDefault();

@@ -33,7 +33,7 @@ class SkinCheckbox extends SkinField{
 		}
 	}
 	clickHandler(e) {
-		if (this.disabled) {return;}
+		if (this.field.disabled) {return;}
 		e.stopImmediatePropagation();
 		e.stopPropagation();
 		e.preventDefault();

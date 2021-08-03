@@ -1,6 +1,9 @@
 skinMe
 ========
 
+Version - 3.1.2
+- Fix checkbox disabled not properly working
+
 Version - 3.1.1
 - Update select choices height calculation to ignore options not visible
 

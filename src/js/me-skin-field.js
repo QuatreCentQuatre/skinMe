@@ -72,7 +72,7 @@ class SkinField {
 		this.ID 			= this.$field.attr('id');
 		this.name 			= this.$field.attr('name');
 		this.type 			= (this.$field.attr('type')) ? this.$field.attr('type') : this.$field.prop("tagName").toLowerCase();
-		this.disabled 		= !!this.$field.attr('disabled');
+		// this.disabled 		= !!this.$field.attr('disabled');
 
 		this.$label 		= (this.$field.parent().find('label[for="' + this.ID + '"]').length > 0) ? this.$field.parent().find('label[for="' + this.ID + '"]') : null;
 		this.$customSkin 	= (this.$field.parent().find(`[me\\:skin\\:id="${this.ID}"]`).length > 0) ? this.$field.parent().find(`[me\\:skin\\:id="${this.ID}"]`) : null;
@@ -112,12 +112,12 @@ class SkinField {
 		this.$field.attr('me:skin:render', "true");
 		this.$field.attr('me:skin:type', this.type);
 		this.$customSkin.attr('me:skin:render', "true");
-		this.$customSkin.attr('me:skin:disabled', this.disabled);
+		this.$customSkin.attr('me:skin:disabled', this.field.disabled);
 
 		this.$customSkin.attr('me:skin:theme', this.$field.attr('me:skin:theme'));
 		this.$field.removeAttr('me:skin:theme');
 
-		if(!this.disabled){
+		if(!this.field.disabled){
 			this.$customSkin.attr('tabindex', 0);
 		}
 	}
