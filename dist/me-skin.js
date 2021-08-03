@@ -104,8 +104,8 @@ var SkinField = /*#__PURE__*/function () {
     this.$field = jQuery(options.field);
     this.ID = this.$field.attr('id');
     this.name = this.$field.attr('name');
-    this.type = this.$field.attr('type') ? this.$field.attr('type') : this.$field.prop("tagName").toLowerCase();
-    this.disabled = !!this.$field.attr('disabled');
+    this.type = this.$field.attr('type') ? this.$field.attr('type') : this.$field.prop("tagName").toLowerCase(); // this.disabled 		= !!this.$field.attr('disabled');
+
     this.$label = this.$field.parent().find('label[for="' + this.ID + '"]').length > 0 ? this.$field.parent().find('label[for="' + this.ID + '"]') : null;
     this.$customSkin = this.$field.parent().find("[me\\:skin\\:id=\"".concat(this.ID, "\"]")).length > 0 ? this.$field.parent().find("[me\\:skin\\:id=\"".concat(this.ID, "\"]")) : null;
     if (!this.dependenciesExist() || !this.requirementsExist()) return;
@@ -152,11 +152,11 @@ var SkinField = /*#__PURE__*/function () {
       this.$field.attr('me:skin:render', "true");
       this.$field.attr('me:skin:type', this.type);
       this.$customSkin.attr('me:skin:render', "true");
-      this.$customSkin.attr('me:skin:disabled', this.disabled);
+      this.$customSkin.attr('me:skin:disabled', this.field.disabled);
       this.$customSkin.attr('me:skin:theme', this.$field.attr('me:skin:theme'));
       this.$field.removeAttr('me:skin:theme');
 
-      if (!this.disabled) {
+      if (!this.field.disabled) {
         this.$customSkin.attr('tabindex', 0);
       }
     }
@@ -357,7 +357,7 @@ var SkinCheckbox = /*#__PURE__*/function (_SkinField) {
   }, {
     key: "clickHandler",
     value: function clickHandler(e) {
-      if (this.disabled) {
+      if (this.field.disabled) {
         return;
       }
 
@@ -454,7 +454,7 @@ var SkinRadio = /*#__PURE__*/function (_SkinField2) {
   }, {
     key: "clickHandler",
     value: function clickHandler(e) {
-      if (this.disabled) {
+      if (this.field.disabled) {
         return;
       }
 
@@ -642,7 +642,7 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
   }, {
     key: "handleState",
     value: function handleState(e) {
-      if (this.disabled) {
+      if (this.field.disabled) {
         return;
       }
 
@@ -661,7 +661,7 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
     value: function open() {
       var _this12 = this;
 
-      if (this.disabled || this.isAnimating) {
+      if (this.field.disabled || this.isAnimating) {
         return;
       }
 
@@ -682,7 +682,7 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
     value: function close(e) {
       var _this13 = this;
 
-      if (this.disabled || this.isAnimating) {
+      if (this.field.disabled || this.isAnimating) {
         return;
       }
 
