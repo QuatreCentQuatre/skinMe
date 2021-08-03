@@ -104,8 +104,7 @@ var SkinField = /*#__PURE__*/function () {
     this.$field = jQuery(options.field);
     this.ID = this.$field.attr('id');
     this.name = this.$field.attr('name');
-    this.type = this.$field.attr('type') ? this.$field.attr('type') : this.$field.prop("tagName").toLowerCase(); // this.disabled 		= !!this.$field.attr('disabled');
-
+    this.type = this.$field.attr('type') ? this.$field.attr('type') : this.$field.prop("tagName").toLowerCase();
     this.$label = this.$field.parent().find('label[for="' + this.ID + '"]').length > 0 ? this.$field.parent().find('label[for="' + this.ID + '"]') : null;
     this.$customSkin = this.$field.parent().find("[me\\:skin\\:id=\"".concat(this.ID, "\"]")).length > 0 ? this.$field.parent().find("[me\\:skin\\:id=\"".concat(this.ID, "\"]")) : null;
     if (!this.dependenciesExist() || !this.requirementsExist()) return;
