@@ -5,7 +5,7 @@ class SkinSelect extends SkinField{
 		this.$skinChoicesWrapper = this.$field.parent().find(`[me\\:skin\\:choices="${this.ID}"]`);
 		this.$choiceSelected = this.$skinChoicesWrapper.find('.choice[selected]');
 		this.isAnimating = false;
-
+		
 		this.classes = {
 			opening: 'is-opening',
 			closing: 'is-closing',
@@ -47,11 +47,11 @@ class SkinSelect extends SkinField{
 			this.$selection = this.$field.parent().find(`[me\\:skin\\:selection="${this.ID}"]`);
 			this.$wrapper = this.$field.parent();
 		}
-
+		
 		if(Me.detect && Me.detect.isMobile()){
 			this.$field.addClass(this.classes.native);
 		}
-
+		
 		this.isNative = (this.$field.hasClass(this.classes.native));
 	}
 	addEventWhenOpen(){
@@ -74,10 +74,10 @@ class SkinSelect extends SkinField{
 			}
 		});
 		this.$field.on('change.skinMe', (e) => {this.handleChange(e)});
-
+		
 		if(!this.isNative){
 			this.$customSkin.on('click.skinMe', (e) => {this.handleState(e)});
-
+			
 			if (this.$label) {
 				this.$label.on('click.skinMe', (e) => {this.handleState(e)});
 			}
@@ -90,10 +90,10 @@ class SkinSelect extends SkinField{
 			}
 		});
 		this.$field.off('change.skinMe');
-
+		
 		if(!this.isNative){
 			this.$customSkin.off('click.skinMe');
-
+			
 			if (this.$label) {
 				this.$label.off('click.skinMe');
 			}
@@ -103,7 +103,7 @@ class SkinSelect extends SkinField{
 		this.$choiceSelected = jQuery(this.$skinChoicesWrapper.find('.choice')[this.getSelectedIndex()]);
 		this.$skinChoicesWrapper.find('.choice').attr('selected', false);
 		jQuery(this.$skinChoicesWrapper.find('.choice')[this.getSelectedIndex()]).attr('selected', true);
-
+		
 		this.updateHtml();
 		if(this.isOpen){
 			this.close();
@@ -111,20 +111,25 @@ class SkinSelect extends SkinField{
 	}
 	handleState(e){
 		if (this.field.disabled) {return;}
-
+		
 		e.preventDefault();
-		e.stopPropagation();
-
+		// e.stopPropagation();
+		
 		if(this.isOpen){
 			this.close();
 			return;
 		}
-
+		
 		this.open();
 	}
 	open(){
 		if (this.field.disabled || this.isAnimating) {return;}
-
+		
+		let selects = $('select:not('+ this.$field.attr('name') + ')');
+		selects.each(function (index, value) {
+			Me.skin.getField($(value)).close();
+		});
+		
 		this.isAnimating = true;
 		this.$skinChoicesWrapper.outerHeight(this.choicesHeight);
 		this.$wrapper.addClass(this.classes.opening).on('transitionend', ()=>{
@@ -133,26 +138,26 @@ class SkinSelect extends SkinField{
 			this.isAnimating = false;
 			jQuery(this.$skinChoicesWrapper.find('.choice')[this.getSelectedIndex()]).focus();
 		});
-
+		
 		this.addEventWhenOpen();
 	}
 	close(e){
 		if (this.field.disabled || this.isAnimating) {return;}
-
+		
 		if(e)
 			e.preventDefault();
-
+		
 		if(this.isOpen){
 			this.isAnimating = true;
 		}
-
+		
 		this.$skinChoicesWrapper.outerHeight(0);
 		this.$wrapper.addClass(this.classes.closing).on('transitionend', ()=>{
 			this.$wrapper.removeClass(`${this.classes.open} ${this.classes.closing}`);
 			this.$wrapper.off('transitionend');
 			this.isAnimating = false;
 		});
-
+		
 		this.removeEventOnClose();
 	}
 	handleSelection(e){
@@ -176,10 +181,10 @@ class SkinSelect extends SkinField{
 	updateHtml(){
 		this.$selection.html(this.$choiceSelected.html());
 	}
-
+	
 	keyHandler(e) {
 		super.keyHandler(e);
-
+		
 		switch (e.keyCode) {
 			case 38:
 			case 40:
@@ -189,7 +194,7 @@ class SkinSelect extends SkinField{
 					let direction = (e.keyCode === 38) ? -1 : 1;
 					let focusChoiceIndex = this.$customSkin.find(':focus').index();
 					let elToFocus = this.$skinChoicesWrapper.find('.choice')[focusChoiceIndex + direction];
-
+					
 					if(elToFocus){
 						elToFocus.focus();
 					}
@@ -201,31 +206,31 @@ class SkinSelect extends SkinField{
 				break;
 		}
 	}
-
+	
 	requirementsExist(){
 		let isValid = super.requirementsExist();
-
+		
 		if(!jQuery(`[me\\:skin\\:choices="${this.ID}"]`).length > 0){
 			console.error(`Can't find the associated me:skin:choices attribute linked to field. See me:skin:choices in README.md`)
 		}
-
+		
 		if(!jQuery(`[me\\:skin\\:selection="${this.ID}"]`).length > 0){
 			console.error(`Can't find the associated me:skin:selection attribute linked to field. See me:skin:selection in README.md`)
 		}
-
+		
 		return isValid;
 	}
-
+	
 	get choicesHeight(){
 		let height = 0;
-
+		
 		this.$skinChoicesWrapper.find('.choice').filter(":visible").each((index, value) => {
 			height += jQuery(value).outerHeight(true);
 		});
-
+		
 		return height;
 	}
-
+	
 	get isOpen(){
 		return this.$wrapper.hasClass(this.classes.open);
 	}
