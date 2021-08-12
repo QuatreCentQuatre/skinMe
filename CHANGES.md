@@ -1,6 +1,9 @@
 skinMe
 ========
 
+Version - 3.1.3
+- On open, close all other skinned select
+
 Version - 3.1.2
 - Fix checkbox disabled not properly working
 
