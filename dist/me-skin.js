@@ -665,6 +665,7 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
       }
 
       var selects = $('select:not(' + this.$field.attr('name') + ')');
+      console.log(selects);
       selects.each(function (index, value) {
         Me.skin.getField($(value)).close();
       });
