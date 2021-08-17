@@ -665,7 +665,11 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
 
       var selects = $('select:not(' + this.$field.attr('name') + ')');
       selects.each(function (index, value) {
-        Me.skin.getField($(value)).close();
+        var field = Me.skin.getField($(value));
+
+        if (field) {
+          field.close();
+        }
       });
       this.isAnimating = true;
       this.$skinChoicesWrapper.outerHeight(this.choicesHeight);

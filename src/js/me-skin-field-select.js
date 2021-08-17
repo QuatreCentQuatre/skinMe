@@ -127,7 +127,11 @@ class SkinSelect extends SkinField{
 		
 		let selects = $('select:not('+ this.$field.attr('name') + ')');
 		selects.each(function (index, value) {
-			Me.skin.getField($(value)).close();
+			let field = Me.skin.getField($(value));
+			
+			if(field){
+				field.close();
+			}
 		});
 		
 		this.isAnimating = true;
