@@ -665,10 +665,10 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
       }
 
       var selects = $('select:not(' + this.$field.attr('name') + ')');
-      console.log(selects); // selects.each(function (index, value) {
-      // 	Me.skin.getField($(value)).close();
-      // });
-
+      console.log(selects);
+      selects.each(function (index, value) {
+        console.log(index, value, Me.skin.getField); // 	Me.skin.getField($(value)).close();
+      });
       this.isAnimating = true;
       this.$skinChoicesWrapper.outerHeight(this.choicesHeight);
       this.$wrapper.addClass(this.classes.opening).on('transitionend', function () {
