@@ -1,6 +1,9 @@
 skinMe
 ========
 
+Version - 3.1.4
+- Fix with verification if select exist when closing all other one
+
 Version - 3.1.3
 - On open, close all other skinned select
 
