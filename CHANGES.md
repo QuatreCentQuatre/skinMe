@@ -1,6 +1,9 @@
 skinMe
 ========
 
+Version - 3.1.4
+- Allow <a> into <label> for checkboxes and radios
+
 Version - 3.1.3
 - On open, close all other skinned select
 

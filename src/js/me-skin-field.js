@@ -6,7 +6,7 @@
  *
  * Dual licensed under MIT and GNU General Public License version 3 (GPLv3)
  * http://www.opensource.org/licenses/LGPL-3.0
- * Version: 3.0.0
+ * Version: 3.1.4
  * Release date: Feb 2020
  *
  * Methods:
