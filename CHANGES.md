@@ -1,6 +1,9 @@
 skinMe
 ========
 
+Version - 3.1.5
+- Allow <a> into <label> for checkboxes and radios
+
 Version - 3.1.4
 - Fix with verification if select exist when closing all other one
 

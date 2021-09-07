@@ -40,7 +40,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  *
  * Dual licensed under MIT and GNU General Public License version 3 (GPLv3)
  * http://www.opensource.org/licenses/LGPL-3.0
- * Version: 3.0.0
+ * Version: 3.1.5
  * Release date: Feb 2020
  *
  * Methods:
@@ -356,7 +356,7 @@ var SkinCheckbox = /*#__PURE__*/function (_SkinField) {
   }, {
     key: "clickHandler",
     value: function clickHandler(e) {
-      if (this.field.disabled) {
+      if (this.field.disabled || e.target.tagName === 'A') {
         return;
       }
 
@@ -453,7 +453,7 @@ var SkinRadio = /*#__PURE__*/function (_SkinField2) {
   }, {
     key: "clickHandler",
     value: function clickHandler(e) {
-      if (this.field.disabled) {
+      if (this.field.disabled || e.target.tagName === 'A') {
         return;
       }
 
