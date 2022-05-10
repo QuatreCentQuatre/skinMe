@@ -23,35 +23,6 @@ Then you're already good to go and customize your first element!
 
 ### Customize elements
 
-
-#### Radio & Checkbox
-Create an input of type radio. Then you'll need to add the attribute <b>me:skin</b> with the wanted type (radio or checkbox)
-
-```html
-<!--Radio-->
-<input me:skin="radio" type="radio" id="radio-direction-down" name="direction" value="down" />
-
-<!--Checkbox-->
-<input me:skin="checkbox" type="checkbox" id="checkbox-side-left" name="side[]" value="left"/>
-```
-<br>
-You'll need to add custom element with some mandatory attributes. First, we need to add the <b>me:skin:id</b> attribute
-with the same value as the input we want it to be link to. The value of this attribute must be the <b>ID</b> of the input.
-The <b>me:skin:theme</b> attribute is non-mandatory. It's only purpose is to easily know wich theme is applied to 
-this custom input and to target all element with the same theme in CSS. You can decide to set a class instead. It's up to you. 
-
-<br>
-<br>
-
-```html
-<!--Radio-->
-<span me:skin:id="radio-direction-down" me:skin:theme="skinMe-radio"></span>
-
-<!--Checkbox-->
-<span me:skin:id="checkbox-side-left" me:skin:theme="skinMe-checkbox"></span>
-```
-
-
 #### Select
 Create a select. Then you'll need to add the attribute me:skin with the "select" value.
 
@@ -164,10 +135,10 @@ initialize this field. This function is **addField()** and accept 2 parameters. 
 The second one, is a boolean to trigger the initialize on creation. 
 
 ```javascript
-Me.skin.addField($field, shouldInit);
+Me.skin.addField(document.querySelector('...'), shouldInit);
 
 // Example
-Me.skin.addField($('#select-number'), true);
+Me.skin.addField(document.querySelector('#select-number'), true);
 ```
  
 If you have more than one field added to the DOM, call the function **initFields()** of Me.skin.
@@ -178,7 +149,7 @@ The parameter **must** be an **element**.
 ```javascript
 Me.skin.initFields();
 // or
-Me.skin.initFields($('form'));
+Me.skin.initFields(document.querySelector('form'));
 ```
 
 ### Clear deleted fields
@@ -194,7 +165,7 @@ Me.skin.clearFields();
 If your are looking to update a field, all you need to do is fetch de field object with Me.skin.getField($field). Then you can modify it.
 
 ```javascript
-Me.skin.getField($('#select-number'));
+Me.skin.getField(document.querySelector('#select-number'));
 ```
 
 ## Single field setter
@@ -204,6 +175,6 @@ Me.skin.getField($('#select-number'));
 Speaks for itself, it will disable your field, so no more interaction with it will be possible.
 
 ```javascript
-let field = Me.skin.getField($('#select-number'));
+let field = Me.skin.getField(document.querySelector('#select-number'));
 field.disabled = true;
 ```

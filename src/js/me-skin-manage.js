@@ -6,14 +6,14 @@ class SkinManager {
 		this.newFields 	= [];
 	}
 
-	initFields($root = jQuery('html')){
+	initFields($rootElement = document.querySelector('html')){
 		this.clearFields();
 
-		let fields = $root.find('[me\\:skin]');
+		let fields = $rootElement.querySelectorAll('[me\\:skin]');
 		this.newFields = [];
 
 		for (let i = 0; i < fields.length; i++) {
-			this.addField(jQuery(fields[i]));
+			this.addField(fields[i]);
 		}
 
 		// /* Initialize all new fields*/
@@ -22,19 +22,19 @@ class SkinManager {
 		}
 	}
 
-	getField($field){
+	getField(fieldEl){
 		for (let i in this.fields) {
             let field = this.fields[i];
 
-            if(field.ID === $field.attr('id')){
+            if(field.ID === fieldEl.getAttribute('id')){
                return field;
             }
         }
 	}
 
-	addField($field, shouldInit = false){
-		let fieldType = $field.attr('me:skin');
-		let fieldParams = {field: $field[0], type: fieldType};
+	addField(fieldEl, shouldInit = false){
+		let fieldType = fieldEl.getAttribute('me:skin');
+		let fieldParams = {field: fieldEl, type: fieldType};
 		let className = `Skin${fieldType.charAt(0).toUpperCase()}${fieldType.slice(1)}`;
 
 		/* Look if the field is valid */
@@ -44,7 +44,7 @@ class SkinManager {
 		}
 
 		/* Look if the field has already been rendered */
-		if ($field.attr('me:skin:render')) {return;}
+		if (fieldEl.getAttribute('me:skin:render')) {return;}
 
 		/* Create instance of the field */
 		let field = new Me.skinTypes[className](fieldParams);
@@ -65,10 +65,8 @@ class SkinManager {
 		for (let i in this.fields) {
 			let field = this.fields[i];
 
-			if(typeof field.$el == "object"){
-				let selector = jQuery('html').find(field.$el[0]);
-
-				if (selector.length > 0) {
+			if(typeof field == "object"){
+				if (document.body.contains(field.el)) {
 					activeFields.push(field);
 				} else {
 					field.terminate();
@@ -112,8 +110,9 @@ class SkinManager {
 	}
 }
 
+if(!window.Me){window.Me = {};}
 Me.skin = new SkinManager();
 
-jQuery(document).ready(function() {
+document.addEventListener('DOMContentLoaded', (event) => {
 	Me.skin.initFields();
 });

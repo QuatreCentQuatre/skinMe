@@ -11,18 +11,6 @@
     display: inline-block;
 }
 
-[me\:skin="checkbox"] {
-    display: none;
-}
-
-[me\:skin="radio"] {
-    display: none;
-}
-
-[me\:skin="radio"] + [me\:skin\:id] {
-    border-radius: 100%;
-}
-
 [me\:skin="select"] {
     display: none;
 }
