@@ -4,17 +4,14 @@ skinMe
 Dependencies
 
 - Babel Polyfill (https://babeljs.io/docs/en/babel-polyfill#usage-in-browser)
-- jQuery (https://jquery.com/)
 
 ## How to implement
 
-First, you'll need to link Babel Polyfill, jQuery and skinMe files in your project 
+First, you'll need to link Babel Polyfill and skinMe files in your project 
 ```html
 <link href='/path/to/directory/me-skin.min.css' rel='stylesheet' type='text/css' />
 
 <script type="text/javascript" src="/path/to/directory/polyfill.js"></script>
-<script type="text/javascript" src="/path/to/directory/jquery.js"></script>
-
 <script type="text/javascript" src="/path/to/directory/me-skin.min.js"></script>
 ```
 
@@ -177,4 +174,18 @@ Speaks for itself, it will disable your field, so no more interaction with it wi
 ```javascript
 let field = Me.skin.getField(document.querySelector('#select-number'));
 field.disabled = true;
+```
+
+## Additional Library
+### Smooth Scrollbar
+#### Init Smooth Scrollbar
+SkinMe comes with Smooth Scrollbar for selects. You're not force to use it but it will be installed in the node_modules folder.
+You'll need to include the javascript file in your website. Then you can simply add a `data-scrollbar` attributes to the `me:skin:choices` wrapper.
+
+#### Option
+If you're looking to add option like in the Smooth Scrollbar documentation, you can pass them via an attribute `data-scrollbar-options`
+
+Example 
+```html
+data-scrollbar-options='{"alwaysShowTracks":true}'
 ```

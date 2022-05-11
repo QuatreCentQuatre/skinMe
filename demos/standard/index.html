@@ -9,29 +9,6 @@
 <body>
 <form action="">
     <div class="row">
-        <label for="radio-direction-up">Up</label>
-        <input me:skin="radio" type="radio" id="radio-direction-up" name="direction" value="up"/>
-        <span me:skin:id="radio-direction-up" me:skin:theme="skinMe-radio"></span>
-    </div>
-    <div class="row">
-        <label for="radio-direction-down">Down</label>
-        <input me:skin="radio" type="radio" id="radio-direction-down" name="direction" value="down"/>
-        <span me:skin:id="radio-direction-down" me:skin:theme="skinMe-radio"></span>
-    </div>
-
-    <div class="row">
-        <label for="checkbox-side-left">Check Down</label>
-        <input me:skin="checkbox" type="checkbox" id="checkbox-side-left" name="side[]" value="left"/>
-        <span me:skin:id="checkbox-side-left" me:skin:theme="skinMe-checkbox"></span>
-    </div>
-
-    <div class="row">
-        <label for="checkbox-side-right">Check up</label>
-        <input me:skin="checkbox" type="checkbox" id="checkbox-side-right" name="side[]" value="right"/>
-        <span me:skin:id="checkbox-side-right" me:skin:theme="skinMe-checkbox"></span>
-    </div>
-
-    <div class="row">
         <label for="select-number">Label Select</label>
 
         <div>
@@ -65,15 +42,45 @@
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
             </select>
         
             <div me:skin:id="select-number-2" me:skin:theme="skinMe-select">
                 <span me:skin:selection="select-number-2"></span>
-                <div me:skin:choices="select-number-2">
+                <div me:skin:choices="select-number-2" data-scrollbar data-scrollbar-options='{"alwaysShowTracks":true}'>
                     <div class="choice">1</div>
                     <div class="choice">2</div>
                     <div class="choice">3</div>
                     <div class="choice">4</div>
+                    <div class="choice">5</div>
+                    <div class="choice">6</div>
+                    <div class="choice">7</div>
+                    <div class="choice">8</div>
+                    <div class="choice">9</div>
+                    <div class="choice">10</div>
+                    <div class="choice">11</div>
+                    <div class="choice">12</div>
+                    <div class="choice">13</div>
+                    <div class="choice">14</div>
+                    <div class="choice">15</div>
+                    <div class="choice">16</div>
+                    <div class="choice">17</div>
+                    <div class="choice">18</div>
+                    <div class="choice">19</div>
                 </div>
             </div>
         </div>
@@ -81,8 +88,7 @@
 </form>
 
 <script src="https://cdn.jsdelivr.net/npm/@babel/polyfill@7.8.7/dist/polyfill.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-<script src="../../node_modules/detect-me/src/me.detect.js"></script>
+<script src="../../node_modules/smooth-scrollbar/dist/smooth-scrollbar.js"></script>
 
 <script src="../../dist/me-skin.min.js?v=2"></script>
 

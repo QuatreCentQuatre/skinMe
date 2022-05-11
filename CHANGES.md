@@ -1,6 +1,10 @@
 skinMe
 ========
 
+Version - 3.2
+- Remove Checkbox and Radio from skinMe.
+- Add Smooth Scrollbar as possible library
+
 Version - 3.1.5
 - Allow <a> into <label> for checkboxes and radios
 

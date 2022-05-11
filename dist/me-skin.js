@@ -308,6 +308,12 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
       _get(_getPrototypeOf(SkinSelect.prototype), "initialize", this).call(this);
 
       this.setDefault();
+
+      if (this.skinChoicesWrapper.hasAttribute('data-scrollbar') && Scrollbar) {
+        var option = this.skinChoicesWrapper.hasAttribute('data-scrollbar-options') ? JSON.parse(this.skinChoicesWrapper.getAttribute('data-scrollbar-options')) : {};
+        console.log(option);
+        Scrollbar.init(this.skinChoicesWrapper, option);
+      }
     }
   }, {
     key: "setDefault",

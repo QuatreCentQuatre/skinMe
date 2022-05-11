@@ -17,6 +17,11 @@ class SkinSelect extends SkinField{
 	initialize() {
 		super.initialize();
 		this.setDefault();
+
+		if(this.skinChoicesWrapper.hasAttribute('data-scrollbar') && Scrollbar){
+			let option = (this.skinChoicesWrapper.hasAttribute('data-scrollbar-options')) ? JSON.parse(this.skinChoicesWrapper.getAttribute('data-scrollbar-options')) : {};
+			Scrollbar.init(this.skinChoicesWrapper, option);
+		}
 	}
 
 	setDefault(){
