@@ -311,7 +311,6 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
 
       if (this.skinChoicesWrapper.hasAttribute('data-scrollbar') && Scrollbar) {
         var option = this.skinChoicesWrapper.hasAttribute('data-scrollbar-options') ? JSON.parse(this.skinChoicesWrapper.getAttribute('data-scrollbar-options')) : {};
-        console.log(option);
         Scrollbar.init(this.skinChoicesWrapper, option);
       }
     }
