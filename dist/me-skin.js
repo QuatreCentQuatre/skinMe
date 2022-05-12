@@ -393,13 +393,7 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
   }, {
     key: "addCustomEvents",
     value: function addCustomEvents() {
-      var _this2 = this;
-
-      window.addEventListener('resize', function () {
-        if (_this2.isOpen) {
-          _this2.close();
-        }
-      });
+      window.addEventListener('resize', this.handleResize.bind(this));
       this.field.addEventListener('change', this.handleChange.bind(this));
 
       if (!this.isNative) {
@@ -413,13 +407,7 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
   }, {
     key: "removeCustomEvents",
     value: function removeCustomEvents() {
-      var _this3 = this;
-
-      window.removeEventListener("resize", function () {
-        if (_this3.isOpen) {
-          _this3.close();
-        }
-      });
+      window.removeEventListener("resize", this.handleResize.bind(this));
       this.field.removeEventListener('change', this.handleChange.bind(this));
 
       if (!this.isNative) {
@@ -433,13 +421,13 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
   }, {
     key: "handleChange",
     value: function handleChange(e) {
-      var _this4 = this;
+      var _this2 = this;
 
       this.choiceSelected = this.skinChoicesWrapper.querySelectorAll('.choice')[this.getSelectedIndex()];
       this.skinChoicesWrapper.querySelectorAll('.choice').forEach(function (value, nodeIndex) {
         value.setAttribute('selected', false);
 
-        if (nodeIndex === _this4.getSelectedIndex()) {
+        if (nodeIndex === _this2.getSelectedIndex()) {
           value.setAttribute('selected', true);
         }
       });
@@ -464,6 +452,13 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
       }
 
       this.open();
+    }
+  }, {
+    key: "handleResize",
+    value: function handleResize() {
+      if (this.isOpen) {
+        this.close();
+      }
     }
   }, {
     key: "open",
@@ -524,12 +519,12 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
     key: "handleSelection",
     value: function handleSelection(e) {
       e.preventDefault();
-      this.setSelection(Array.from(event.target.parentNode.children).indexOf(event.target));
+      this.setSelection(Array.from(e.target.parentNode.children).indexOf(e.target));
     }
   }, {
     key: "setSelection",
     value: function setSelection() {
-      var _this5 = this;
+      var _this3 = this;
 
       var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
       var preventTrigger = arguments.length > 1 ? arguments[1] : undefined;
@@ -538,12 +533,12 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
 
         if (nodeIndex === index) {
           value.setAttribute('selected', 'selected');
-          _this5.field.value = value.getAttribute('value');
+          _this3.field.value = value.getAttribute('value');
 
           if (!preventTrigger) {
-            _this5.field.dispatchEvent(new Event('change'));
+            _this3.field.dispatchEvent(new Event('change'));
           } else {
-            _this5.updateHtml();
+            _this3.updateHtml();
           }
         }
       });

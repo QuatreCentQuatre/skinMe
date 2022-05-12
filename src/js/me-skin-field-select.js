@@ -12,6 +12,8 @@ class SkinSelect extends SkinField{
 			open: 'is-open',
 			native: 'is-native'
 		}
+
+		_.bindAll(this, ['close','keydownOnChoice','handleSelection','handleResize','handleChange','handleState', 'handleEndOpenTransition', 'handleEndCloseTransition'])
 	}
 	
 	initialize() {
@@ -64,10 +66,10 @@ class SkinSelect extends SkinField{
 	addEventWhenOpen(){
 		let scope = this;
 
-		document.addEventListener('click', this.close.bind(this));
+		document.addEventListener('click', this.close);
 		this.skinChoicesWrapper.querySelectorAll('.choice').forEach((value, index)=>{
-			value.addEventListener('keydown', scope.keydownOnChoice.bind(scope));
-			value.addEventListener('click', scope.handleSelection.bind(scope));
+			value.addEventListener('keydown', scope.keydownOnChoice);
+			value.addEventListener('click', scope.handleSelection);
 		});
 	}
 	keydownOnChoice(e){
@@ -77,42 +79,34 @@ class SkinSelect extends SkinField{
 	removeEventOnClose(){
 		let scope = this;
 
-		document.removeEventListener('click', this.close.bind(this));
+		document.removeEventListener('click', this.close);
 		this.skinChoicesWrapper.querySelectorAll('.choice').forEach((value, index)=>{
-			value.removeEventListener('keydown', scope.keydownOnChoice.bind(scope));
-			value.removeEventListener('click', scope.handleSelection.bind(scope));
+			value.removeEventListener('keydown', scope.keydownOnChoice);
+			value.removeEventListener('click', scope.handleSelection);
 		});
 	}
 	addCustomEvents(){
-		window.addEventListener('resize', ()=>{
-			if (this.isOpen) {
-				this.close();
-			}
-		});
+		window.addEventListener('resize', this.handleResize);
 
-		this.field.addEventListener('change', this.handleChange.bind(this));
+		this.field.addEventListener('change', this.handleChange);
 
 		if(!this.isNative){
-			this.customSkin.addEventListener('click', this.handleState.bind(this));
+			this.customSkin.addEventListener('click', this.handleState);
 
 			if (this.label) {
-				this.label.addEventListener('click', this.handleState.bind(this));
+				this.label.addEventListener('click', this.handleState);
 			}
 		}
 	}
 	removeCustomEvents(){
-		window.removeEventListener("resize", ()=>{
-			if (this.isOpen) {
-				this.close();
-			}
-		});
-		this.field.removeEventListener('change', this.handleChange.bind(this));
+		window.removeEventListener("resize", this.handleResize);
+		this.field.removeEventListener('change', this.handleChange);
 
 		if(!this.isNative){
-			this.customSkin.removeEventListener('click', this.handleState.bind(this));
+			this.customSkin.removeEventListener('click', this.handleState);
 
 			if (this.label) {
-				this.label.removeEventListener('click', this.handleState.bind(this));
+				this.label.removeEventListener('click', this.handleState);
 			}
 		}
 	}
@@ -143,6 +137,11 @@ class SkinSelect extends SkinField{
 
 		this.open();
 	}
+	handleResize(){
+		if (this.isOpen) {
+			this.close();
+		}
+	}
 	open(){
 		if (this.field.disabled || this.isAnimating) {return;}
 
@@ -158,7 +157,7 @@ class SkinSelect extends SkinField{
 		this.isAnimating = true;
 		this.skinChoicesWrapper.style.height = this.choicesHeight();
 		this.wrapper.classList.add(this.classes.opening);
-		this.wrapper.addEventListener('transitionend', this.handleEndOpenTransition.bind(this));
+		this.wrapper.addEventListener('transitionend', this.handleEndOpenTransition);
 		this.addEventWhenOpen();
 	}
 	close(e){
@@ -173,24 +172,24 @@ class SkinSelect extends SkinField{
 
 		this.skinChoicesWrapper.style.height = '0px';
 		this.wrapper.classList.add(this.classes.closing);
-		this.wrapper.addEventListener('transitionend', this.handleEndCloseTransition.bind(this));
+		this.wrapper.addEventListener('transitionend', this.handleEndCloseTransition);
 		this.removeEventOnClose();
 	}
 	handleEndOpenTransition(e){
 		this.wrapper.classList.add(this.classes.open);
 		this.wrapper.classList.remove(this.classes.opening);
-		this.wrapper.removeEventListener('transitionend', this.handleEndOpenTransition.bind(this));
+		this.wrapper.removeEventListener('transitionend', this.handleEndOpenTransition);
 		this.isAnimating = false;
 		this.skinChoicesWrapper.querySelectorAll('.choice')[this.getSelectedIndex()].focus();
 	}
 	handleEndCloseTransition(e){
 		this.wrapper.classList.remove(`${this.classes.open}`, `${this.classes.closing}`);
-		this.wrapper.removeEventListener('transitionend', this.handleEndCloseTransition.bind(this));
+		this.wrapper.removeEventListener('transitionend', this.handleEndCloseTransition);
 		this.isAnimating = false;
 	}
 	handleSelection(e){
 		e.preventDefault();
-		this.setSelection(Array.from(event.target.parentNode.children).indexOf(event.target));
+		this.setSelection(Array.from(e.target.parentNode.children).indexOf(e.target));
 	}
 	setSelection(index = 0, preventTrigger){
 		this.field.querySelectorAll('option').forEach((value,nodeIndex)=>{
