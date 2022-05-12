@@ -1,6 +1,9 @@
 skinMe
 ========
 
+Version - 3.2.1
+- Fix remove event listener
+
 Version - 3.2
 - Remove Checkbox and Radio from skinMe.
 - Add Smooth Scrollbar as possible library

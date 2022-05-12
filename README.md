@@ -4,6 +4,7 @@ skinMe
 Dependencies
 
 - Babel Polyfill (https://babeljs.io/docs/en/babel-polyfill#usage-in-browser)
+- Underscore (https://underscorejs.org/)
 
 ## How to implement
 
@@ -12,6 +13,7 @@ First, you'll need to link Babel Polyfill and skinMe files in your project
 <link href='/path/to/directory/me-skin.min.css' rel='stylesheet' type='text/css' />
 
 <script type="text/javascript" src="/path/to/directory/polyfill.js"></script>
+<script type="text/javascript" src="/path/to/directory/underscore-min.js"></script>
 <script type="text/javascript" src="/path/to/directory/me-skin.min.js"></script>
 ```
 
