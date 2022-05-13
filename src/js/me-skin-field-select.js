@@ -212,7 +212,7 @@ class SkinSelect extends SkinField{
 				if(!preventTrigger){
 					this.field.dispatchEvent(new Event('change'));
 				} else{
-					this.updateHtml();
+					this.handleChange();
 				}
 			}
 		});

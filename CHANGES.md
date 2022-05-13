@@ -1,6 +1,10 @@
 skinMe
 ========
 
+Version - 3.2.3
+- Add me:skin:prevent-default attributes definition in README.
+- Fix me:skin:prevent-default option to prevent first value definition to trigger a change event
+
 Version - 3.2.2
 - Fix first value definition on load
 - Add detection of smooth scrollbar to scroll when navigating in the select

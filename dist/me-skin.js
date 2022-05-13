@@ -563,7 +563,7 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
           if (!preventTrigger) {
             _this6.field.dispatchEvent(new Event('change'));
           } else {
-            _this6.updateHtml();
+            _this6.handleChange();
           }
         }
       });

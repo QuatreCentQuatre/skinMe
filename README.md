@@ -125,6 +125,9 @@ This attribute needs to be set on an option tag of your select. The attribute wi
 <br>
 This attribute needs to be set on an option tag of your select. This attribute will define the value as the initial one.
 
+<b>me:skin:prevent-default</b>
+<br>
+This attribute need to be set on the select tag. It will prevent a change event to be triggered on the definition of the default value.
 
 ## Skin Manager functions
 
