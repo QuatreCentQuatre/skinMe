@@ -314,7 +314,7 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
 
       if (this.skinChoicesWrapper.hasAttribute('data-scrollbar') && Scrollbar) {
         var option = this.skinChoicesWrapper.hasAttribute('data-scrollbar-options') ? JSON.parse(this.skinChoicesWrapper.getAttribute('data-scrollbar-options')) : {};
-        Scrollbar.init(this.skinChoicesWrapper, option);
+        this.scrollbar = Scrollbar.init(this.skinChoicesWrapper, option);
       }
     }
   }, {
@@ -336,6 +336,8 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
   }, {
     key: "setDOMAttr",
     value: function setDOMAttr() {
+      var _this2 = this;
+
       _get(_getPrototypeOf(SkinSelect.prototype), "setDOMAttr", this).call(this);
 
       this.field.parentNode.setAttribute('me:skin:wrapper', this.ID);
@@ -343,8 +345,11 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
       this.field.parentNode.setAttribute('me:skin:type', this.type);
       this.skinChoicesWrapper.querySelectorAll('.choice').forEach(function (value, key) {
         value.setAttribute('tabindex', -1);
+
+        if (key === _this2.skinChoicesWrapper.querySelectorAll('.choice') - 1) {
+          _this2.field.setAttribute('tabindex', -1);
+        }
       });
-      this.field.setAttribute('tabindex', -1);
     }
   }, {
     key: "setCustomVariables",
@@ -386,11 +391,12 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
   }, {
     key: "removeEventOnClose",
     value: function removeEventOnClose() {
-      var scope = this;
+      var _this3 = this;
+
       document.removeEventListener('click', this.close);
       this.skinChoicesWrapper.querySelectorAll('.choice').forEach(function (value, index) {
-        value.removeEventListener('keydown', scope.keydownOnChoice);
-        value.removeEventListener('click', scope.handleSelection);
+        value.removeEventListener('keydown', _this3.keydownOnChoice);
+        value.removeEventListener('click', _this3.handleSelection);
       });
     }
   }, {
@@ -424,21 +430,25 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
   }, {
     key: "handleChange",
     value: function handleChange(e) {
-      var _this2 = this;
+      var _this4 = this;
 
-      this.choiceSelected = this.skinChoicesWrapper.querySelectorAll('.choice')[this.getSelectedIndex()];
       this.skinChoicesWrapper.querySelectorAll('.choice').forEach(function (value, nodeIndex) {
-        value.setAttribute('selected', false);
+        value.removeAttribute('selected');
 
-        if (nodeIndex === _this2.getSelectedIndex()) {
+        if (nodeIndex === _this4.getSelectedIndex()) {
           value.setAttribute('selected', true);
         }
-      });
-      this.updateHtml();
 
-      if (this.isOpen) {
-        this.close();
-      }
+        if (nodeIndex === _this4.skinChoicesWrapper.querySelectorAll('.choice').length - 1) {
+          _this4.choiceSelected = _this4.skinChoicesWrapper.querySelectorAll('.choice')[_this4.getSelectedIndex()];
+
+          _this4.updateHtml();
+
+          if (_this4.isOpen) {
+            _this4.close();
+          }
+        }
+      });
     }
   }, {
     key: "handleState",
@@ -466,6 +476,8 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
   }, {
     key: "open",
     value: function open() {
+      var _this5 = this;
+
       if (this.field.disabled || this.isAnimating) {
         return;
       }
@@ -477,12 +489,18 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
         if (field) {
           field.close();
         }
+
+        if (index === selects.length - 1) {
+          _this5.isAnimating = true;
+          _this5.skinChoicesWrapper.style.height = _this5.choicesHeight();
+
+          _this5.wrapper.classList.add(_this5.classes.opening);
+
+          _this5.wrapper.addEventListener('transitionend', _this5.handleEndOpenTransition);
+
+          _this5.addEventWhenOpen();
+        }
       });
-      this.isAnimating = true;
-      this.skinChoicesWrapper.style.height = this.choicesHeight();
-      this.wrapper.classList.add(this.classes.opening);
-      this.wrapper.addEventListener('transitionend', this.handleEndOpenTransition);
-      this.addEventWhenOpen();
     }
   }, {
     key: "close",
@@ -509,6 +527,11 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
       this.wrapper.classList.remove(this.classes.opening);
       this.wrapper.removeEventListener('transitionend', this.handleEndOpenTransition);
       this.isAnimating = false;
+
+      if (this.scrollbar) {
+        this.scrollbar.scrollIntoView(this.skinChoicesWrapper.querySelectorAll('.choice')[this.getSelectedIndex()]);
+      }
+
       this.skinChoicesWrapper.querySelectorAll('.choice')[this.getSelectedIndex()].focus();
     }
   }, {
@@ -527,21 +550,20 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
   }, {
     key: "setSelection",
     value: function setSelection() {
-      var _this3 = this;
+      var _this6 = this;
 
       var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
       var preventTrigger = arguments.length > 1 ? arguments[1] : undefined;
       this.field.querySelectorAll('option').forEach(function (value, nodeIndex) {
-        value.setAttribute('selected', false);
+        value.removeAttribute('selected');
 
         if (nodeIndex === index) {
           value.setAttribute('selected', 'selected');
-          _this3.field.value = value.getAttribute('value');
 
           if (!preventTrigger) {
-            _this3.field.dispatchEvent(new Event('change'));
+            _this6.field.dispatchEvent(new Event('change'));
           } else {
-            _this3.updateHtml();
+            _this6.updateHtml();
           }
         }
       });
@@ -569,10 +591,14 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
             this.open();
           } else {
             var direction = e.keyCode === 38 ? -1 : 1;
-            var focusChoiceIndex = Array.from(this.customSkin.querySelector(':focus').parentNode.children).indexOf(this.customSkin.querySelector(':focus'));
+            var focusChoiceIndex = this.customSkin.querySelector(':focus') ? Array.from(this.customSkin.querySelector(':focus').parentNode.children).indexOf(this.customSkin.querySelector(':focus')) : 0;
             var elToFocus = this.skinChoicesWrapper.querySelectorAll('.choice')[focusChoiceIndex + direction];
 
             if (elToFocus) {
+              if (this.scrollbar) {
+                this.scrollbar.scrollIntoView(elToFocus);
+              }
+
               elToFocus.focus();
             }
           }

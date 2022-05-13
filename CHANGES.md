@@ -1,6 +1,10 @@
 skinMe
 ========
 
+Version - 3.2.2
+- Fix first value definition on load
+- Add detection of smooth scrollbar to scroll when navigating in the select
+
 Version - 3.2.1
 - Fix remove event listener
 

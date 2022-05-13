@@ -22,7 +22,7 @@ class SkinSelect extends SkinField{
 
 		if(this.skinChoicesWrapper.hasAttribute('data-scrollbar') && Scrollbar){
 			let option = (this.skinChoicesWrapper.hasAttribute('data-scrollbar-options')) ? JSON.parse(this.skinChoicesWrapper.getAttribute('data-scrollbar-options')) : {};
-			Scrollbar.init(this.skinChoicesWrapper, option);
+			this.scrollbar = Scrollbar.init(this.skinChoicesWrapper, option);
 		}
 	}
 
@@ -46,8 +46,11 @@ class SkinSelect extends SkinField{
 		this.field.parentNode.setAttribute('me:skin:type', this.type);
 		this.skinChoicesWrapper.querySelectorAll('.choice').forEach((value, key)=>{
 			value.setAttribute('tabindex', -1);
+
+			if(key === this.skinChoicesWrapper.querySelectorAll('.choice') - 1){
+				this.field.setAttribute('tabindex', -1);
+			}
 		})
-		this.field.setAttribute('tabindex', -1);
 	}
 	setCustomVariables(){
 		if (this.customSkin){
@@ -77,12 +80,10 @@ class SkinSelect extends SkinField{
 		if(e.keyCode === 9){this.close();}
 	}
 	removeEventOnClose(){
-		let scope = this;
-
 		document.removeEventListener('click', this.close);
 		this.skinChoicesWrapper.querySelectorAll('.choice').forEach((value, index)=>{
-			value.removeEventListener('keydown', scope.keydownOnChoice);
-			value.removeEventListener('click', scope.handleSelection);
+			value.removeEventListener('keydown', this.keydownOnChoice);
+			value.removeEventListener('click', this.handleSelection);
 		});
 	}
 	addCustomEvents(){
@@ -111,19 +112,21 @@ class SkinSelect extends SkinField{
 		}
 	}
 	handleChange(e){
-		this.choiceSelected = this.skinChoicesWrapper.querySelectorAll('.choice')[this.getSelectedIndex()];
 		this.skinChoicesWrapper.querySelectorAll('.choice').forEach((value,nodeIndex)=>{
-			value.setAttribute('selected', false);
+			value.removeAttribute('selected');
 
 			if(nodeIndex === this.getSelectedIndex()){
 				value.setAttribute('selected',true);
 			}
-		})
 
-		this.updateHtml();
-		if(this.isOpen){
-			this.close();
-		}
+			if(nodeIndex === this.skinChoicesWrapper.querySelectorAll('.choice').length - 1){
+				this.choiceSelected = this.skinChoicesWrapper.querySelectorAll('.choice')[this.getSelectedIndex()];
+				this.updateHtml();
+				if(this.isOpen){
+					this.close();
+				}
+			}
+		});
 	}
 	handleState(e){
 		if (this.field.disabled) {return;}
@@ -146,19 +149,23 @@ class SkinSelect extends SkinField{
 		if (this.field.disabled || this.isAnimating) {return;}
 
 		let selects = document.querySelectorAll('select:not('+ this.field.getAttribute('name') + ')');
-		selects.forEach(function (value, index) {
+		selects.forEach( (value, index)=>{
 			let field = Me.skin.getField(value);
 
 			if(field){
 				field.close();
 			}
+
+			if(index === selects.length - 1){
+				this.isAnimating = true;
+				this.skinChoicesWrapper.style.height = this.choicesHeight();
+				this.wrapper.classList.add(this.classes.opening);
+				this.wrapper.addEventListener('transitionend', this.handleEndOpenTransition);
+				this.addEventWhenOpen();
+			}
 		});
 
-		this.isAnimating = true;
-		this.skinChoicesWrapper.style.height = this.choicesHeight();
-		this.wrapper.classList.add(this.classes.opening);
-		this.wrapper.addEventListener('transitionend', this.handleEndOpenTransition);
-		this.addEventWhenOpen();
+
 	}
 	close(e){
 		if (this.field.disabled || this.isAnimating) {return;}
@@ -180,6 +187,11 @@ class SkinSelect extends SkinField{
 		this.wrapper.classList.remove(this.classes.opening);
 		this.wrapper.removeEventListener('transitionend', this.handleEndOpenTransition);
 		this.isAnimating = false;
+
+		if(this.scrollbar){
+			this.scrollbar.scrollIntoView(this.skinChoicesWrapper.querySelectorAll('.choice')[this.getSelectedIndex()]);
+		}
+
 		this.skinChoicesWrapper.querySelectorAll('.choice')[this.getSelectedIndex()].focus();
 	}
 	handleEndCloseTransition(e){
@@ -193,10 +205,9 @@ class SkinSelect extends SkinField{
 	}
 	setSelection(index = 0, preventTrigger){
 		this.field.querySelectorAll('option').forEach((value,nodeIndex)=>{
-			value.setAttribute('selected', false);
+			value.removeAttribute('selected');
 			if(nodeIndex === index){
 				value.setAttribute('selected','selected');
-				this.field.value = value.getAttribute('value');
 
 				if(!preventTrigger){
 					this.field.dispatchEvent(new Event('change'));
@@ -205,8 +216,6 @@ class SkinSelect extends SkinField{
 				}
 			}
 		});
-
-
 	}
 	getSelectedIndex(){
 		let selectedEl = this.field.querySelector('option[value="'+ this.field.value +'"]');
@@ -226,10 +235,14 @@ class SkinSelect extends SkinField{
 					this.open();
 				} else{
 					let direction = (e.keyCode === 38) ? -1 : 1;
-					let focusChoiceIndex = Array.from(this.customSkin.querySelector(':focus').parentNode.children).indexOf(this.customSkin.querySelector(':focus'));
+					let focusChoiceIndex = (this.customSkin.querySelector(':focus')) ? Array.from(this.customSkin.querySelector(':focus').parentNode.children).indexOf(this.customSkin.querySelector(':focus')) : 0;
 					let elToFocus = this.skinChoicesWrapper.querySelectorAll('.choice')[focusChoiceIndex + direction];
 
 					if(elToFocus){
+						if(this.scrollbar){
+							this.scrollbar.scrollIntoView(elToFocus);
+						}
+
 						elToFocus.focus();
 					}
 				}
