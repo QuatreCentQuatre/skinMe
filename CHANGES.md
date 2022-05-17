@@ -1,6 +1,9 @@
 skinMe
 ========
 
+Version - 3.2.4
+- Remove native version and detection
+
 Version - 3.2.3
 - Add me:skin:prevent-default attributes definition in README.
 - Fix me:skin:prevent-default option to prevent first value definition to trigger a change event
