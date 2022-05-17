@@ -360,12 +360,6 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
         this.selection = this.field.parentNode.querySelector("[me\\:skin\\:selection=\"".concat(this.ID, "\"]"));
         this.wrapper = this.field.parentNode;
       }
-
-      if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/iPhone|iPad|iPod/i) || navigator.userAgent.match(/Opera Mini/i) || navigator.userAgent.match(/IEMobile/i)) {
-        this.field.addClass(this.classes.native);
-      }
-
-      this.isNative = this.field.classList.contains(this.classes.native);
     }
   }, {
     key: "addEventWhenOpen",
@@ -404,28 +398,12 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
     value: function addCustomEvents() {
       window.addEventListener('resize', this.handleResize);
       this.field.addEventListener('change', this.handleChange);
-
-      if (!this.isNative) {
-        this.customSkin.addEventListener('click', this.handleState);
-
-        if (this.label) {
-          this.label.addEventListener('click', this.handleState);
-        }
-      }
     }
   }, {
     key: "removeCustomEvents",
     value: function removeCustomEvents() {
       window.removeEventListener("resize", this.handleResize);
       this.field.removeEventListener('change', this.handleChange);
-
-      if (!this.isNative) {
-        this.customSkin.removeEventListener('click', this.handleState);
-
-        if (this.label) {
-          this.label.removeEventListener('click', this.handleState);
-        }
-      }
     }
   }, {
     key: "handleChange",
