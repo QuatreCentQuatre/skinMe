@@ -84,6 +84,12 @@ class SkinSelect extends SkinField{
 		window.addEventListener('resize', this.handleResize);
 
 		this.field.addEventListener('change', this.handleChange);
+
+		this.customSkin.addEventListener('click', this.handleState);
+
+		if (this.label) {
+			this.label.addEventListener('click', this.handleState);
+		}
 	}
 	removeCustomEvents(){
 		window.removeEventListener("resize", this.handleResize);

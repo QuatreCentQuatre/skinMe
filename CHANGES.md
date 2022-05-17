@@ -1,7 +1,7 @@
 skinMe
 ========
 
-Version - 3.2.4
+Version - 3.2.5
 - Remove native version and detection
 
 Version - 3.2.3

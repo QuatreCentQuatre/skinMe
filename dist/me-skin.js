@@ -398,6 +398,11 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
     value: function addCustomEvents() {
       window.addEventListener('resize', this.handleResize);
       this.field.addEventListener('change', this.handleChange);
+      this.customSkin.addEventListener('click', this.handleState);
+
+      if (this.label) {
+        this.label.addEventListener('click', this.handleState);
+      }
     }
   }, {
     key: "removeCustomEvents",

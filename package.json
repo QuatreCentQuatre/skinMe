@@ -1,6 +1,6 @@
 {
   "name": "skin-me",
-  "version": "3.2.4",
+  "version": "3.2.5",
   "author": "QuatreCentQuatre team <info@quatrecentquatre.com> (https://www.quatrecentquatre.com/)",
   "scripts": {
     "production": "node_modules/gulp/bin/gulp.js build"
