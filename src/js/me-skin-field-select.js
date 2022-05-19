@@ -172,11 +172,9 @@ class SkinSelect extends SkinField{
 		this.wrapper.removeEventListener('transitionend', this.handleEndOpenTransition);
 		this.isAnimating = false;
 
-		if(this.scrollbar){
-			this.scrollbar.scrollIntoView(this.skinChoicesWrapper.querySelectorAll('.choice')[this.getSelectedIndex()]);
+		if(!this.scrollbar){
+			this.skinChoicesWrapper.querySelectorAll('.choice')[this.getSelectedIndex()].focus();
 		}
-
-		this.skinChoicesWrapper.querySelectorAll('.choice')[this.getSelectedIndex()].focus();
 	}
 	handleEndCloseTransition(e){
 		this.wrapper.classList.remove(`${this.classes.open}`, `${this.classes.closing}`);

@@ -1,6 +1,9 @@
 skinMe
 ========
 
+Version - 3.2.6
+- Remove focus of the selected option if Smoothscrollbar exist on the select
+
 Version - 3.2.5
 - Remove native version and detection
 
