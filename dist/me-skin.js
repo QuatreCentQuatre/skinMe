@@ -197,6 +197,12 @@ var SkinField = /*#__PURE__*/function () {
     key: "keyHandler",
     value: function keyHandler(e) {}
   }, {
+    key: "terminate",
+    value: function terminate() {
+      this.removeCustomEvents();
+      this.removeCommonEvents();
+    }
+  }, {
     key: "name",
     get: function get() {
       return this._name;

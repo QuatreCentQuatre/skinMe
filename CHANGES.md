@@ -1,6 +1,9 @@
 skinMe
 ========
 
+Version - 3.2.7
+- Restore terminate function in fields
+
 Version - 3.2.6
 - Remove focus of the selected option if Smoothscrollbar exist on the select
 

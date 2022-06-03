@@ -229,4 +229,8 @@ class SkinField {
 	removeCustomEvents(){}
 	setInitialValue(){}
 	keyHandler(e){}
+	terminate(){
+		this.removeCustomEvents();
+		this.removeCommonEvents();
+	}
 }
