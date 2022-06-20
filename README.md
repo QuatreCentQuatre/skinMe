@@ -170,6 +170,13 @@ If your are looking to update a field, all you need to do is fetch de field obje
 Me.skin.getField(document.querySelector('#select-number'));
 ```
 
+###Set a new value
+If your are looking to update a field, all you need to do is fetch de field object with Me.skin.getField($field). Then you can modify it.
+
+```javascript
+Me.skin.getField(document.querySelector('#select-number')).setSelection(index);
+```
+
 ## Single field setter
 
 ### disabled

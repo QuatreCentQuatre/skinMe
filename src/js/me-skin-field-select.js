@@ -183,7 +183,7 @@ class SkinSelect extends SkinField{
 	}
 	handleSelection(e){
 		e.preventDefault();
-		this.setSelection(Array.from(e.target.parentNode.children).indexOf(e.target));
+		this.setSelection(Array.from(e.target.parentNode.children).indexOf(e.target), false);
 	}
 	setSelection(index = 0, preventTrigger){
 		this.field.querySelectorAll('option').forEach((value,nodeIndex)=>{
@@ -200,7 +200,7 @@ class SkinSelect extends SkinField{
 		});
 	}
 	getSelectedIndex(){
-		let selectedEl = this.field.querySelector('option[value="'+ this.field.value +'"]');
+		let selectedEl = this.field.querySelector('option[selected="selected"]');
 		return Array.from(selectedEl.parentNode.children).indexOf(selectedEl);
 	}
 	updateHtml(){

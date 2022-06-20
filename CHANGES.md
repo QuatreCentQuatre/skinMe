@@ -1,6 +1,9 @@
 skinMe
 ========
 
+Version - 3.2.8
+- Fix firefox value detection
+
 Version - 3.2.7
 - Restore terminate function in fields
 

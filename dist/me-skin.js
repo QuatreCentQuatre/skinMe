@@ -532,7 +532,7 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
     key: "handleSelection",
     value: function handleSelection(e) {
       e.preventDefault();
-      this.setSelection(Array.from(e.target.parentNode.children).indexOf(e.target));
+      this.setSelection(Array.from(e.target.parentNode.children).indexOf(e.target), false);
     }
   }, {
     key: "setSelection",
@@ -558,7 +558,7 @@ var SkinSelect = /*#__PURE__*/function (_SkinField) {
   }, {
     key: "getSelectedIndex",
     value: function getSelectedIndex() {
-      var selectedEl = this.field.querySelector('option[value="' + this.field.value + '"]');
+      var selectedEl = this.field.querySelector('option[selected="selected"]');
       return Array.from(selectedEl.parentNode.children).indexOf(selectedEl);
     }
   }, {
