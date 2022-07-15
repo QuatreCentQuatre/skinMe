@@ -1,6 +1,8 @@
 skinMe
 ========
 
+IMPORTANT NOTE: This repository has been archived and migrated to Bitbucket.
+
 Dependencies
 
 - Babel Polyfill (https://babeljs.io/docs/en/babel-polyfill#usage-in-browser)
