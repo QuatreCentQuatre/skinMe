@@ -2,12 +2,6 @@
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function set(target, property, value, receiver) { if (typeof Reflect !== "undefined" && Reflect.set) { set = Reflect.set; } else { set = function set(target, property, value, receiver) { var base = _superPropBase(target, property); var desc; if (base) { desc = Object.getOwnPropertyDescriptor(base, property); if (desc.set) { desc.set.call(receiver, value); return true; } else if (!desc.writable) { return false; } } desc = Object.getOwnPropertyDescriptor(receiver, property); if (desc) { if (!desc.writable) { return false; } desc.value = value; Object.defineProperty(receiver, property, desc); } else { _defineProperty(receiver, property, value); } return true; }; } return set(target, property, value, receiver); }
-
-function _set(target, property, value, receiver, isStrict) { var s = set(target, property, value, receiver || target); if (!s && isStrict) { throw new Error('failed to set property'); } return value; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
 
 function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
@@ -101,12 +95,11 @@ var SkinField = /*#__PURE__*/function () {
     _classCallCheck(this, SkinField);
 
     this.field = options.field;
-    this.$field = jQuery(options.field);
-    this.ID = this.$field.attr('id');
-    this.name = this.$field.attr('name');
-    this.type = this.$field.attr('type') ? this.$field.attr('type') : this.$field.prop("tagName").toLowerCase();
-    this.$label = this.$field.parent().find('label[for="' + this.ID + '"]').length > 0 ? this.$field.parent().find('label[for="' + this.ID + '"]') : null;
-    this.$customSkin = this.$field.parent().find("[me\\:skin\\:id=\"".concat(this.ID, "\"]")).length > 0 ? this.$field.parent().find("[me\\:skin\\:id=\"".concat(this.ID, "\"]")) : null;
+    this.ID = this.field.getAttribute('id');
+    this.name = this.field.getAttribute('name');
+    this.type = this.field.hasAttribute('type') ? this.field.getAttribute('type') : this.field.tagName.toLowerCase();
+    this.label = this.field.parentElement.querySelector('label[for="' + this.ID + '"]') ? this.field.parentElement.querySelector('label[for="' + this.ID + '"]') : null;
+    this.customSkin = this.field.parentElement.querySelector("[me\\:skin\\:id=\"".concat(this.ID, "\"]")) ? this.field.parentElement.querySelector("[me\\:skin\\:id=\"".concat(this.ID, "\"]")) : null;
     if (!this.dependenciesExist() || !this.requirementsExist()) return;
     this.options = {
       debug: window.SETTINGS && SETTINGS.DEBUG_MODE ? SETTINGS.DEBUG_MODE : false
@@ -119,9 +112,10 @@ var SkinField = /*#__PURE__*/function () {
       // Set common variables used by every field type
       this.setDOMAttr();
       this.setCustomVariables();
-      if (!this.$customSkin) return;
-      this.removeCommonEvents();
-      this.addCommonEvents(); // Add specific variables depending of the field type
+      if (!this.customSkin) return; // this.removeCommonEvents();
+
+      this.addCommonEvents(); //
+      // Add specific variables depending of the field type
 
       this.removeCustomEvents();
       this.addCustomEvents();
@@ -130,44 +124,33 @@ var SkinField = /*#__PURE__*/function () {
   }, {
     key: "addCommonEvents",
     value: function addCommonEvents() {
-      var _this = this;
-
-      this.$customSkin.on('mouseenter.skinMe mouseleave.skinMe', function (e) {
-        _this.toggleHover(e);
-      });
-      this.$customSkin.on('keydown.skinMe', function (e) {
-        _this.keyHandler(e);
-      });
+      this.customSkin.addEventListener('mouseenter', this.toggleHover.bind(this));
+      this.customSkin.addEventListener('mouseleave', this.toggleHover.bind(this));
+      this.customSkin.addEventListener('keydown', this.keyHandler.bind(this));
     }
   }, {
     key: "removeCommonEvents",
     value: function removeCommonEvents() {
-      this.$customSkin.off('mouseenter.skinMe mouseleave.skinMe');
-      this.$customSkin.off('keydown.skinMe');
+      this.customSkin.removeEventListener('mouseenter', this.toggleHover.bind(this));
+      this.customSkin.removeEventListener('mouseleave', this.toggleHover.bind(this));
+      this.customSkin.removeEventListener('keydown', this.keyHandler.bind(this));
     }
   }, {
     key: "setDOMAttr",
     value: function setDOMAttr() {
-      this.$field.attr('me:skin:render', "true");
-      this.$field.attr('me:skin:type', this.type);
-      this.$customSkin.attr('me:skin:render', "true");
-      this.$customSkin.attr('me:skin:disabled', this.field.disabled);
-      this.$customSkin.attr('me:skin:theme', this.$field.attr('me:skin:theme'));
-      this.$field.removeAttr('me:skin:theme');
+      this.field.setAttribute('me:skin:render', "true");
+      this.field.setAttribute('me:skin:type', this.type);
+      this.customSkin.setAttribute('me:skin:render', "true");
+      this.customSkin.setAttribute('me:skin:disabled', this.field.disabled);
 
       if (!this.field.disabled) {
-        this.$customSkin.attr('tabindex', 0);
+        this.customSkin.setAttribute('tabindex', 0);
       }
     }
   }, {
     key: "dependenciesExist",
     value: function dependenciesExist() {
-      var isValid = true;
-
-      if (!window.$) {
-        console.warn("SkinMe :: Dependencies :: required jquery (http://jquery.com/)");
-        isValid = false;
-      }
+      var isValid = true; // @NOTE Only here in case some dependencies needs to be added in a near future
 
       return isValid;
     }
@@ -176,7 +159,7 @@ var SkinField = /*#__PURE__*/function () {
     value: function requirementsExist() {
       var isValid = true;
 
-      if (!this.$customSkin) {
+      if (!this.customSkin) {
         console.error("Skin element associated with ID:".concat(this.ID, " can't be found. Add me:skin:id=\"").concat(this.ID, "\""));
         isValid = false;
       }
@@ -191,11 +174,11 @@ var SkinField = /*#__PURE__*/function () {
   }, {
     key: "toggleHover",
     value: function toggleHover(e) {
-      if (this.$field.attr('disabled')) {
+      if (this.field.hasAttribute('disabled') && this.field.getAttribute('disabled')) {
         return;
       }
 
-      this.$customSkin.toggleClass('hover');
+      this.customSkin.classList.toggle('hover');
     }
   }, {
     key: "setCustomVariables",
@@ -213,6 +196,12 @@ var SkinField = /*#__PURE__*/function () {
   }, {
     key: "keyHandler",
     value: function keyHandler(e) {}
+  }, {
+    key: "terminate",
+    value: function terminate() {
+      this.removeCustomEvents();
+      this.removeCommonEvents();
+    }
   }, {
     key: "name",
     get: function get() {
@@ -277,16 +266,16 @@ var SkinField = /*#__PURE__*/function () {
         return;
       }
 
-      this.$field.attr('disabled', bool);
+      this.field.setAttribute('disabled', bool);
       this._disabled = bool;
 
-      if (this.$customSkin) {
-        this.$customSkin.attr('me:skin:disabled', bool);
+      if (this.customSkin) {
+        this.customSkin.setAttribute('me:skin:disabled', bool);
 
         if (bool === true) {
-          this.$customSkin.attr('tabindex', -1);
+          this.customSkin.setAttribute('tabindex', -1);
         } else {
-          this.$customSkin.attr('tabindex', 0);
+          this.customSkin.setAttribute('tabindex', 0);
         }
       }
     }
@@ -295,209 +284,31 @@ var SkinField = /*#__PURE__*/function () {
   return SkinField;
 }();
 
-var SkinCheckbox = /*#__PURE__*/function (_SkinField) {
-  _inherits(SkinCheckbox, _SkinField);
+var SkinSelect = /*#__PURE__*/function (_SkinField) {
+  _inherits(SkinSelect, _SkinField);
 
-  var _super = _createSuper(SkinCheckbox);
-
-  function SkinCheckbox(options) {
-    var _this2;
-
-    _classCallCheck(this, SkinCheckbox);
-
-    _this2 = _super.call(this, options);
-    _this2.classes = {
-      checked: 'is-checked'
-    };
-    return _this2;
-  }
-
-  _createClass(SkinCheckbox, [{
-    key: "addCustomEvents",
-    value: function addCustomEvents() {
-      var _this3 = this;
-
-      this.$field.on('change.skinMe', function (e) {
-        _this3.changeHandler(e);
-      });
-      this.$customSkin.on('click.skinMe', function (e) {
-        _this3.clickHandler(e);
-      });
-
-      if (this.$label) {
-        this.$label.on('click.skinMe', function (e) {
-          _this3.clickHandler(e);
-        });
-      }
-    }
-  }, {
-    key: "removeCustomEvents",
-    value: function removeCustomEvents() {
-      this.$field.off('change.skinMe');
-      this.$customSkin.off('click.skinMe');
-
-      if (this.$label) {
-        this.$label.off('click.skinMe');
-      }
-    }
-  }, {
-    key: "changeHandler",
-    value: function changeHandler(e) {
-      if (!this.field.checked) {
-        this.$customSkin.addClass(this.classes.checked);
-        this.$field.addClass(this.classes.checked);
-        this.field.checked = true;
-      } else {
-        this.$customSkin.removeClass(this.classes.checked);
-        this.$field.removeClass(this.classes.checked);
-        this.field.checked = false;
-      }
-    }
-  }, {
-    key: "clickHandler",
-    value: function clickHandler(e) {
-      if (this.field.disabled || e.target.tagName === 'A') {
-        return;
-      }
-
-      e.stopImmediatePropagation();
-      e.stopPropagation();
-      e.preventDefault();
-      this.$field.trigger('change.skinMe');
-    }
-  }, {
-    key: "keyHandler",
-    value: function keyHandler(e) {
-      _get(_getPrototypeOf(SkinCheckbox.prototype), "keyHandler", this).call(this, e);
-
-      if (e.keyCode === 13 || e.keyCode === 32) this.$customSkin.trigger('click.skinMe');
-    }
-  }, {
-    key: "disabled",
-    set: function set(bool) {
-      _set(_getPrototypeOf(SkinCheckbox.prototype), "disabled", bool, this, true);
-
-      if (this.field.checked) {
-        this.changeHandler();
-      }
-    }
-  }]);
-
-  return SkinCheckbox;
-}(SkinField);
-
-Me.skinTypes['SkinCheckbox'] = SkinCheckbox;
-
-var SkinRadio = /*#__PURE__*/function (_SkinField2) {
-  _inherits(SkinRadio, _SkinField2);
-
-  var _super2 = _createSuper(SkinRadio);
-
-  function SkinRadio(options) {
-    var _this4;
-
-    _classCallCheck(this, SkinRadio);
-
-    _this4 = _super2.call(this, options);
-    _this4.classes = {
-      checked: 'is-checked'
-    };
-    return _this4;
-  }
-
-  _createClass(SkinRadio, [{
-    key: "addCustomEvents",
-    value: function addCustomEvents() {
-      var _this5 = this;
-
-      this.$field.on('change.skinMe', function (e) {
-        _this5.changeHandler(e);
-      });
-      this.$customSkin.on('click.skinMe', function (e) {
-        _this5.clickHandler(e);
-      });
-
-      if (this.$label) {
-        this.$label.on('click.skinMe', function (e) {
-          _this5.clickHandler(e);
-        });
-      }
-    }
-  }, {
-    key: "removeCustomEvents",
-    value: function removeCustomEvents() {
-      this.$field.off('change.skinMe');
-      this.$customSkin.off('click.skinMe');
-
-      if (this.$label) {
-        this.$label.off('click.skinMe');
-      }
-    }
-  }, {
-    key: "changeHandler",
-    value: function changeHandler(e) {
-      var _this6 = this;
-
-      if (!this.field.checked) {
-        jQuery.each(jQuery('input[name="' + this.name + '"]'), function (index, el) {
-          var field = Me.skin.getField(jQuery(el));
-          field.$customSkin.removeClass(_this6.classes.checked);
-          field.$field.removeClass(_this6.classes.checked);
-          field.field.checked = false;
-        });
-        this.$customSkin.addClass(this.classes.checked);
-        this.$field.addClass(this.classes.checked);
-        this.field.checked = true;
-      }
-    }
-  }, {
-    key: "clickHandler",
-    value: function clickHandler(e) {
-      if (this.field.disabled || e.target.tagName === 'A') {
-        return;
-      }
-
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      e.stopPropagation();
-      this.$field.trigger('change', 'label');
-    }
-  }, {
-    key: "keyHandler",
-    value: function keyHandler(e) {
-      _get(_getPrototypeOf(SkinRadio.prototype), "keyHandler", this).call(this, e);
-
-      if (e.keyCode === 13 || e.keyCode === 32) this.$customSkin.trigger('click');
-    }
-  }]);
-
-  return SkinRadio;
-}(SkinField);
-
-Me.skinTypes['SkinRadio'] = SkinRadio;
-
-var SkinSelect = /*#__PURE__*/function (_SkinField3) {
-  _inherits(SkinSelect, _SkinField3);
-
-  var _super3 = _createSuper(SkinSelect);
+  var _super = _createSuper(SkinSelect);
 
   function SkinSelect(options) {
-    var _this7;
+    var _this;
 
     _classCallCheck(this, SkinSelect);
 
-    _this7 = _super3.call(this, options);
-    _this7.preventDefaultChangeEvent = _this7.$field[0].hasAttribute('me:skin:prevent-default');
-    _this7.$skinChoicesWrapper = _this7.$field.parent().find("[me\\:skin\\:choices=\"".concat(_this7.ID, "\"]"));
-    _this7.$choiceSelected = _this7.$skinChoicesWrapper.find('.choice[selected]');
-    _this7.isAnimating = false;
-    _this7.classes = {
+    _this = _super.call(this, options);
+    _this.preventDefaultChangeEvent = _this.field.hasAttribute('me:skin:prevent-default');
+    _this.skinChoicesWrapper = _this.field.parentNode.querySelector("[me\\:skin\\:choices=\"".concat(_this.ID, "\"]"));
+    _this.choiceSelected = _this.skinChoicesWrapper.querySelector('.choice[selected]');
+    _this.isAnimating = false;
+    _this.classes = {
       opening: 'is-opening',
       closing: 'is-closing',
       open: 'is-open',
       native: 'is-native'
     };
-    return _this7;
+
+    _.bindAll(_assertThisInitialized(_this), ['close', 'keydownOnChoice', 'handleSelection', 'handleResize', 'handleChange', 'handleState', 'handleEndOpenTransition', 'handleEndCloseTransition']);
+
+    return _this;
   }
 
   _createClass(SkinSelect, [{
@@ -506,21 +317,24 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
       _get(_getPrototypeOf(SkinSelect.prototype), "initialize", this).call(this);
 
       this.setDefault();
+
+      if (this.skinChoicesWrapper.hasAttribute('data-scrollbar') && Scrollbar) {
+        var option = this.skinChoicesWrapper.hasAttribute('data-scrollbar-options') ? JSON.parse(this.skinChoicesWrapper.getAttribute('data-scrollbar-options')) : {};
+        this.scrollbar = Scrollbar.init(this.skinChoicesWrapper, option);
+      }
     }
   }, {
     key: "setDefault",
     value: function setDefault() {
-      var _this8 = this;
-
-      this.$defaults.each(function (index, value) {
-        jQuery(_this8.$skinChoicesWrapper.find('.choice')[_this8.$field.find('option[value="' + $(value).val() + '"]').index()]).attr('default', true);
-      });
+      if (this.defaults) {
+        this.skinChoicesWrapper.querySelectorAll('.choice')[Array.from(this.defaults.parentNode.children).indexOf(this.defaults)].setAttribute('default', true);
+      }
     }
   }, {
     key: "setInitialValue",
     value: function setInitialValue() {
-      if (this.$selected.length > 0) {
-        this.setSelection(this.$selected.index(), this.preventDefaultChangeEvent);
+      if (this.selected) {
+        this.setSelection(Array.from(this.selected.parentNode.children).indexOf(this.selected), this.preventDefaultChangeEvent);
       } else {
         this.setSelection(0, this.preventDefaultChangeEvent);
       }
@@ -528,115 +342,102 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
   }, {
     key: "setDOMAttr",
     value: function setDOMAttr() {
+      var _this2 = this;
+
       _get(_getPrototypeOf(SkinSelect.prototype), "setDOMAttr", this).call(this);
 
-      this.$field.parent().attr('me:skin:wrapper', this.ID);
-      this.$field.removeAttr('me:skin:type');
-      this.$field.parent().attr('me:skin:type', this.type);
-      this.$skinChoicesWrapper.find('.choice').attr('tabindex', -1);
-      this.$field.attr('tabindex', -1);
+      this.field.parentNode.setAttribute('me:skin:wrapper', this.ID);
+      this.field.removeAttribute('me:skin:type');
+      this.field.parentNode.setAttribute('me:skin:type', this.type);
+      this.skinChoicesWrapper.querySelectorAll('.choice').forEach(function (value, key) {
+        value.setAttribute('tabindex', -1);
+
+        if (key === _this2.skinChoicesWrapper.querySelectorAll('.choice') - 1) {
+          _this2.field.setAttribute('tabindex', -1);
+        }
+      });
     }
   }, {
     key: "setCustomVariables",
     value: function setCustomVariables() {
-      if (this.$customSkin) {
-        this.$defaults = this.$field.find("option[default]");
-        this.$selected = this.$field.find("option[selected]");
-        this.$selection = this.$field.parent().find("[me\\:skin\\:selection=\"".concat(this.ID, "\"]"));
-        this.$wrapper = this.$field.parent();
+      if (this.customSkin) {
+        this.defaults = this.field.querySelector("option[default]");
+        this.selected = this.field.querySelector("option[selected]");
+        this.selection = this.field.parentNode.querySelector("[me\\:skin\\:selection=\"".concat(this.ID, "\"]"));
+        this.wrapper = this.field.parentNode;
       }
-
-      if (Me.detect && Me.detect.isMobile()) {
-        this.$field.addClass(this.classes.native);
-      }
-
-      this.isNative = this.$field.hasClass(this.classes.native);
     }
   }, {
     key: "addEventWhenOpen",
     value: function addEventWhenOpen() {
-      var _this9 = this;
+      var scope = this;
+      document.addEventListener('click', this.close);
+      this.skinChoicesWrapper.querySelectorAll('.choice').forEach(function (value, index) {
+        value.addEventListener('keydown', scope.keydownOnChoice);
+        value.addEventListener('click', scope.handleSelection);
+      });
+    }
+  }, {
+    key: "keydownOnChoice",
+    value: function keydownOnChoice(e) {
+      if (e.keyCode === 13) {
+        this.handleSelection(e);
+      }
 
-      jQuery(document).on('click.skinMe', function (e) {
-        _this9.close(e);
-      });
-      this.$skinChoicesWrapper.find('.choice').on('keydown.skinMe', function (e) {
-        if (e.keyCode === 13) {
-          _this9.handleSelection(e);
-        }
-
-        if (e.keyCode === 9) {
-          _this9.close();
-        }
-      });
-      this.$skinChoicesWrapper.find('.choice').on('click.skinMe', function (e) {
-        _this9.handleSelection(e);
-      });
+      if (e.keyCode === 9) {
+        this.close();
+      }
     }
   }, {
     key: "removeEventOnClose",
     value: function removeEventOnClose() {
-      jQuery(document).off('click.skinMe');
-      this.$skinChoicesWrapper.find('.choice').off('keydown.skinMe');
-      this.$skinChoicesWrapper.find('.choice').off('click.skinMe');
+      var _this3 = this;
+
+      document.removeEventListener('click', this.close);
+      this.skinChoicesWrapper.querySelectorAll('.choice').forEach(function (value, index) {
+        value.removeEventListener('keydown', _this3.keydownOnChoice);
+        value.removeEventListener('click', _this3.handleSelection);
+      });
     }
   }, {
     key: "addCustomEvents",
     value: function addCustomEvents() {
-      var _this10 = this;
+      window.addEventListener('resize', this.handleResize);
+      this.field.addEventListener('change', this.handleChange);
+      this.customSkin.addEventListener('click', this.handleState);
 
-      window.addEventListener('resize', function () {
-        if (_this10.isOpen) {
-          _this10.close();
-        }
-      });
-      this.$field.on('change.skinMe', function (e) {
-        _this10.handleChange(e);
-      });
-
-      if (!this.isNative) {
-        this.$customSkin.on('click.skinMe', function (e) {
-          _this10.handleState(e);
-        });
-
-        if (this.$label) {
-          this.$label.on('click.skinMe', function (e) {
-            _this10.handleState(e);
-          });
-        }
+      if (this.label) {
+        this.label.addEventListener('click', this.handleState);
       }
     }
   }, {
     key: "removeCustomEvents",
     value: function removeCustomEvents() {
-      var _this11 = this;
-
-      window.removeEventListener("resize", function () {
-        if (_this11.isOpen) {
-          _this11.close();
-        }
-      });
-      this.$field.off('change.skinMe');
-
-      if (!this.isNative) {
-        this.$customSkin.off('click.skinMe');
-
-        if (this.$label) {
-          this.$label.off('click.skinMe');
-        }
-      }
+      window.removeEventListener("resize", this.handleResize);
+      this.field.removeEventListener('change', this.handleChange);
     }
   }, {
     key: "handleChange",
     value: function handleChange(e) {
-      this.$choiceSelected = jQuery(this.$skinChoicesWrapper.find('.choice')[this.getSelectedIndex()]);
-      this.$skinChoicesWrapper.find('.choice').attr('selected', false);
-      jQuery(this.$skinChoicesWrapper.find('.choice')[this.getSelectedIndex()]).attr('selected', true);
-      this.updateHtml();
+      var _this4 = this;
 
-      if (this.isOpen) {
-        this.close();
-      }
+      this.skinChoicesWrapper.querySelectorAll('.choice').forEach(function (value, nodeIndex) {
+        value.removeAttribute('selected');
+
+        if (nodeIndex === _this4.getSelectedIndex()) {
+          value.setAttribute('selected', true);
+        }
+
+        if (nodeIndex === _this4.skinChoicesWrapper.querySelectorAll('.choice').length - 1) {
+          _this4.choiceSelected = _this4.skinChoicesWrapper.querySelectorAll('.choice')[_this4.getSelectedIndex()];
+
+          _this4.updateHtml();
+
+          if (_this4.isOpen) {
+            _this4.close();
+          }
+        }
+      });
     }
   }, {
     key: "handleState",
@@ -645,7 +446,7 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
         return;
       }
 
-      e.preventDefault(); // e.stopPropagation();
+      e.preventDefault();
 
       if (this.isOpen) {
         this.close();
@@ -655,39 +456,44 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
       this.open();
     }
   }, {
+    key: "handleResize",
+    value: function handleResize() {
+      if (this.isOpen) {
+        this.close();
+      }
+    }
+  }, {
     key: "open",
     value: function open() {
-      var _this12 = this;
+      var _this5 = this;
 
       if (this.field.disabled || this.isAnimating) {
         return;
       }
 
-      var selects = $('select:not(' + this.$field.attr('name') + ')');
-      selects.each(function (index, value) {
-        var field = Me.skin.getField($(value));
+      var selects = document.querySelectorAll('select:not(' + this.field.getAttribute('name') + ')');
+      selects.forEach(function (value, index) {
+        var field = Me.skin.getField(value);
 
         if (field) {
           field.close();
         }
-      });
-      this.isAnimating = true;
-      this.$skinChoicesWrapper.outerHeight(this.choicesHeight);
-      this.$wrapper.addClass(this.classes.opening).on('transitionend', function () {
-        _this12.$wrapper.addClass(_this12.classes.open).removeClass(_this12.classes.opening);
 
-        _this12.$wrapper.off('transitionend');
+        if (index === selects.length - 1) {
+          _this5.isAnimating = true;
+          _this5.skinChoicesWrapper.style.height = _this5.choicesHeight();
 
-        _this12.isAnimating = false;
-        jQuery(_this12.$skinChoicesWrapper.find('.choice')[_this12.getSelectedIndex()]).focus();
+          _this5.wrapper.classList.add(_this5.classes.opening);
+
+          _this5.wrapper.addEventListener('transitionend', _this5.handleEndOpenTransition);
+
+          _this5.addEventWhenOpen();
+        }
       });
-      this.addEventWhenOpen();
     }
   }, {
     key: "close",
     value: function close(e) {
-      var _this13 = this;
-
       if (this.field.disabled || this.isAnimating) {
         return;
       }
@@ -698,44 +504,67 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
         this.isAnimating = true;
       }
 
-      this.$skinChoicesWrapper.outerHeight(0);
-      this.$wrapper.addClass(this.classes.closing).on('transitionend', function () {
-        _this13.$wrapper.removeClass("".concat(_this13.classes.open, " ").concat(_this13.classes.closing));
-
-        _this13.$wrapper.off('transitionend');
-
-        _this13.isAnimating = false;
-      });
+      this.skinChoicesWrapper.style.height = '0px';
+      this.wrapper.classList.add(this.classes.closing);
+      this.wrapper.addEventListener('transitionend', this.handleEndCloseTransition);
       this.removeEventOnClose();
+    }
+  }, {
+    key: "handleEndOpenTransition",
+    value: function handleEndOpenTransition(e) {
+      this.wrapper.classList.add(this.classes.open);
+      this.wrapper.classList.remove(this.classes.opening);
+      this.wrapper.removeEventListener('transitionend', this.handleEndOpenTransition);
+      this.isAnimating = false;
+
+      if (!this.scrollbar) {
+        this.skinChoicesWrapper.querySelectorAll('.choice')[this.getSelectedIndex()].focus();
+      }
+    }
+  }, {
+    key: "handleEndCloseTransition",
+    value: function handleEndCloseTransition(e) {
+      this.wrapper.classList.remove("".concat(this.classes.open), "".concat(this.classes.closing));
+      this.wrapper.removeEventListener('transitionend', this.handleEndCloseTransition);
+      this.isAnimating = false;
     }
   }, {
     key: "handleSelection",
     value: function handleSelection(e) {
       e.preventDefault();
-      this.setSelection(jQuery(e.currentTarget).index());
+      this.setSelection(Array.from(e.target.parentNode.children).indexOf(e.target), false);
     }
   }, {
     key: "setSelection",
-    value: function setSelection(index, preventTrigger) {
-      this.$field.find('option').attr('selected', false); // jQuery(this.$field.find('option')[index]).attr('selected', true); // @NOTE: issue on reset: previously selected value cant be selected anymore
+    value: function setSelection() {
+      var _this6 = this;
 
-      jQuery(this.$field.find("option")[index])[0].selected = 'selected';
+      var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+      var preventTrigger = arguments.length > 1 ? arguments[1] : undefined;
+      this.field.querySelectorAll('option').forEach(function (value, nodeIndex) {
+        value.removeAttribute('selected');
 
-      if (!preventTrigger) {
-        this.$field.trigger('change');
-      } else {
-        this.updateHtml();
-      }
+        if (nodeIndex === index) {
+          value.setAttribute('selected', 'selected');
+
+          if (!preventTrigger) {
+            _this6.field.dispatchEvent(new Event('change'));
+          } else {
+            _this6.handleChange();
+          }
+        }
+      });
     }
   }, {
     key: "getSelectedIndex",
     value: function getSelectedIndex() {
-      return this.$field.find('option[value="' + this.$field.val() + '"]').index();
+      var selectedEl = this.field.querySelector('option[selected="selected"]');
+      return Array.from(selectedEl.parentNode.children).indexOf(selectedEl);
     }
   }, {
     key: "updateHtml",
     value: function updateHtml() {
-      this.$selection.html(this.$choiceSelected.html());
+      this.selection.textContent = this.choiceSelected.textContent;
     }
   }, {
     key: "keyHandler",
@@ -749,10 +578,14 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
             this.open();
           } else {
             var direction = e.keyCode === 38 ? -1 : 1;
-            var focusChoiceIndex = this.$customSkin.find(':focus').index();
-            var elToFocus = this.$skinChoicesWrapper.find('.choice')[focusChoiceIndex + direction];
+            var focusChoiceIndex = this.customSkin.querySelector(':focus') ? Array.from(this.customSkin.querySelector(':focus').parentNode.children).indexOf(this.customSkin.querySelector(':focus')) : 0;
+            var elToFocus = this.skinChoicesWrapper.querySelectorAll('.choice')[focusChoiceIndex + direction];
 
             if (elToFocus) {
+              if (this.scrollbar) {
+                this.scrollbar.scrollIntoView(elToFocus);
+              }
+
               elToFocus.focus();
             }
           }
@@ -760,7 +593,7 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
           break;
 
         case 27:
-          this.$customSkin.focus();
+          this.customSkin.focus();
           this.close();
           break;
       }
@@ -770,11 +603,11 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
     value: function requirementsExist() {
       var isValid = _get(_getPrototypeOf(SkinSelect.prototype), "requirementsExist", this).call(this);
 
-      if (!jQuery("[me\\:skin\\:choices=\"".concat(this.ID, "\"]")).length > 0) {
+      if (!document.querySelector("[me\\:skin\\:choices=\"".concat(this.ID, "\"]"))) {
         console.error("Can't find the associated me:skin:choices attribute linked to field. See me:skin:choices in README.md");
       }
 
-      if (!jQuery("[me\\:skin\\:selection=\"".concat(this.ID, "\"]")).length > 0) {
+      if (!document.querySelector("[me\\:skin\\:selection=\"".concat(this.ID, "\"]"))) {
         console.error("Can't find the associated me:skin:selection attribute linked to field. See me:skin:selection in README.md");
       }
 
@@ -782,17 +615,17 @@ var SkinSelect = /*#__PURE__*/function (_SkinField3) {
     }
   }, {
     key: "choicesHeight",
-    get: function get() {
+    value: function choicesHeight() {
       var height = 0;
-      this.$skinChoicesWrapper.find('.choice').filter(":visible").each(function (index, value) {
-        height += jQuery(value).outerHeight(true);
+      this.skinChoicesWrapper.querySelectorAll('.choice').forEach(function (value, index) {
+        height += value.offsetHeight;
       });
-      return height;
+      return "".concat(height, "px");
     }
   }, {
     key: "isOpen",
     get: function get() {
-      return this.$wrapper.hasClass(this.classes.open);
+      return this.wrapper.classList.contains(this.classes.open);
     }
   }]);
 
@@ -814,13 +647,13 @@ var SkinManager = /*#__PURE__*/function () {
   _createClass(SkinManager, [{
     key: "initFields",
     value: function initFields() {
-      var $root = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : jQuery('html');
+      var $rootElement = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : document.querySelector('html');
       this.clearFields();
-      var fields = $root.find('[me\\:skin]');
+      var fields = $rootElement.querySelectorAll('[me\\:skin]');
       this.newFields = [];
 
       for (var i = 0; i < fields.length; i++) {
-        this.addField(jQuery(fields[i]));
+        this.addField(fields[i]);
       } // /* Initialize all new fields*/
 
 
@@ -830,22 +663,22 @@ var SkinManager = /*#__PURE__*/function () {
     }
   }, {
     key: "getField",
-    value: function getField($field) {
+    value: function getField(fieldEl) {
       for (var i in this.fields) {
         var field = this.fields[i];
 
-        if (field.ID === $field.attr('id')) {
+        if (field.ID === fieldEl.getAttribute('id')) {
           return field;
         }
       }
     }
   }, {
     key: "addField",
-    value: function addField($field) {
+    value: function addField(fieldEl) {
       var shouldInit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-      var fieldType = $field.attr('me:skin');
+      var fieldType = fieldEl.getAttribute('me:skin');
       var fieldParams = {
-        field: $field[0],
+        field: fieldEl,
         type: fieldType
       };
       var className = "Skin".concat(fieldType.charAt(0).toUpperCase()).concat(fieldType.slice(1));
@@ -858,7 +691,7 @@ var SkinManager = /*#__PURE__*/function () {
       /* Look if the field has already been rendered */
 
 
-      if ($field.attr('me:skin:render')) {
+      if (fieldEl.getAttribute('me:skin:render')) {
         return;
       }
       /* Create instance of the field */
@@ -884,10 +717,8 @@ var SkinManager = /*#__PURE__*/function () {
       for (var i in this.fields) {
         var field = this.fields[i];
 
-        if (_typeof(field.$el) == "object") {
-          var selector = jQuery('html').find(field.$el[0]);
-
-          if (selector.length > 0) {
+        if (_typeof(field) == "object") {
+          if (document.body.contains(field.el)) {
             activeFields.push(field);
           } else {
             field.terminate();
@@ -934,7 +765,11 @@ var SkinManager = /*#__PURE__*/function () {
   return SkinManager;
 }();
 
+if (!window.Me) {
+  window.Me = {};
+}
+
 Me.skin = new SkinManager();
-jQuery(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function (event) {
   Me.skin.initFields();
 });

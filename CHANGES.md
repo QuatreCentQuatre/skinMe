@@ -1,6 +1,33 @@
 skinMe
 ========
 
+Version - 3.2.8
+- Fix firefox value detection
+
+Version - 3.2.7
+- Restore terminate function in fields
+
+Version - 3.2.6
+- Remove focus of the selected option if Smoothscrollbar exist on the select
+
+Version - 3.2.5
+- Remove native version and detection
+
+Version - 3.2.3
+- Add me:skin:prevent-default attributes definition in README.
+- Fix me:skin:prevent-default option to prevent first value definition to trigger a change event
+
+Version - 3.2.2
+- Fix first value definition on load
+- Add detection of smooth scrollbar to scroll when navigating in the select
+
+Version - 3.2.1
+- Fix remove event listener
+
+Version - 3.2
+- Remove Checkbox and Radio from skinMe.
+- Add Smooth Scrollbar as possible library
+
 Version - 3.1.5
 - Allow <a> into <label> for checkboxes and radios
 

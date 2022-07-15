@@ -11,18 +11,6 @@
     display: inline-block;
 }
 
-[me\:skin="checkbox"] {
-    display: none;
-}
-
-[me\:skin="radio"] {
-    display: none;
-}
-
-[me\:skin="radio"] + [me\:skin\:id] {
-    border-radius: 100%;
-}
-
 [me\:skin="select"] {
     display: none;
 }
@@ -56,6 +44,7 @@
     top: 100%;
     z-index: 999;
     background: white;
+    max-height: 200px;
 }
 
 [me\:skin\:type="select"].is-opening [me\:skin\:id] [me\:skin\:choices], [me\:skin\:type="select"].is-open [me\:skin\:id] [me\:skin\:choices] {

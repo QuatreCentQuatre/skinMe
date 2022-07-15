@@ -1,194 +1,215 @@
 class SkinSelect extends SkinField{
 	constructor(options){
 		super(options);
-		this.preventDefaultChangeEvent = this.$field[0].hasAttribute('me:skin:prevent-default');
-		this.$skinChoicesWrapper = this.$field.parent().find(`[me\\:skin\\:choices="${this.ID}"]`);
-		this.$choiceSelected = this.$skinChoicesWrapper.find('.choice[selected]');
+		this.preventDefaultChangeEvent = this.field.hasAttribute('me:skin:prevent-default');
+		this.skinChoicesWrapper = this.field.parentNode.querySelector(`[me\\:skin\\:choices="${this.ID}"]`);
+		this.choiceSelected = this.skinChoicesWrapper.querySelector('.choice[selected]');
 		this.isAnimating = false;
-		
+
 		this.classes = {
 			opening: 'is-opening',
 			closing: 'is-closing',
 			open: 'is-open',
 			native: 'is-native'
 		}
+
+		_.bindAll(this, ['close','keydownOnChoice','handleSelection','handleResize','handleChange','handleState', 'handleEndOpenTransition', 'handleEndCloseTransition'])
 	}
 	
 	initialize() {
 		super.initialize();
 		this.setDefault();
+
+		if(this.skinChoicesWrapper.hasAttribute('data-scrollbar') && Scrollbar){
+			let option = (this.skinChoicesWrapper.hasAttribute('data-scrollbar-options')) ? JSON.parse(this.skinChoicesWrapper.getAttribute('data-scrollbar-options')) : {};
+			this.scrollbar = Scrollbar.init(this.skinChoicesWrapper, option);
+		}
 	}
-	
+
 	setDefault(){
-		this.$defaults.each((index, value)=>{
-			jQuery(this.$skinChoicesWrapper.find('.choice')[this.$field.find('option[value="'+ $(value).val() +'"]').index()]).attr('default', true);
-		});
+		if(this.defaults){
+			this.skinChoicesWrapper.querySelectorAll('.choice')[Array.from(this.defaults.parentNode.children).indexOf(this.defaults)].setAttribute('default', true);
+		}
 	}
 	setInitialValue(){
-		if(this.$selected.length > 0){
-			this.setSelection(this.$selected.index(), this.preventDefaultChangeEvent);
+		if(this.selected){
+			this.setSelection(Array.from(this.selected.parentNode.children).indexOf(this.selected), this.preventDefaultChangeEvent);
 		} else{
 			this.setSelection(0, this.preventDefaultChangeEvent);
 		}
 	}
-	
+
 	setDOMAttr(){
 		super.setDOMAttr();
-		this.$field.parent().attr('me:skin:wrapper', this.ID);
-		this.$field.removeAttr('me:skin:type');
-		this.$field.parent().attr('me:skin:type', this.type);
-		this.$skinChoicesWrapper.find('.choice').attr('tabindex', -1);
-		this.$field.attr('tabindex', -1);
+		this.field.parentNode.setAttribute('me:skin:wrapper', this.ID);
+		this.field.removeAttribute('me:skin:type');
+		this.field.parentNode.setAttribute('me:skin:type', this.type);
+		this.skinChoicesWrapper.querySelectorAll('.choice').forEach((value, key)=>{
+			value.setAttribute('tabindex', -1);
+
+			if(key === this.skinChoicesWrapper.querySelectorAll('.choice') - 1){
+				this.field.setAttribute('tabindex', -1);
+			}
+		})
 	}
 	setCustomVariables(){
-		if (this.$customSkin){
-			this.$defaults = this.$field.find(`option[default]`);
-			this.$selected = this.$field.find(`option[selected]`);
-			this.$selection = this.$field.parent().find(`[me\\:skin\\:selection="${this.ID}"]`);
-			this.$wrapper = this.$field.parent();
+		if (this.customSkin){
+			this.defaults = this.field.querySelector(`option[default]`);
+			this.selected = this.field.querySelector(`option[selected]`);
+			this.selection = this.field.parentNode.querySelector(`[me\\:skin\\:selection="${this.ID}"]`);
+			this.wrapper = this.field.parentNode;
 		}
-		
-		if(Me.detect && Me.detect.isMobile()){
-			this.$field.addClass(this.classes.native);
-		}
-		
-		this.isNative = (this.$field.hasClass(this.classes.native));
 	}
 	addEventWhenOpen(){
-		jQuery(document).on('click.skinMe', (e) => {this.close(e)});
-		this.$skinChoicesWrapper.find('.choice').on('keydown.skinMe', (e)=>{
-			if(e.keyCode === 13){this.handleSelection(e)}
-			if(e.keyCode === 9){this.close();}
+		let scope = this;
+
+		document.addEventListener('click', this.close);
+		this.skinChoicesWrapper.querySelectorAll('.choice').forEach((value, index)=>{
+			value.addEventListener('keydown', scope.keydownOnChoice);
+			value.addEventListener('click', scope.handleSelection);
 		});
-		this.$skinChoicesWrapper.find('.choice').on('click.skinMe', (e) => {this.handleSelection(e)});
+	}
+	keydownOnChoice(e){
+		if(e.keyCode === 13){this.handleSelection(e)}
+		if(e.keyCode === 9){this.close();}
 	}
 	removeEventOnClose(){
-		jQuery(document).off('click.skinMe');
-		this.$skinChoicesWrapper.find('.choice').off('keydown.skinMe');
-		this.$skinChoicesWrapper.find('.choice').off('click.skinMe');
+		document.removeEventListener('click', this.close);
+		this.skinChoicesWrapper.querySelectorAll('.choice').forEach((value, index)=>{
+			value.removeEventListener('keydown', this.keydownOnChoice);
+			value.removeEventListener('click', this.handleSelection);
+		});
 	}
 	addCustomEvents(){
-		window.addEventListener('resize', ()=>{
-			if (this.isOpen) {
-				this.close();
-			}
-		});
-		this.$field.on('change.skinMe', (e) => {this.handleChange(e)});
-		
-		if(!this.isNative){
-			this.$customSkin.on('click.skinMe', (e) => {this.handleState(e)});
-			
-			if (this.$label) {
-				this.$label.on('click.skinMe', (e) => {this.handleState(e)});
-			}
+		window.addEventListener('resize', this.handleResize);
+
+		this.field.addEventListener('change', this.handleChange);
+
+		this.customSkin.addEventListener('click', this.handleState);
+
+		if (this.label) {
+			this.label.addEventListener('click', this.handleState);
 		}
 	}
 	removeCustomEvents(){
-		window.removeEventListener("resize", ()=>{
-			if (this.isOpen) {
-				this.close();
-			}
-		});
-		this.$field.off('change.skinMe');
-		
-		if(!this.isNative){
-			this.$customSkin.off('click.skinMe');
-			
-			if (this.$label) {
-				this.$label.off('click.skinMe');
-			}
-		}
+		window.removeEventListener("resize", this.handleResize);
+		this.field.removeEventListener('change', this.handleChange);
 	}
 	handleChange(e){
-		this.$choiceSelected = jQuery(this.$skinChoicesWrapper.find('.choice')[this.getSelectedIndex()]);
-		this.$skinChoicesWrapper.find('.choice').attr('selected', false);
-		jQuery(this.$skinChoicesWrapper.find('.choice')[this.getSelectedIndex()]).attr('selected', true);
-		
-		this.updateHtml();
-		if(this.isOpen){
-			this.close();
-		}
+		this.skinChoicesWrapper.querySelectorAll('.choice').forEach((value,nodeIndex)=>{
+			value.removeAttribute('selected');
+
+			if(nodeIndex === this.getSelectedIndex()){
+				value.setAttribute('selected',true);
+			}
+
+			if(nodeIndex === this.skinChoicesWrapper.querySelectorAll('.choice').length - 1){
+				this.choiceSelected = this.skinChoicesWrapper.querySelectorAll('.choice')[this.getSelectedIndex()];
+				this.updateHtml();
+				if(this.isOpen){
+					this.close();
+				}
+			}
+		});
 	}
 	handleState(e){
 		if (this.field.disabled) {return;}
-		
+
 		e.preventDefault();
-		// e.stopPropagation();
-		
+
 		if(this.isOpen){
 			this.close();
 			return;
 		}
-		
+
 		this.open();
+	}
+	handleResize(){
+		if (this.isOpen) {
+			this.close();
+		}
 	}
 	open(){
 		if (this.field.disabled || this.isAnimating) {return;}
-		
-		let selects = $('select:not('+ this.$field.attr('name') + ')');
-		selects.each(function (index, value) {
-			let field = Me.skin.getField($(value));
-			
+
+		let selects = document.querySelectorAll('select:not('+ this.field.getAttribute('name') + ')');
+		selects.forEach( (value, index)=>{
+			let field = Me.skin.getField(value);
+
 			if(field){
 				field.close();
 			}
+
+			if(index === selects.length - 1){
+				this.isAnimating = true;
+				this.skinChoicesWrapper.style.height = this.choicesHeight();
+				this.wrapper.classList.add(this.classes.opening);
+				this.wrapper.addEventListener('transitionend', this.handleEndOpenTransition);
+				this.addEventWhenOpen();
+			}
 		});
-		
-		this.isAnimating = true;
-		this.$skinChoicesWrapper.outerHeight(this.choicesHeight);
-		this.$wrapper.addClass(this.classes.opening).on('transitionend', ()=>{
-			this.$wrapper.addClass(this.classes.open).removeClass(this.classes.opening);
-			this.$wrapper.off('transitionend');
-			this.isAnimating = false;
-			jQuery(this.$skinChoicesWrapper.find('.choice')[this.getSelectedIndex()]).focus();
-		});
-		
-		this.addEventWhenOpen();
+
+
 	}
 	close(e){
 		if (this.field.disabled || this.isAnimating) {return;}
-		
+
 		if(e)
 			e.preventDefault();
-		
+
 		if(this.isOpen){
 			this.isAnimating = true;
 		}
-		
-		this.$skinChoicesWrapper.outerHeight(0);
-		this.$wrapper.addClass(this.classes.closing).on('transitionend', ()=>{
-			this.$wrapper.removeClass(`${this.classes.open} ${this.classes.closing}`);
-			this.$wrapper.off('transitionend');
-			this.isAnimating = false;
-		});
-		
+
+		this.skinChoicesWrapper.style.height = '0px';
+		this.wrapper.classList.add(this.classes.closing);
+		this.wrapper.addEventListener('transitionend', this.handleEndCloseTransition);
 		this.removeEventOnClose();
+	}
+	handleEndOpenTransition(e){
+		this.wrapper.classList.add(this.classes.open);
+		this.wrapper.classList.remove(this.classes.opening);
+		this.wrapper.removeEventListener('transitionend', this.handleEndOpenTransition);
+		this.isAnimating = false;
+
+		if(!this.scrollbar){
+			this.skinChoicesWrapper.querySelectorAll('.choice')[this.getSelectedIndex()].focus();
+		}
+	}
+	handleEndCloseTransition(e){
+		this.wrapper.classList.remove(`${this.classes.open}`, `${this.classes.closing}`);
+		this.wrapper.removeEventListener('transitionend', this.handleEndCloseTransition);
+		this.isAnimating = false;
 	}
 	handleSelection(e){
 		e.preventDefault();
-		this.setSelection(jQuery(e.currentTarget).index());
+		this.setSelection(Array.from(e.target.parentNode.children).indexOf(e.target), false);
 	}
-	setSelection(index, preventTrigger){
-		this.$field.find('option').attr('selected', false);
-		// jQuery(this.$field.find('option')[index]).attr('selected', true); // @NOTE: issue on reset: previously selected value cant be selected anymore
-		jQuery(this.$field.find("option")[index])[0].selected = 'selected';
-		
-		if(!preventTrigger){
-			this.$field.trigger('change');
-		} else{
-			this.updateHtml();
-		}
+	setSelection(index = 0, preventTrigger){
+		this.field.querySelectorAll('option').forEach((value,nodeIndex)=>{
+			value.removeAttribute('selected');
+			if(nodeIndex === index){
+				value.setAttribute('selected','selected');
+
+				if(!preventTrigger){
+					this.field.dispatchEvent(new Event('change'));
+				} else{
+					this.handleChange();
+				}
+			}
+		});
 	}
 	getSelectedIndex(){
-		return this.$field.find('option[value="'+ this.$field.val() +'"]').index();
+		let selectedEl = this.field.querySelector('option[selected="selected"]');
+		return Array.from(selectedEl.parentNode.children).indexOf(selectedEl);
 	}
 	updateHtml(){
-		this.$selection.html(this.$choiceSelected.html());
+		this.selection.textContent = this.choiceSelected.textContent;
 	}
-	
+
 	keyHandler(e) {
 		super.keyHandler(e);
-		
+
 		switch (e.keyCode) {
 			case 38:
 			case 40:
@@ -196,47 +217,51 @@ class SkinSelect extends SkinField{
 					this.open();
 				} else{
 					let direction = (e.keyCode === 38) ? -1 : 1;
-					let focusChoiceIndex = this.$customSkin.find(':focus').index();
-					let elToFocus = this.$skinChoicesWrapper.find('.choice')[focusChoiceIndex + direction];
-					
+					let focusChoiceIndex = (this.customSkin.querySelector(':focus')) ? Array.from(this.customSkin.querySelector(':focus').parentNode.children).indexOf(this.customSkin.querySelector(':focus')) : 0;
+					let elToFocus = this.skinChoicesWrapper.querySelectorAll('.choice')[focusChoiceIndex + direction];
+
 					if(elToFocus){
+						if(this.scrollbar){
+							this.scrollbar.scrollIntoView(elToFocus);
+						}
+
 						elToFocus.focus();
 					}
 				}
 				break;
 			case 27:
-				this.$customSkin.focus();
+				this.customSkin.focus();
 				this.close();
 				break;
 		}
 	}
-	
+
 	requirementsExist(){
 		let isValid = super.requirementsExist();
-		
-		if(!jQuery(`[me\\:skin\\:choices="${this.ID}"]`).length > 0){
+
+		if(!document.querySelector(`[me\\:skin\\:choices="${this.ID}"]`)){
 			console.error(`Can't find the associated me:skin:choices attribute linked to field. See me:skin:choices in README.md`)
 		}
-		
-		if(!jQuery(`[me\\:skin\\:selection="${this.ID}"]`).length > 0){
+
+		if(!document.querySelector(`[me\\:skin\\:selection="${this.ID}"]`)){
 			console.error(`Can't find the associated me:skin:selection attribute linked to field. See me:skin:selection in README.md`)
 		}
-		
+
 		return isValid;
 	}
-	
-	get choicesHeight(){
+
+	choicesHeight(){
 		let height = 0;
-		
-		this.$skinChoicesWrapper.find('.choice').filter(":visible").each((index, value) => {
-			height += jQuery(value).outerHeight(true);
+
+		this.skinChoicesWrapper.querySelectorAll('.choice').forEach((value, index) => {
+			height += value.offsetHeight;
 		});
-		
-		return height;
+
+		return `${height}px`;
 	}
-	
+
 	get isOpen(){
-		return this.$wrapper.hasClass(this.classes.open);
+		return this.wrapper.classList.contains(this.classes.open);
 	}
 }
 
